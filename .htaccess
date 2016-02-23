@@ -1,0 +1,10 @@
+
+#<VirtualHost *:80>
+#    DocumentRoot www/client
+#    ServerName moco-moco
+#</VirtualHost>
+#
+#<VirtualHost *:80>
+#    DocumentRoot www/api
+#    ServerName api.moco-moco
+#</VirtualHost>

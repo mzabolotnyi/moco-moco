@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+
+    RewriteBase /
+
+    RewriteCond %{REQUEST_URI} ^/
+    RewriteRule ^(.*)$ web/$1 [L]
+
+    RewriteCond %{REQUEST_URI} !^/web/
+    RewriteCond %{REQUEST_URI} !index.php
+    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^.*$ web/index.php
+
+</IfModule>
