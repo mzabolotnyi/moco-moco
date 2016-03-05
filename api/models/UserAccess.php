@@ -10,9 +10,10 @@ use Yii;
  * @property integer $user_id
  * @property string $user_ip
  * @property string $token
- * @property string $create_at
+ * @property string $created_at
+ * @property string $updated_at
  */
-class UserAccess extends \yii\db\ActiveRecord
+class UserAccess extends OActiveRecord
 {
     /**
      * @inheritdoc
@@ -30,7 +31,7 @@ class UserAccess extends \yii\db\ActiveRecord
         return [
             [['user_id', 'user_ip', 'token'], 'required'],
             [['user_id'], 'integer'],
-            [['create_at'], 'safe'],
+            [['created_at'], 'safe'],
             [['user_ip', 'token'], 'string', 'max' => 255]
         ];
     }
@@ -44,7 +45,6 @@ class UserAccess extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'user_ip' => 'User IP',
             'token' => 'Access Token',
-            'create_at' => 'Create At',
         ];
     }
 

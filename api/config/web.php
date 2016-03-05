@@ -10,60 +10,15 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
-        'request' => [
-            'enableCookieValidation' => false,
-            'enableCsrfValidation' => false,
-            'baseUrl' => '',
-            'parsers' => [
-                'application/json' => 'yii\web\JsonParser',
-            ],
-        ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableSession' => false,
-            'loginUrl' => null,
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'htmlLayout' => '@app/mail/layouts/html',
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',
-                'username' => 'mocomoco.online@gmail.com',
-                'password' => 'max070690',
-                'port' => '587',
-                'encryption' => 'tls',
-            ],
-        ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
+        'request' => require(__DIR__ . '/components/request.php'),
+        'cache' => require(__DIR__ . '/components/cache.php'),
+        'user' => require(__DIR__ . '/components/user.php'),
+        'authManager' => require(__DIR__ . '/components/authManager.php'),
+        'errorHandler' => require(__DIR__ . '/components/errorHandler.php'),
+        'mailer' => require(__DIR__ . '/components/mailer.php'),
+        'log' => require(__DIR__ . '/components/log.php'),
         'db' => require(__DIR__ . '/db.php'),
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-//            'enableStrictParsing' => true,
-            'showScriptName' => false,
-            'rules' => [
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => [
-                        'account',
-                    ],
-                ],
-            ],
-        ],
+        'urlManager' => require(__DIR__ . '/components/urlManager.php'),
     ],
     'params' => $params,
 ];

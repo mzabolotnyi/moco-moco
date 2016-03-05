@@ -2,22 +2,20 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
 use yii\helpers\Url;
-use yii\web\Link;
-use yii\web\Linkable;
 
 /**
- * Класс модели счетов, таблица - "account".
+ * This is the model class for table "account".
  *
  * @property integer $id
  * @property integer $user_id
  * @property string $name
  * @property string $color
- * @property integer $closed
- * @property date $closing_date
+ * @property integer $active
+ * @property string $created_at
+ * @property string $updated_at
  */
-class Account extends ActiveRecord implements Linkable
+class Account extends OActiveRecord
 {
     /**
      * @inheritdoc
@@ -30,12 +28,26 @@ class Account extends ActiveRecord implements Linkable
     /**
      * @inheritdoc
      */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'color', 'active', '!user_id'];
+
+        return $scenarios;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
             [['user_id', 'name'], 'required'],
-            [['name'], 'string', 'min' => 1, 'max' => 255],
-            [['color'], 'string', 'max' => 7]
+            ['name', 'string', 'max' => 255],
+            ['color', 'string', 'max' => 7],
+            ['color', 'default', 'value' => '#009688'],
+            ['active', 'boolean'],
+            ['active', 'default', 'value' => 1],
         ];
     }
 
@@ -48,8 +60,7 @@ class Account extends ActiveRecord implements Linkable
             'name' => 'Название',
             'currency' => 'Валюта',
             'color' => 'Цвет',
-            'closed' => 'Закрыт',
-            'closing_date' => 'Дата закрытия',
+            'active' => 'Активный',
         ];
     }
 
@@ -59,44 +70,49 @@ class Account extends ActiveRecord implements Linkable
     public function fields()
     {
         return [
+            'href' => function () {
+                return Url::to("/accounts/$this->id", true);
+            },
             'id',
             'name',
+            'color',
+            'active',
             'user_id',
-            'link' => function ($model) {
-                return "www.$model->name.com";
-            }
         ];
     }
 
     /**
-     * @inheritdoc
+     * Binds currency with account by creating and saving AccountCurrency model
+     * @param \app\models\Currency $currency
+     * @return bool
      */
-    public function extraFields()
+    public function bindCurrency($currency)
     {
-        return [
-            'balance' => function ($model) {
-                return $model->getBalance();
-            }
-        ];
+        $params = ['account_id' => $this->id, 'currency_id' => $currency->id];
+        $model = AccountCurrency::findOne($params);
+
+        if (!$model) {
+            $model = new AccountCurrency($params);
+            return $model->save();
+        }
+
+        return true;
     }
 
     /**
-     * @inheritdoc
+     * Unbinds currency from account by deleting AccountCurrency model
+     * @param \app\models\Currency $currency
+     * @return bool
      */
-    public function getLinks()
+    public function unbindCurrency($currency)
     {
-        return [
-            Link::REL_SELF => Url::to(['view', 'id' => $this->id], true),
-            'balance' => Url::to(['view', 'id' => $this->id, 'balance'], true),
-        ];
-    }
+        $params = ['account_id' => $this->id, 'currency_id' => $currency->id];
+        $model = AccountCurrency::findOne($params);
 
+        if ($model) {
+            return $model->delete();
+        }
 
-    public function getBalance()
-    {
-        return [
-            'UAH' => 5200,
-            'USD' => 1200,
-        ];
+        return true;
     }
 }

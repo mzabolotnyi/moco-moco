@@ -3,12 +3,12 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use yii\filters\RateLimitInterface;
 use yii\web\IdentityInterface;
 use yii\web\ServerErrorHttpException;
 
 /**
- * Модель пользователя
+ * User model class
  *
  * @property integer $id
  * @property string $username
@@ -22,27 +22,21 @@ use yii\web\ServerErrorHttpException;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends OActiveRecord implements IdentityInterface, RateLimitInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+
+    const ROLE_BASIC = 'basic';
+    const ROLE_PREMIUM = 'premium';
+    const ROLE_ADMIN = 'admin';
 
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%user}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
+        return 'user';
     }
 
     /**
@@ -188,22 +182,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Устанавливает пользователю статус "Активен"
-     *
-     * @return bool
-     */
-    public function activate()
-    {
-        if ($this->status != self::STATUS_ACTIVE) {
-            $this->status = self::STATUS_ACTIVE;
-            return $this->save();
-        }
-
-        return true;
-    }
-
-    /**
-     * Получает данные о токене доступа
+     * Get data about access token
      *
      * @return UserAccess|null
      * @throws ServerErrorHttpException
@@ -220,7 +199,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Удаляет данные о токене доступа
+     * Remove data about access token
      *
      * @return bool
      */
@@ -228,4 +207,51 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return UserAccess::destroyAccess($this);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRateLimit($request, $action)
+    {
+        return [100, 180]; //не более 100 запросов в течении 180 секунд (3 минут)
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loadAllowance($request, $action)
+    {
+        //get allowance from cache
+        $cache = Yii::$app->cache;
+
+        if ($cache) {
+            $key = 'rate_limit_user_' . $this->getId();
+            $allowance = $cache->get($key);
+
+            if ($allowance) {
+                return $allowance;
+            }
+        }
+
+        //something wrong with cache - return default
+        return [1, time()];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function saveAllowance($request, $action, $allowance, $timestamp)
+    {
+        //set allowance to cache
+        $cache = Yii::$app->cache;
+
+        if ($cache) {
+            $key = 'rate_limit_user_' . $this->getId();
+            $cache->set($key, [
+                $allowance,
+                $timestamp,
+            ]);
+        }
+    }
+
 }

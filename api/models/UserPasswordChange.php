@@ -49,7 +49,7 @@ class UserPasswordChange extends Model
         if ($this->validate()) {
 
             if ($this->user === false) {
-                $this->user = User::findIdentity(Yii::$app->user->getId());
+                $this->user = Yii::$app->user->getIdentity(false);
             }
 
             if ($this->user !== null) {

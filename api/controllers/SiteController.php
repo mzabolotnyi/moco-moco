@@ -2,93 +2,37 @@
 
 namespace app\controllers;
 
-use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
-
-class SiteController extends Controller
+class SiteController extends \yii\web\Controller
 {
-    public function behaviors()
+    public function actionError()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+            "name" => "Ресурс не найден",
+            "message" => "Запрошенный ресурс не найден",
+            "code" => 0,
+            "status" => 404,
+            "type" => "yii\\web\\NotFoundHttpException",
         ];
     }
 
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
-    }
-
+    /**
+     * Displays homepage.
+     *
+     * @return mixed
+     */
     public function actionIndex()
     {
+        $models = \app\models\Currency::search(['user_id' => implode(';', [22, 0, 'null'])]);
+
+//        \Yii::$app->cache->flush();
+//
+//        echo "<div style='margin: 100px'>$account->name</div>";
+        echo "<div style='margin: 100px'></div>";
+
+        foreach ($models->getModels() as $model) {
+            echo "<div>$model->id - " . $model->user_id . "</div>";
+        }
+
         return $this->render('index');
-    }
-
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }
