@@ -19,6 +19,8 @@ use yii\web\Linkable;
  * @property boolean $active
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property User $user
  */
 class Tag extends OActiveRecord
 {
@@ -90,8 +92,17 @@ class Tag extends OActiveRecord
             'income',
             'expense',
             'active',
-            'user_id',
+            'userId' => 'user_id',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->user_id === null ?
+            null : $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

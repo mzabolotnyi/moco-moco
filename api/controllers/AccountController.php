@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\AccountCurrency;
 use app\models\Currency;
+use app\models\Transaction;
+use yii\data\ActiveDataProvider;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
@@ -68,5 +71,65 @@ class AccountController extends OActiveController
         if (!$model->unbindCurrency($currency)) {
             throw new ServerErrorHttpException('Не удалось выполнить действие по неизвестным причинам');
         }
+    }
+
+    /**
+     * Returns ActiveDataProvider of transactions by account
+     * @param integer $id account ID
+     * @return ActiveDataProvider
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionGetTransactions($id)
+    {
+        /* @var $model \app\models\Account */
+        $model = $this->findModel($id);
+
+        $queryParams = Yii::$app->request->queryParams;
+        unset($queryParams['id']);
+
+        $dataProvider = Transaction::search($queryParams);
+        $dataProvider->query
+            ->andWhere([
+                'or',
+                ['account_id' => $model->id],
+                ['recipient_account_id' => $model->id],
+            ]);
+
+        return $dataProvider;
+    }
+
+    /**
+     * Deletes transactions by account
+     * @param integer $id account ID
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionDeleteTransactions($id)
+    {
+        /* @var $model \app\models\Account */
+        $model = $this->findModel($id);
+
+        Transaction::deleteAll([
+            'or',
+            ['account_id' => $model->id],
+            ['recipient_account_id' => $model->id],
+        ]);
+
+        Yii::$app->getResponse()->setStatusCode(204);
+    }
+
+    /**
+     * @inheritdoc
+     * @param \app\models\Currency $model
+     */
+    protected function allowDelete($model)
+    {
+        $countTransactions = $model->hasMany(Transaction::className(), ['account_id' => 'id'])->count()
+            + $model->hasMany(Transaction::className(), ['recipient_account_id' => 'id'])->count();
+
+        if ($countTransactions > 0) {
+            throw new BadRequestHttpException("Необходимо удалить операции по счету. Всего операций в базе - $countTransactions.");
+        }
+
+        return true;
     }
 }

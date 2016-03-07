@@ -14,6 +14,8 @@ use yii\helpers\Url;
  * @property integer $active
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property User $user
  */
 class Account extends OActiveRecord
 {
@@ -45,8 +47,8 @@ class Account extends OActiveRecord
             [['user_id', 'name'], 'required'],
             ['name', 'string', 'max' => 255],
             ['color', 'string', 'max' => 7],
-            ['color', 'default', 'value' => '#009688'],
             ['active', 'boolean'],
+            ['color', 'default', 'value' => '#009688'],
             ['active', 'default', 'value' => 1],
         ];
     }
@@ -77,8 +79,26 @@ class Account extends OActiveRecord
             'name',
             'color',
             'active',
-            'user_id',
+            'userId' => 'user_id',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->user_id === null ?
+            null : $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * Returns a value indicating whether the account is active
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
     }
 
     /**

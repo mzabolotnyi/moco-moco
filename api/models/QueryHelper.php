@@ -19,14 +19,15 @@ class QueryHelper
      * @param \yii\db\Query $query
      * @param array $params of filtering, associated array of 'key' => 'value' pairs
      * Example:
-     *         name = Kate:         'name' => 'Kate'
-     *         name != Kate:        'name' => '!Kate'
-     *         name = Jane or Kate: 'name' => 'Jane;Kate'
-     *         comment like 'test': 'comment' => '^test'
-     *         amount > 1000:       'amount' => '>1000'
-     *         amount >= 1000:      'amount' => '>=1000'
-     *         amount < 1000:       'amount' => '<1000'
-     *         amount <= 1000:      'amount' => '<=1000'
+     *         name = Kate:                 'name' => 'Kate'
+     *         name != Kate:                'name' => '!Kate'
+     *         name = Jane or Kate:         'name' => 'Jane;Kate'
+     *         comment like 'test':         'comment' => '^test'
+     *         amount > 1000:               'amount' => '>1000'
+     *         amount >= 1000:              'amount' => '>=1000'
+     *         amount < 1000:               'amount' => '<1000'
+     *         amount <= 1000:              'amount' => '<=1000'
+     *         amount >= 100 and <= 1000:   'amount' => '100:1000'
      *
      * @return \yii\db\Query
      */
@@ -38,6 +39,16 @@ class QueryHelper
                 continue;
             }
 
+            // filter by range
+            $values = explode(':', $param);
+
+            if (count($values)>1){
+                $query->andFilterWhere(['>=', $key, $values[0]]); // start of range
+                $query->andFilterWhere(['<=', $key, $values[1]]); // end of range
+                continue;
+            }
+
+            // filter by other conditions
             $values = explode(';', $param);
 
             foreach ($values as $index => $value) {

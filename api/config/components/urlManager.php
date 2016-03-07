@@ -4,6 +4,7 @@ return [
     'enablePrettyUrl' => true,
     'showScriptName' => false,
     'rules' => [
+        // currency
         [
             'class' => 'yii\rest\UrlRule',
             'controller' => [
@@ -18,10 +19,11 @@ return [
                 'GET {id}/rates/{date}' => 'get-rates',
                 'POST {id}/rates/{date}' => 'create-rate',
                 'PUT,PATCH {id}/rates/{date}' => 'update-rate',
-                'DELETE {id}/rates' => 'delete-rate',
-                'DELETE {id}/rates/{date}' => 'delete-rate',
+                'DELETE {id}/rates' => 'delete-rates',
+                'DELETE {id}/rates/{date}' => 'delete-rates',
             ],
         ],
+        // account
         [
             'class' => 'yii\rest\UrlRule',
             'controller' => [
@@ -33,19 +35,28 @@ return [
             ],
             'extraPatterns' => [
                 'GET {id}/currencies' => 'get-currencies',
+                'GET {id}/transactions' => 'get-transactions',
                 'PUT,PATCH {id}/currencies/{currency-id}' => 'bind-currency',
                 'DELETE {id}/currencies/{currency-id}' => 'unbind-currency',
+                'DELETE {id}/transactions' => 'delete-transactions',
             ],
         ],
+        // tag
         [
             'class' => 'yii\rest\UrlRule',
             'controller' => [
                 'tag',
             ],
-            'tokens' => [
-                '{id}' => '<id:\\d[\\d,]*>',
-            ],
             'extraPatterns' => [
+                'GET {id}/transactions' => 'get-transactions',
+                'DELETE {id}/transactions' => 'delete-transactions',
+            ],
+        ],
+        // transaction
+        [
+            'class' => 'yii\rest\UrlRule',
+            'controller' => [
+                'transaction',
             ],
         ],
     ],

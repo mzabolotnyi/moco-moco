@@ -13,6 +13,8 @@ use yii\helpers\Url;
  * @property integer $size
  * @property integer $created_at
  * @property integer $updated_at
+ *
+ * @property Currency $currency
  */
 class CurrencyRate extends OActiveRecord
 {
@@ -43,10 +45,10 @@ class CurrencyRate extends OActiveRecord
         return [
             [['currency_id', 'date'], 'required'],
             ['date', 'date', 'format' => 'yyyy-MM-dd'],
-            ['date', 'validateUnique'],
-            ['currency_id', 'exist', 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
             ['rate', 'number'],
             ['size', 'integer'],
+            ['currency_id', 'exist', 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
+            ['date', 'validateUnique'],
             [['rate', 'size'], 'default', 'value' => 1],
         ];
     }
@@ -73,14 +75,22 @@ class CurrencyRate extends OActiveRecord
             'href' => function () {
                 return Url::to("/currencies/$this->currency_id/rates/$this->date", true);
             },
-            'currency_id',
             'date',
             'rate',
             'size',
             'currency' => function () {
-                return ['href' => Url::to("/currencies/$this->currency_id", true)];
+                return $this->currency;
             },
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrency()
+    {
+        return $this->currency_id === null ?
+            null : $this->hasOne(Currency::className(), ['id' => 'currency_id']);
     }
 
     /**

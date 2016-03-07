@@ -30,10 +30,10 @@ class CurrencyController extends OActiveController
     }
 
     /**
-     * Returns array of currency rates or currency rate on date if param $date is defined
+     * Returns ActiveDataProvider of currency rates or currency rate on date if param $date is defined
      * @param integer $id currency ID
      * @param string|null $date
-     * @return CurrencyRate|array|\yii\db\ActiveRecord[]
+     * @return CurrencyRate|ActiveDataProvider
      * @throws NotFoundHttpException
      */
     public function actionGetRates($id, $date = null)
@@ -56,6 +56,7 @@ class CurrencyController extends OActiveController
     }
 
     /**
+     * Creates new currency rate on date
      * @param integer $id currency ID
      * @param string $date
      * @return CurrencyRate
@@ -93,6 +94,16 @@ class CurrencyController extends OActiveController
         return $currencyRate;
     }
 
+    /**
+     * Updates currency rate
+     * @param integer $id currency ID
+     * @param string|null $date
+     * @return CurrencyRate
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws ServerErrorHttpException
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionUpdateRate($id, $date)
     {
         /* @var $currency \app\models\Currency */
@@ -118,7 +129,16 @@ class CurrencyController extends OActiveController
         return $currencyRate;
     }
 
-    public function actionDeleteRate($id, $date = null)
+    /**
+     * Deletes currency rates or currency rate on date if param $date is defined
+     * @param integer $id currency ID
+     * @param string|null $date
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws ServerErrorHttpException
+     * @throws \Exception
+     */
+    public function actionDeleteRates($id, $date = null)
     {
         /* @var $currency \app\models\Currency */
         $currency = Currency::findCurrency($id);

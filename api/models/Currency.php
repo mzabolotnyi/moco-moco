@@ -15,6 +15,8 @@ use yii\web\NotFoundHttpException;
  * @property string $user_id
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property User $user
  */
 class Currency extends OActiveRecord
 {
@@ -75,8 +77,17 @@ class Currency extends OActiveRecord
             'iso',
             'name',
             'symbol',
-            'user_id',
+            'userId' => 'user_id',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->user_id === null ?
+            null : $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

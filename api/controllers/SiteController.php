@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use yii\rest\Serializer;
+
 class SiteController extends \yii\web\Controller
 {
     public function actionError()
@@ -22,15 +24,22 @@ class SiteController extends \yii\web\Controller
      */
     public function actionIndex()
     {
-        $models = \app\models\Currency::search(['user_id' => implode(';', [22, 0, 'null'])]);
+        $dataProvider = \app\models\Transaction::search(['id'=>3]);
+        $dataProvider->query
+            ->andWhere([
+                'or',
+                'account_id' => 3,
+                'recipient_account_id' => 3
+            ]);
 
 //        \Yii::$app->cache->flush();
 //
 //        echo "<div style='margin: 100px'>$account->name</div>";
         echo "<div style='margin: 100px'></div>";
 
-        foreach ($models->getModels() as $model) {
-            echo "<div>$model->id - " . $model->user_id . "</div>";
+        foreach ($dataProvider->getModels() as $model) {
+            $ser = new Serializer;
+            echo json_encode($ser->serialize($model));
         }
 
         return $this->render('index');
