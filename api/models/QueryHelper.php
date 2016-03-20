@@ -3,7 +3,7 @@
 namespace app\models;
 
 /**
- * Trait QueryHelper using for filtering and sorting \yii\db\Query
+ * Class QueryHelper using for filtering and sorting \yii\db\Query
  * @package app\models
  */
 class QueryHelper

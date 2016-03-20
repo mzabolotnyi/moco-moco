@@ -46,7 +46,7 @@ class CurrencyController extends OActiveController
             ]);
         } else {
             /* @var $currencyRate \app\models\CurrencyRate */
-            $currencyRate = CurrencyRate::findRate($currency->id, $date);
+            $currencyRate = $currency->getRate($date);
             if ($currencyRate) {
                 return $currencyRate;
             } else {

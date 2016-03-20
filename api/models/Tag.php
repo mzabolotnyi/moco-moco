@@ -4,8 +4,6 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\Url;
-use yii\web\Link;
-use yii\web\Linkable;
 
 /**
  * This is the model class for table "tag".
@@ -57,7 +55,11 @@ class Tag extends OActiveRecord
             ['active', 'default', 'value' => 1],
             ['income', function ($attribute, $params) {
                 if (!$this->isIncome() && !$this->isExpense()) {
-                    $this->addError('income, expense', 'Нужно указать хотя бы одно назначение тега');
+                    if ($this->isNewRecord) {
+                        $this->expense = true;
+                    } else {
+                        $this->addError('income, expense', 'Нужно указать хотя бы одно назначение тега');
+                    }
                 }
             }, 'skipOnEmpty' => false],
         ];

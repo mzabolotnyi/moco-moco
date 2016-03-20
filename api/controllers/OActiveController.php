@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use yii\filters\AccessControl;
+use yii\filters\Cors;
 use yii\filters\RateLimiter;
 use yii\helpers\Url;
 use yii\rest\ActiveController;

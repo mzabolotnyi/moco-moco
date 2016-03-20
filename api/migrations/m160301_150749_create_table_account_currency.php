@@ -11,6 +11,7 @@ class m160301_150749_create_table_account_currency extends Migration
         $this->createTable('account_currency', [
             'account_id' => $this->integer()->notNull(),
             'currency_id' => $this->integer()->notNull(),
+            'is_balance' => $this->boolean()->defaultValue(1),
             'created_at' => $this->integer(),
             'updated_at' => $this->integer(),
         ], $tableOptions);

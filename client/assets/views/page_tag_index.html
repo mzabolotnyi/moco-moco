@@ -1,0 +1,32 @@
+<!-- Page Header -->
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-12">
+            <h1 class="page-heading">
+                Теги
+            </h1>
+        </div>
+    </div>
+</div>
+<!-- END Page Header -->
+
+<!-- Page Content -->
+<div class="content text-center">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Иконка</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="item in items">
+            <td class="text-left">{{item.name}}</td>
+            <td class="text-left">
+                <span class="fa {{item.icon}}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- END Page Content -->

@@ -32,13 +32,11 @@ class TransactionController extends OActiveController
         if ($model->save()) {
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);
-            $id = implode(',', array_values($model->getPrimaryKey(true)));
-            $response->getHeaders()->set('Location', Url::toRoute(['view', 'id' => $id], true));
+            $response->getHeaders()->set('Location', Url::toRoute(['view', 'id' => $model->id], true));
         } elseif (!$model->hasErrors()) {
             throw new ServerErrorHttpException('Не удалось создать объект по неизвестным причинам');
         }
 
         return $model;
     }
-
 }

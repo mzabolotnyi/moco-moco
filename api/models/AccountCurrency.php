@@ -9,6 +9,7 @@ use yii\helpers\Url;
  *
  * @property integer $account_id
  * @property integer $currency_id
+ * @property integer $in_balance
  * @property integer $created_at
  * @property integer $updated_at
  */
@@ -28,7 +29,7 @@ class AccountCurrency extends OActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_DEFAULT] = ['!account_id', '!currency_id'];
+        $scenarios[self::SCENARIO_DEFAULT] = ['in_balance', '!account_id', '!currency_id'];
 
         return $scenarios;
     }
@@ -40,8 +41,10 @@ class AccountCurrency extends OActiveRecord
     {
         return [
             [['account_id', 'currency_id'], 'required'],
+            ['in_balance', 'boolean'],
             ['account_id', 'exist', 'targetClass' => Account::className(), 'targetAttribute' => ['account_id' => 'id']],
             ['currency_id', 'exist', 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
+            ['in_balance', 'default', 'value' => 1]
         ];
     }
 
@@ -51,8 +54,9 @@ class AccountCurrency extends OActiveRecord
     public function attributeLabels()
     {
         return [
-            'currency_id' => 'ID счета',
+            'account_id' => 'ID счета',
             'currency_id' => 'ID валюты',
+            'in_balance' => 'Учитывать в балансе',
         ];
     }
 }

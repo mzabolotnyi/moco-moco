@@ -69,7 +69,8 @@ class UserSignup extends Model
             $user->generateAuthKey();
             if ($user->save()) {
                 $this->_user = $user;
-                $this->sendRegistrationMail($user);
+                $this->sendRegistrationMail();
+                $this->performInitialFilling();
                 return true;
             }
         }
@@ -78,23 +79,80 @@ class UserSignup extends Model
     }
 
     /**
-     * Отпрявляет на email письмо об успешной регистрации
-     *
-     * @param User $user
+     * Sends email letter about successful registration
      * @return bool
      */
-    protected function sendRegistrationMail($user)
+    protected function sendRegistrationMail()
     {
         return Yii::$app->mailer
             ->compose('@app/mail/successSignup.php', [
-                'username' => $user->username,
-                'email' => $user->email,
+                'username' => $this->getUser()->username,
+                'email' => $this->getUser()->email,
                 'serviceUrl' => Yii::$app->params['serviceUrl'],
             ])
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-            ->setTo($user->email)
+            ->setTo($this->getUser()->email)
             ->setSubject('Регистрация')
             ->send();
+    }
+
+    /**
+     * Performs initial filling for registered user
+     */
+    protected function performInitialFilling()
+    {
+        $this->getUser()->createProfile();
+        $this->createDefaultTags();
+        $this->createDefaultAccount();
+    }
+
+    protected function createDefaultTags()
+    {
+        $userId = $this->getUser()->id;
+
+        $tagsData = [
+            ['name' => 'Зарплата', 'icon' => 'fa-money', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
+            ['name' => 'Премия', 'icon' => 'fa-usd', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
+            ['name' => 'Дополнительный доход', 'icon' => 'fa-plus-circle', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
+            ['name' => 'Стипендия', 'icon' => 'fa-university', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
+            ['name' => 'Автомобиль', 'icon' => 'fa-car', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Фриланс', 'icon' => 'fa-briefcase', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
+            ['name' => 'Помощь, подарки', 'icon' => 'fa-gift', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => true],
+            ['name' => 'Гаджеты', 'icon' => 'fa-tablet', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Бытовая техника', 'icon' => 'fa-television', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Домашние животные', 'icon' => 'fa-paw', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Здоровье и красота', 'icon' => 'fa-user-md', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Ипотека, долги, кредиты', 'icon' => 'fa-credit-card', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => true],
+            ['name' => 'Квартира и связь', 'icon' => 'fa-lightbulb-o', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Налоги и страхование', 'icon' => 'fa-umbrella', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Образование ', 'icon' => 'fa-graduation-cap', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Одежда и аксессуары', 'icon' => 'fa-female', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Отдых и развлечение', 'icon' => 'fa-headphones', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Питание', 'icon' => 'fa-shopping-cart', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Разное', 'icon' => 'fa-thumb-tack', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => true],
+            ['name' => 'Ремонт и мебель', 'icon' => 'fa-bed', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Товары для дома', 'icon' => 'fa-home', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Транспорт', 'icon' => 'fa-bus', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Хобби', 'icon' => 'fa-paint-brush', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+            ['name' => 'Аренда квартиры', 'icon' => 'fa-home', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
+            ['name' => 'Услуги', 'icon' => 'fa-briefcase', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
+        ];
+
+        foreach ($tagsData as $tagData) {
+            $tag = new Tag();
+            $tag->load($tagData, '');
+            $tag->user_id = $tagData['user_id'];
+            $tag->save();
+        }
+    }
+
+    protected function createDefaultAccount()
+    {
+        $account = new Account();
+        $account->name = 'Наличные';
+        $account->user_id = $this->getUser()->id;
+
+        return $account->save();
     }
 
     /**

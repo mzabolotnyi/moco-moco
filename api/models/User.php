@@ -53,6 +53,17 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
     /**
      * @inheritdoc
      */
+    public function fields()
+    {
+        return [
+            'username',
+            'email',
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
@@ -182,8 +193,7 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
     }
 
     /**
-     * Get data about access token
-     *
+     * Get access token data
      * @return UserAccess|null
      * @throws ServerErrorHttpException
      */
@@ -199,8 +209,7 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
     }
 
     /**
-     * Remove data about access token
-     *
+     * Remove access token data
      * @return bool
      */
     public function destroyAccess()
@@ -254,4 +263,35 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
         }
     }
 
+    /**
+     * Creates user profile
+     * @return UserProfile
+     * @throws ServerErrorHttpException
+     */
+    public function createProfile()
+    {
+        $profile = new UserProfile();
+        $profile->user_id = $this->id;
+        $profile->currency_id = Currency::findDefaultCurrency()->id;
+        if (!$profile->save()) {
+            throw new ServerErrorHttpException('Не удалось создать профиль пользователя по неизвестным причинам');
+        }
+
+        return $profile;
+    }
+
+    /**
+     * Returns user profile, if it does not exist creates new
+     * @return UserProfile
+     */
+    public function getProfile()
+    {
+        $profile = $this->hasOne(UserProfile::className(), ['user_id' => 'id'])->one();
+
+        if ($profile === null) {
+            $profile = $this->createProfile();
+        }
+
+        return $profile;
+    }
 }

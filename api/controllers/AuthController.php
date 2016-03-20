@@ -11,6 +11,7 @@ use app\models\UserPasswordChange;
 use app\models\UserRequestAccessRecovery;
 use app\models\UserSignup;
 use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
 use yii\filters\RateLimiter;
 use yii\filters\VerbFilter;
 use yii\rest\Controller;

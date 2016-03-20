@@ -4,6 +4,18 @@ return [
     'enablePrettyUrl' => true,
     'showScriptName' => false,
     'rules' => [
+        // user profile
+        [
+            'class' => 'yii\rest\UrlRule',
+            'pluralize' => false,
+            'controller' => [
+                'profile',
+            ],
+            'patterns' => [
+                'PUT,PATCH' => 'update',
+                'GET' => 'view',
+            ],
+        ],
         // currency
         [
             'class' => 'yii\rest\UrlRule',
@@ -36,6 +48,10 @@ return [
             'extraPatterns' => [
                 'GET {id}/currencies' => 'get-currencies',
                 'GET {id}/transactions' => 'get-transactions',
+                'GET balance' => 'get-balance',
+                'GET {id}/balance' => 'get-balance',
+                'GET {id}/balance/{currency-id}' => 'get-balance',
+                'POST {id}/balance/{currency-id}' => 'adjust-balance',
                 'PUT,PATCH {id}/currencies/{currency-id}' => 'bind-currency',
                 'DELETE {id}/currencies/{currency-id}' => 'unbind-currency',
                 'DELETE {id}/transactions' => 'delete-transactions',

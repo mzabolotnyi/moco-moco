@@ -216,9 +216,9 @@ class Transaction extends OActiveRecord
     }
 
     /**
-     * Check unique of currency rate
+     * Checks relationships between objects by user
      * @param string $attribute
-     * @param  array $params
+     * @param array $params
      */
     public function validateRelations($attribute, $params)
     {

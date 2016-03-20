@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Balance;
 use Yii;
 use app\models\AccountCurrency;
 use app\models\Currency;
@@ -115,6 +116,67 @@ class AccountController extends OActiveController
         ]);
 
         Yii::$app->getResponse()->setStatusCode(204);
+    }
+
+    /**
+     * Returns balance data
+     * @param string|null $id account ID
+     * @param string|null $currencyId currency ID
+     * @param string|null $date limit date, format 'yyyy-MM-dd', if 'null' - today
+     * @return array
+     */
+    public function actionGetBalance($id = null, $currencyId = null, $date = null)
+    {
+        if ($id !== null) {
+            /* @var $model \app\models\Account */
+            $model = $this->findModel($id);
+        }
+
+        if ($currencyId !== null) {
+            $currency = Currency::findCurrency($currencyId);
+        }
+
+        $balance = new Balance([
+            'scenario' => Balance::SCENARIO_GET,
+            'accountId' => $id,
+            'currencyId' => $currencyId,
+            'date' => $date,
+        ]);
+
+        if (!$balance->validate()) {
+            return $balance;
+        }
+
+        return $balance->get();
+    }
+
+    /**
+     * Adjusts balance data by account and currecy
+     * @param string $id account ID
+     * @param string $currencyId currency ID
+     * @param string|null $date limit date, format 'yyyy-MM-dd', if 'null' - today
+     * @throws BadRequestHttpException
+     * @return array
+     */
+    public function actionAdjustBalance($id, $currencyId, $date = null)
+    {
+        /* @var $model \app\models\Account */
+        $model = $this->findModel($id);
+        $currency = Currency::findCurrency($currencyId);
+
+        $balance = new Balance([
+            'scenario' => Balance::SCENARIO_ADJUST,
+            'accountId' => $model->id,
+            'currencyId' => $currency->id,
+            'date' => $date,
+            'amount' => $_POST['amount'],
+        ]);
+
+        if (!$balance->validate()) {
+            return $balance;
+        }
+
+        return $balance->adjust();
     }
 
     /**

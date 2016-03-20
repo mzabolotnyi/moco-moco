@@ -60,7 +60,6 @@ class Account extends OActiveRecord
     {
         return [
             'name' => 'Название',
-            'currency' => 'Валюта',
             'color' => 'Цвет',
             'active' => 'Активный',
         ];

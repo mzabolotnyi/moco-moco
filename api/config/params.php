@@ -7,4 +7,5 @@ return [
     'serviceUrl' => 'http://moco-moco/',
     'signupConfirmExpire' => 86400 * 7, //7 суток
     'tempPasswordLength' => 8,
+    'defaultCurrency' => 'UAH',
 ];

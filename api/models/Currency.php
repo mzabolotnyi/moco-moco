@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use Yii;
+use yii\base\Object;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 
@@ -91,6 +93,25 @@ class Currency extends OActiveRecord
     }
 
     /**
+     * Finds the latest exchange rate at the date of
+     * @param string $date |null limit date, format 'yyyy-MM-dd', if 'null' get rate on today
+     * @return null|CurrencyRate
+     */
+    public function getRate($date = null)
+    {
+        return CurrencyRate::getRate($this->id, $date);
+    }
+
+    /**
+     * Returns the default currency based on the default ISO in params
+     * @return \app\models\Currency
+     */
+    public static function findDefaultCurrency()
+    {
+        return self::findOne(['iso' => \Yii::$app->params['defaultCurrency'], 'user_id' => null]);
+    }
+
+    /**
      * Returns the currency based on the primary key given.
      * If the currency is not found or deny access, a 404 HTTP exception will be raised.
      * @param string $id the ID of the currency to be loaded.
@@ -118,4 +139,61 @@ class Currency extends OActiveRecord
 
         return $model;
     }
+
+    /**
+     * Converts amount to main currency
+     * @param double $amount amount in currency
+     * @param static|string $currency current currency or currency ID
+     * @param string|null $date limit date, format 'yyyy-MM-dd', if 'null' get rate on today
+     * @return double
+     */
+    public static function convertToMainCurrency($amount, $currency, $date = null)
+    {
+        if ($amount === 0) {
+            return 0;
+        }
+
+        if (!$currency instanceof Currency) {
+            $currency = self::findOne($currency);
+        }
+
+        $mainCurrency = self::getMainCurrency();
+
+        if ($currency === $mainCurrency) {
+            return $amount;
+        }
+
+        $currencyRate = $currency->getRate($date);
+        $mainCurrencyRate = $mainCurrency->getRate($date);
+
+        if ($currencyRate === null) {
+            $currencyRate = new CurrencyRate(['rate' => 1, 'size' => 1]);
+        }
+
+        if ($mainCurrencyRate === null) {
+            $mainCurrencyRate = new CurrencyRate(['rate' => 1, 'size' => 1]);
+        }
+
+        if ($currencyRate->rate === 0 || $mainCurrencyRate->rate === 0
+            || $currencyRate->size === 0 || $mainCurrencyRate->size === 0
+        ) {
+            return 0;
+        }
+
+        return round(($amount * $currencyRate->rate * $mainCurrencyRate->size)
+            / ($mainCurrencyRate->rate * $currencyRate->size)
+            , 2);
+    }
+
+    /**
+     * Returns main currency of current user
+     * @return static|null
+     */
+    protected static function getMainCurrency()
+    {
+        // TODO можно реализовать через кэш
+        return Yii::$app->user->getIdentity()->getProfile()->currency;
+    }
+
+
 }

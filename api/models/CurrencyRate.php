@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Carbon\Carbon;
 use yii\helpers\Url;
 
 /**
@@ -45,8 +46,8 @@ class CurrencyRate extends OActiveRecord
         return [
             [['currency_id', 'date'], 'required'],
             ['date', 'date', 'format' => 'yyyy-MM-dd'],
-            ['rate', 'number'],
-            ['size', 'integer'],
+            ['rate', 'number', 'min' => 0.0001],
+            ['size', 'integer', 'min' => 1],
             ['currency_id', 'exist', 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
             ['date', 'validateUnique'],
             [['rate', 'size'], 'default', 'value' => 1],
@@ -96,7 +97,7 @@ class CurrencyRate extends OActiveRecord
     /**
      * Check unique of currency rate
      * @param string $attribute
-     * @param  array $params
+     * @param array $params
      */
     public function validateUnique($attribute, $params)
     {
@@ -108,12 +109,31 @@ class CurrencyRate extends OActiveRecord
     }
 
     /**
-     * @param integer $currencyId ID of currency
+     * Finds rate for currency on date
+     * @param integer $id ID of currency
      * @param string $date date which need to check, format 'yyyy-MM-dd'
      * @return null|static
      */
-    public static function findRate($currencyId, $date)
+    public static function findRate($id, $date)
     {
-        return self::findOne(['currency_id' => $currencyId, 'date' => $date]);
+        return self::findOne(['currency_id' => $id, 'date' => $date]);
+    }
+
+    /**
+     * Finds the latest exchange rate at the date of
+     * @param integer $id ID of currency
+     * @param string $date |null limit date, format 'yyyy-MM-dd', if 'null' get rate on today
+     * @return null|static
+     */
+    public static function getRate($id, $date = null)
+    {
+        if ($date === null) {
+            $date = Carbon::today()->format('Y-m-d');
+        }
+
+        return self::find()->where(['currency_id' => $id])
+            ->andWhere(['<=', 'date', $date])
+            ->orderBy('date DESC')
+            ->one();
     }
 }
