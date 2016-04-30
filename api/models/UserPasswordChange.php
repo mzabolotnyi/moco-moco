@@ -12,7 +12,12 @@ use yii\web\ServerErrorHttpException;
  */
 class UserPasswordChange extends Model
 {
+    public $oldPassword;
     public $password;
+
+    /**
+     * @var bool|User
+     */
     public $user = false;
 
     /**
@@ -53,6 +58,9 @@ class UserPasswordChange extends Model
             }
 
             if ($this->user !== null) {
+                if (!$this->user->validatePassword($this->oldPassword)) {
+                    throw new BadRequestHttpException("Текущий пароль указан неверно");
+                }
                 if ($this->user->validatePassword($this->password)) {
                     throw new BadRequestHttpException("Нельзя установить пароль, который совпадает с текущим");
                 }

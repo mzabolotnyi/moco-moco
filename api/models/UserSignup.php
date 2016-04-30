@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use yii\base\Exception;
 use yii\base\Model;
 use Yii;
 use yii\helpers\Url;
@@ -42,7 +43,7 @@ class UserSignup extends Model
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required', 'message' => 'Не указан Email'],
             ['email', 'email', 'message' => 'Неверный формат Email'],
-            ['email', 'string', 'min' => 2, 'max' => 255],
+            ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Email уже используется'],
 
             ['password', 'required', 'message' => 'Не указан пароль'],

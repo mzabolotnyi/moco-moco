@@ -31,7 +31,7 @@ class AuthController extends Controller
         $behaviors = parent::behaviors();
         $behaviors['rateLimiter'] = [
             'class' => RateLimiter::className(),
-            'errorMessage' => 'Превышен лимит запросов',
+            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
             'user' => new IpRateLimiter(),
         ];
         $behaviors['authenticator'] = [

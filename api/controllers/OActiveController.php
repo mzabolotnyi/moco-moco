@@ -68,7 +68,7 @@ class OActiveController extends ActiveController
 
         $behaviors['rateLimiter'] = [
             'class' => RateLimiter::className(),
-            'errorMessage' => 'Превышен лимит запросов',
+            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
         ];
 
         return $behaviors;
