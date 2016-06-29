@@ -25,6 +25,7 @@ class Balance extends Model
     public $comment = 'Корректировка баланса';
 
     private $_currencies = [];
+    private $_accounts = [];
 
     /**
      * @inheritdoc
@@ -93,13 +94,7 @@ class Balance extends Model
     public function get()
     {
         $queryResult = $this->buildQuery()->all();
-        $balance = [];
-
-        foreach ($queryResult as $row) {
-            $balance[] = $this->prepareBalanceData($row);
-        }
-
-        return $balance;
+        return $this->prepareBalanceData($queryResult);
     }
 
     /**
@@ -148,7 +143,8 @@ class Balance extends Model
                 'balance.account_id = ac.account_id AND balance.currency_id = ac.currency_id'
             )->where(['ac.is_balance' => true])
             ->orWhere(['ac.is_balance' => null])
-            ->groupBy(['balance.account_id', 'balance.currency_id']);
+            ->groupBy(['balance.account_id', 'balance.currency_id'])
+            ->orderBy('account_id, currency_id');
 
         if ($this->accountId !== null) {
             $queryMain->andWhere(['balance.account_id' => $this->accountId]);
@@ -162,19 +158,56 @@ class Balance extends Model
     }
 
     /**
-     * Prepares balance data array based on row of query result
-     * @param array $row row of query result
+     * Prepares balance data array based on query result
+     * @param array $queryResult
      * @return array
      */
-    protected function prepareBalanceData($row)
+    protected function prepareBalanceData($queryResult)
     {
-        $account = Account::findOne($row['account_id']);
+        $balanceData = [];
+        $mainCurrency = Currency::getMainCurrency();
+
+        foreach ($queryResult as $row) {
+
+            $accountId = $row['account_id'];
+            $currencyId = $row['currency_id'];
+            $balanceDataByRow = $this->prepareBalanceDataByRow($row);
+
+            if (!isset($balanceData[$accountId])) {
+                $balanceData[$accountId] = [];
+                $balanceData[$accountId]['account'] = $this->getAccount($accountId);
+                $balanceData[$accountId]['currencies'] = [];
+
+                //сумма общего баланса, включая валютные счете в основной валюте по курсу
+                $balanceData[$accountId]['amount'] = 0;
+
+                //сумма баланса только в основной валюте, исключая остаток в валюте
+                $balanceData[$accountId]['amountInMainCurrency'] = 0;
+            }
+
+            $balanceData[$accountId]['currencies'][] = $balanceDataByRow;
+            $balanceData[$accountId]['amount'] += $balanceDataByRow['amountInMainCurrency'];
+
+            if ($currencyId == $mainCurrency->id) {
+                $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];
+            }
+        }
+
+        return array_values($balanceData);
+    }
+
+    /**
+     * Prepares balance data array based on row of query result
+     * @param array $row
+     * @return array
+     */
+    protected function prepareBalanceDataByRow($row)
+    {
         $currency = $this->getCurrency($row['currency_id']);
-        $amount = (double)$row['amount'];
+        $amount = round((double)$row['amount'], 2);
         $amountInMainCurrency = Currency::convertToMainCurrency($amount, $currency, $this->date);
 
         return [
-            'account' => $account,
             'currency' => $currency,
             'amount' => $amount,
             'amountInMainCurrency' => $amountInMainCurrency,
@@ -196,6 +229,23 @@ class Balance extends Model
         }
 
         return $currency;
+    }
+
+    /**
+     * Returns account by ID
+     * @param string $id account ID
+     * @return Account|null
+     */
+    protected function getAccount($id)
+    {
+        if (isset($this->_accounts[$id])) {
+            $account = $this->_accounts[$id];
+        } else {
+            $account = Account::findOne($id);
+            $this->_accounts[$id] = $account;
+        }
+
+        return $account;
     }
 
     /** Creates an adjustment transaction on the difference between current balance and transferred ('amount')

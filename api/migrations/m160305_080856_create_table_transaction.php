@@ -15,7 +15,7 @@ class m160305_080856_create_table_transaction extends Migration
             'recipient_currency_id' => $this->integer(),
             'account_id' => $this->integer()->notNull(),
             'recipient_account_id' => $this->integer(),
-            'tag_id' => $this->integer(),
+            'category_id' => $this->integer(),
             'amount' => $this->double(2),
             'recipient_amount' => $this->double(2),
             'date' => $this->date()->notNull(),
@@ -30,7 +30,7 @@ class m160305_080856_create_table_transaction extends Migration
         $this->addForeignKey('fk_user_transaction', 'transaction', 'user_id', 'user', 'id', 'CASCADE', 'RESTRICT');
         $this->addForeignKey('fk_currency_transaction', 'transaction', 'currency_id', 'currency', 'id', 'CASCADE', 'RESTRICT');
         $this->addForeignKey('fk_account_transaction', 'transaction', 'account_id', 'account', 'id', 'CASCADE', 'RESTRICT');
-        $this->addForeignKey('fk_tag_transaction', 'transaction', 'tag_id', 'tag', 'id', 'CASCADE', 'RESTRICT');
+        $this->addForeignKey('fk_category_transaction', 'transaction', 'category_id', 'category', 'id', 'CASCADE', 'RESTRICT');
         $this->addForeignKey('fk_recipient_currency_transaction', 'transaction', 'recipient_currency_id', 'currency', 'id', 'CASCADE', 'RESTRICT');
         $this->addForeignKey('fk_recipient_account_transaction', 'transaction', 'recipient_account_id', 'account', 'id', 'CASCADE', 'RESTRICT');
     }

@@ -6,19 +6,19 @@ use Yii;
 use app\models\Transaction;
 use yii\web\BadRequestHttpException;
 
-class TagController extends OActiveController
+class CategoryController extends OActiveController
 {
-    public $modelClass = 'app\models\Tag';
+    public $modelClass = 'app\models\Category';
 
     /**
-     * Returns ActiveDataProvider of transactions by tag
-     * @param integer $id tag ID
+     * Returns ActiveDataProvider of transactions by category
+     * @param integer $id category ID
      * @return ActiveDataProvider
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionGetTransactions($id)
     {
-        /* @var $model \app\models\Tag */
+        /* @var $model \app\models\Category */
         $model = $this->findModel($id);
 
         $queryParams = Yii::$app->request->queryParams;
@@ -26,22 +26,22 @@ class TagController extends OActiveController
 
         $dataProvider = Transaction::search($queryParams);
         $dataProvider->query
-            ->andWhere(['tag_id' => $model->id]);
+            ->andWhere(['category_id' => $model->id]);
 
         return $dataProvider;
     }
 
     /**
-     * Deletes transactions by tag
-     * @param integer $id tag ID
+     * Deletes transactions by category
+     * @param integer $id category ID
      * @throws \yii\web\NotFoundHttpException
      */
     public function actionDeleteTransactions($id)
     {
-        /* @var $model \app\models\Tag */
+        /* @var $model \app\models\Category */
         $model = $this->findModel($id);
 
-        Transaction::deleteAll(['tag_id' => $model->id]);
+        Transaction::deleteAll(['category_id' => $model->id]);
 
         Yii::$app->getResponse()->setStatusCode(204);
     }
@@ -52,10 +52,10 @@ class TagController extends OActiveController
      */
     protected function allowDelete($model)
     {
-        $countTransactions = $model->hasMany(Transaction::className(), ['tag_id' => 'id'])->count();
+        $countTransactions = $model->hasMany(Transaction::className(), ['category_id' => 'id'])->count();
 
         if ($countTransactions > 0) {
-            throw new BadRequestHttpException("Необходимо удалить операции по тегу. Всего операций в базе - $countTransactions.");
+            throw new BadRequestHttpException("Необходимо удалить операции по категории. Всего операций в базе - $countTransactions.");
         }
 
         return true;

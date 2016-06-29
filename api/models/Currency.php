@@ -189,7 +189,7 @@ class Currency extends OActiveRecord
      * Returns main currency of current user
      * @return static|null
      */
-    protected static function getMainCurrency()
+    public static function getMainCurrency()
     {
         // TODO можно реализовать через кэш
         return Yii::$app->user->getIdentity()->getProfile()->currency;

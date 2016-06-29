@@ -65,6 +65,7 @@ class UserAccessRecovery extends Model
             $userChangePassword = new UserPasswordChange();
             $userChangePassword->password = $tempPassword;
             $userChangePassword->user = $this->getUser();
+            $userChangePassword->checkOldPassword = false;
 
             if ($userChangePassword->changePassword()) {
                 return Yii::$app->mailer

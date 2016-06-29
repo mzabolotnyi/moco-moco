@@ -57,11 +57,11 @@ return [
                 'DELETE {id}/transactions' => 'delete-transactions',
             ],
         ],
-        // tag
+        // category
         [
             'class' => 'yii\rest\UrlRule',
             'controller' => [
-                'tag',
+                'category',
             ],
             'extraPatterns' => [
                 'GET {id}/transactions' => 'get-transactions',

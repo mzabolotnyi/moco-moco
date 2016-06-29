@@ -6,7 +6,6 @@ use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\Cors;
 use yii\filters\RateLimiter;
 use yii\rest\Controller;
 use yii\web\ServerErrorHttpException;
@@ -59,6 +58,5 @@ class ProfileController extends Controller
         }
 
         return $model;
-
     }
 }

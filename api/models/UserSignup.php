@@ -103,15 +103,15 @@ class UserSignup extends Model
     protected function performInitialFilling()
     {
         $this->getUser()->createProfile();
-        $this->createDefaultTags();
+        $this->createDefaultCategories();
         $this->createDefaultAccount();
     }
 
-    protected function createDefaultTags()
+    protected function createDefaultCategories()
     {
         $userId = $this->getUser()->id;
 
-        $tagsData = [
+        $categoriesData = [
             ['name' => 'Зарплата', 'icon' => 'fa-money', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
             ['name' => 'Премия', 'icon' => 'fa-usd', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
             ['name' => 'Дополнительный доход', 'icon' => 'fa-plus-circle', 'user_id' => $userId, 'active' => true, 'income' => true, 'expense' => false],
@@ -139,11 +139,11 @@ class UserSignup extends Model
             ['name' => 'Услуги', 'icon' => 'fa-briefcase', 'user_id' => $userId, 'active' => true, 'income' => false, 'expense' => true],
         ];
 
-        foreach ($tagsData as $tagData) {
-            $tag = new Tag();
-            $tag->load($tagData, '');
-            $tag->user_id = $tagData['user_id'];
-            $tag->save();
+        foreach ($categoriesData as $categoryData) {
+            $category = new Category();
+            $category->load($categoryData, '');
+            $category->user_id = $categoryData['user_id'];
+            $category->save();
         }
     }
 

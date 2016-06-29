@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use yii\helpers\Url;
-
 /**
  * This is the model class for table "account_currency".
  *

@@ -16,7 +16,7 @@ use yii\web\BadRequestHttpException;
  * @property integer $recipient_currency_id
  * @property integer $account_id
  * @property integer $recipient_account_id
- * @property integer $tag_id
+ * @property integer $category_id
  * @property double $amount
  * @property double $recipient_amount
  * @property string $date
@@ -31,7 +31,7 @@ use yii\web\BadRequestHttpException;
  * @property Account $account
  * @property Currency $recipientCurrency
  * @property Account $recipientAccount
- * @property Tag $tag
+ * @property Category $category
  * @property User $user
  */
 class Transaction extends OActiveRecord
@@ -56,13 +56,13 @@ class Transaction extends OActiveRecord
         $scenarios = parent::scenarios();
 
         $attributes = [
-            'currency_id', 'account_id', 'tag_id', 'amount', 'date', 'comment',
+            'currency_id', 'account_id', 'category_id', 'amount', 'date', 'comment',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
         $attributesTransfer = [
             'currency_id', 'recipient_currency_id', 'recipient_account_id', 'account_id',
-            'tag_id', 'amount', 'recipient_amount', 'date', 'comment',
+            'category_id', 'amount', 'recipient_amount', 'date', 'comment',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
@@ -81,13 +81,13 @@ class Transaction extends OActiveRecord
         return [
             [['user_id', 'currency_id', 'account_id'], 'required'],
             [['recipient_currency_id', 'recipient_account_id'], 'required', 'on' => self::SCENARIO_TRANSFER],
-            [['user_id', 'currency_id', 'recipient_currency_id', 'account_id', 'recipient_account_id', 'tag_id'], 'integer'],
+            [['user_id', 'currency_id', 'recipient_currency_id', 'account_id', 'recipient_account_id', 'category_id'], 'integer'],
             [['amount', 'recipient_amount'], 'number', 'numberPattern' => '/^[-+]?[0-9]*\.?[0-9]{1,2}$/'],
             ['date', 'date', 'format' => 'yyyy-MM-dd'],
             ['comment', 'string', 'max' => 255],
             ['currency_id', 'exist', 'targetClass' => Currency::className(), 'targetAttribute' => ['currency_id' => 'id']],
             ['account_id', 'exist', 'targetClass' => Account::className(), 'targetAttribute' => ['account_id' => 'id']],
-            ['tag_id', 'exist', 'targetClass' => Tag::className(), 'targetAttribute' => ['tag_id' => 'id']],
+            ['category_id', 'exist', 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             ['recipient_currency_id', 'exist', 'targetClass' => Currency::className(),
                 'targetAttribute' => ['recipient_currency_id' => 'id'], 'on' => self::SCENARIO_TRANSFER],
             ['recipient_account_id', 'exist', 'targetClass' => Account::className(),
@@ -144,8 +144,8 @@ class Transaction extends OActiveRecord
             'account' => function () {
                 return $this->account;
             },
-            'tag' => function () {
-                return $this->tag;
+            'category' => function () {
+                return $this->category;
             },
             'recipientAmount' => 'recipient_amount',
             'recipientCurrency' => function () {
@@ -182,10 +182,10 @@ class Transaction extends OActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTag()
+    public function getCategory()
     {
-        return $this->tag_id === null ?
-            null : $this->hasOne(Tag::className(), ['id' => 'tag_id']);
+        return $this->category_id === null ?
+            null : $this->hasOne(Category::className(), ['id' => 'category_id']);
     }
 
     /**
@@ -234,9 +234,9 @@ class Transaction extends OActiveRecord
                 $this->addError('account_id', "Значение «Account Id» неверно");
             }
 
-            $tag = $this->tag;
-            if ($tag !== null && $tag->user_id !== $this->user_id) {
-                $this->addError('tag_id', "Значение «Tag Id» неверно");
+            $category = $this->category;
+            if ($category !== null && $category->user_id !== $this->user_id) {
+                $this->addError('category_id', "Значение «Category Id» неверно");
             }
 
             if ($this->scenario === self::SCENARIO_TRANSFER) {
