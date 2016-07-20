@@ -8,7 +8,6 @@ use Yii;
  * This is the model class for table "user_access".
  *
  * @property integer $user_id
- * @property string $user_ip
  * @property string $token
  * @property string $created_at
  * @property string $updated_at
@@ -29,10 +28,11 @@ class UserAccess extends OActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'user_ip', 'token'], 'required'],
+            [['user_id', 'token'], 'required'],
             [['user_id'], 'integer'],
             [['created_at'], 'safe'],
-            [['user_ip', 'token'], 'string', 'max' => 255]
+            [['token'], 'string', 'max' => 255],
+            ['token', 'unique', 'targetClass' => '\app\models\UserAccess', 'message' => 'Токен уже используется'],
         ];
     }
 
@@ -43,14 +43,13 @@ class UserAccess extends OActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'user_ip' => 'User IP',
             'token' => 'Access Token',
         ];
     }
 
     /**
-     * Создает access_token для пользователя и его IP,
-     * если для указанной пары ключей существует access_token,
+     * Создает access_token для пользователя,
+     * если для указанного пользователя существует access_token,
      * то он будет перезаписан на новый
      *
      * @param User $user
@@ -62,55 +61,32 @@ class UserAccess extends OActiveRecord
             return null;
         }
 
-        $userId = $user->getId();
-        $userIp = Yii::$app->request->getUserIP();
+        $access = new UserAccess;
+        $access->user_id = $user->getId();;
+        $access->token = self::generateToken();
 
-        if ($userIp === null) {
+        if (!$access->save()) {
             return null;
         }
 
-        $access = self::findOne([
-            'user_id' => $userId,
-            'user_ip' => $userIp,
-        ]);
-
-        if ($access === null) {
-            $access = new UserAccess;
-            $access->user_id = $userId;
-            $access->user_ip = $userIp;
-        }
-
-        $access->token = Yii::$app->security->generateRandomString();
-
-        if ($access->save()) {
-            return $access;
-        } else {
-            return null;
-        }
+        return $access;
     }
 
     /**
-     * Удаляет access_token для пользователя и его IP
+     * Удаляет access_token для пользователя
      *
      * @param User $user
      * @return bool
      */
-    public static function destroyAccess($user)
+    public static function destroyAccess($user, $token)
     {
         if ($user === null) {
             return true;
         }
 
-        $userId = $user->getId();
-        $userIp = Yii::$app->request->getUserIP();
-
-        if ($userIp === null) {
-            return true;
-        }
-
         $access = self::findOne([
-            'user_id' => $userId,
-            'user_ip' => $userIp,
+            'user_id' => $user->getId(),
+            'token' => $token,
         ]);
 
         if ($access === null) {
@@ -121,22 +97,15 @@ class UserAccess extends OActiveRecord
     }
 
     /**
-     * Получает пользователя по ппереданному токену и текущему IP
+     * Получает пользователя по ппереданному токену
      *
      * @param string $token
      * @return null|\yii\web\IdentityInterface|static
      */
     public static function findUserByAccessToken($token)
     {
-        $userIp = Yii::$app->request->getUserIP();
-
-        if ($userIp === null) {
-            return null;
-        }
-
         $access = self::findOne([
             'token' => $token,
-            'user_ip' => $userIp,
         ]);
 
         if ($access !== null) {
@@ -144,5 +113,23 @@ class UserAccess extends OActiveRecord
         } else {
             return null;
         }
+    }
+
+    /**
+     * Генерирует случайных токен
+     *
+     * @return string
+     */
+    public static function generateToken()
+    {
+        // будем генерить токен пока не получим токен, который еще не используется
+        do {
+            $token = Yii::$app->security->generateRandomString();
+            $existingAccess = self::findOne([
+                'token' => $token,
+            ]);
+        } while ($existingAccess !== null);
+
+        return $token;
     }
 }

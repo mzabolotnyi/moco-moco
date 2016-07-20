@@ -8,6 +8,7 @@ use yii\base\Model;
 use yii\db\Expression;
 use yii\db\Query;
 use yii\helpers\Url;
+use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -22,7 +23,7 @@ class Balance extends Model
     public $accountId;
     public $currencyId;
     public $amount;
-    public $comment = 'Корректировка баланса';
+    public $comment = 'Корректировка остатка';
 
     private $_currencies = [];
     private $_accounts = [];
@@ -186,7 +187,7 @@ class Balance extends Model
             }
 
             $balanceData[$accountId]['currencies'][] = $balanceDataByRow;
-            $balanceData[$accountId]['amount'] += $balanceDataByRow['amountInMainCurrency'];
+            $balanceData[$accountId]['amount'] += $balanceDataByRow['amount'];
 
             if ($currencyId == $mainCurrency->id) {
                 $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];

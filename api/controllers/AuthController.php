@@ -11,7 +11,6 @@ use app\models\UserPasswordChange;
 use app\models\UserRequestAccessRecovery;
 use app\models\UserSignup;
 use yii\filters\auth\HttpBearerAuth;
-use yii\filters\Cors;
 use yii\filters\RateLimiter;
 use yii\filters\VerbFilter;
 use yii\rest\Controller;
@@ -182,9 +181,22 @@ class AuthController extends Controller
          * @var $user User
          */
         $user = Yii::$app->user->getIdentity(false);
+        $token = $this->getAccessToken();
 
-        if (!$user->destroyAccess()) {
+        if (!$token || !$user->destroyAccess($token)) {
             throw new ServerErrorHttpException();
         }
+    }
+
+    protected function getAccessToken()
+    {
+        $authHeader = Yii::$app->getRequest()->getHeaders()->get('Authorization');
+        $token = null;
+
+        if ($authHeader !== null && preg_match('/^Bearer\s+(.*?)$/', $authHeader, $matches)) {
+            $token = $matches[1];
+        }
+
+        return $token;
     }
 }

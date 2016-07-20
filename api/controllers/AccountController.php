@@ -3,10 +3,10 @@
 namespace app\controllers;
 
 use app\models\Balance;
-use Yii;
 use app\models\AccountCurrency;
 use app\models\Currency;
 use app\models\Transaction;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
@@ -169,8 +169,10 @@ class AccountController extends OActiveController
             'accountId' => $model->id,
             'currencyId' => $currency->id,
             'date' => $date,
-            'amount' => $_POST['amount'],
         ]);
+
+        //amount load from request body
+        $balance->load(Yii::$app->getRequest()->getBodyParams(), '');
 
         if (!$balance->validate()) {
             return $balance;

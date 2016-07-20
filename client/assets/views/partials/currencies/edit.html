@@ -1,0 +1,74 @@
+<div class="p-15 m-b-30">
+    <form id="form" name="form" data-ng-submit="scope.currency.save()" autofocus>
+
+        <!--NAME-->
+        <div class="form-group fg-line">
+            <label>Название</label>
+            <input type="text" class="form-control input-sm" data-ng-model="scope.currency.name"
+                   name="name" placeholder="Название" data-ng-maxlength="255" autofocus required
+                   data-ng-disabled="scope.currency.default">
+        </div>
+
+        <div class="has-error">
+            <div data-ng-messages="form.name.$error" data-ng-if="form.name.$dirty"
+                 role="alert" class="help-block animated fadeInDown">
+                <ng-messages-include
+                        src="assets/views/partials/error-messages.html"></ng-messages-include>
+            </div>
+        </div>
+        <!--end NAME-->
+
+        <!--ISO-->
+        <div class="form-group fg-line">
+            <label>ISO</label>
+            <input type="text" class="form-control input-sm" data-ng-model="scope.currency.iso"
+                   name="iso" placeholder="ISO" data-ng-maxlength="3" required
+                   data-ng-disabled="scope.currency.default">
+        </div>
+
+        <div class="has-error">
+            <div data-ng-messages="form.iso.$error" data-ng-if="form.iso.$dirty"
+                 role="alert" class="help-block animated fadeInDown">
+                <ng-messages-include
+                        src="assets/views/partials/error-messages.html"></ng-messages-include>
+            </div>
+        </div>
+        <!--end ISO-->
+
+        <!--SYMBOL-->
+        <div class="form-group fg-line">
+            <label>Символ</label>
+            <input type="text" class="form-control input-sm" data-ng-model="scope.currency.symbol"
+                   name="symbol" placeholder="Символ" data-ng-maxlength="1" required
+                   data-ng-disabled="scope.currency.default">
+        </div>
+
+        <div class="has-error">
+            <div data-ng-messages="form.symbol.$error" data-ng-if="form.symbol.$dirty"
+                 role="alert" class="help-block animated fadeInDown">
+                <ng-messages-include
+                        src="assets/views/partials/error-messages.html"></ng-messages-include>
+            </div>
+        </div>
+        <!--end SYMBOL-->
+
+        <div class="has-error">
+            <div data-ng-repeat="error in scope.currency.errors">
+                <div class="help-block">{{error.message}}</div>
+            </div>
+        </div>
+
+        <div class="m-t-30" data-ng-if="!scope.currency.default">
+            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+                    data-ng-disabled="form.$invalid || scope.currency.submitting">
+                <span>Сохранить</span>
+                <span data-ng-if="scope.currency.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+        </div>
+
+    </form>
+</div>
+
+

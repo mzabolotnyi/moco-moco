@@ -1,0 +1,120 @@
+<!--&lt;!&ndash; Page Header &ndash;&gt;-->
+<!--<div data-ui-page-header data-page-title="Валюты"-->
+<!--data-breadcrumbs='{"dashboard" : "Главная", "activeCrumb" : "Валюты"}'></div>-->
+<!--&lt;!&ndash; END Page Header &ndash;&gt;-->
+
+<!--&lt;!&ndash; Page Content &ndash;&gt;-->
+<!--<section class="content">-->
+<!--<div class="card card-catalog">-->
+
+<!--<div class="cc-menu" data-ng-class="{ 'toggled': scope.sidebar.opened }">-->
+
+<!--<div class="cc-block header">-->
+<!--<button data-ui-sref-active="disabled" data-ui-sref="currencies.new"-->
+<!--class="btn btn-block btn-sm bgm-teal" data-ng-click="scope.currency.update(0)">-->
+<!--Добавить-->
+<!--</button>-->
+<!--</div>-->
+
+<!--<div class="listview body c-overflow">-->
+<!--<div data-ui-sref-active="active" data-ui-sref="currencies.id({id: currency.id})" class="lv-item media"-->
+<!--data-ng-repeat="currency in scope.data" data-ng-click="scope.currency.update(currency)">-->
+<!--<div class="lv-avatar pull-left">{{currency.symbol}}</div>-->
+<!--<div class="media-body">-->
+<!--<div class="lv-title">{{currency.name}}</div>-->
+<!--<div class="lv-small">24.23547</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="text-center" data-ng-if="scope.loading">-->
+<!--<ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>-->
+<!--</div>-->
+<!--<div class="text-center has-error" data-ng-if="scope.error">-->
+<!--<div>Произошла ошибка...</div>-->
+<!--<button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+
+<!--<div class="cc-body">-->
+<!--<div class="listview lv-message">-->
+<!--<div class="lv-header-alt clearfix">-->
+<!--<div class="menu-trigger" data-ng-class="{ 'open': scope.sidebar.opened }"-->
+<!--data-ng-click="scope.sidebar.toggle()">-->
+<!--<div class="line-wrap">-->
+<!--<div class="line top"></div>-->
+<!--<div class="line center"></div>-->
+<!--<div class="line bottom"></div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<div class="lvh-label hidden-xs">-->
+<!--<span class="c-black" data-ng-if="scope.currency.isNew()">Создание валюты</span>-->
+<!--<span class="c-black" data-ng-if="!scope.currency.isNew() && !scope.currency.default">Собственная валюта</span>-->
+<!--<span class="c-black" data-ng-if="scope.currency.default">Базовая валюта</span>-->
+<!--</div>-->
+
+<!--<ul class="lv-actions actions">-->
+<!--<li data-ng-if="!scope.currency.isNew() && !scope.currency.default">-->
+<!--<a href="" data-ng-click="scope.currency.delete()">-->
+<!--<i class="zmdi zmdi-delete"></i>-->
+<!--</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--<ui-view></ui-view>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+<!--&lt;!&ndash; END Page Content &ndash;&gt;-->
+
+<div class="card" data-ng-class="{ 'ismobile': global.isMobile() }">
+    <div class="card-header">
+        <h2 class="dropdown" data-ng-class="{ 'open' : scope.menu.opened }">
+            <span data-ng-click="scope.menu.toggle()">
+                Валюты
+                <span class="caret" data-ng-class="{ 'open' : scope.menu.opened }"></span>
+            </span>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="">Добавить</a>
+                </li>
+                <li>
+                    <a href="">Обновить</a>
+                </li>
+            </ul>
+        </h2>
+
+        <button class="btn bgm-teal btn-float waves-effect waves-circle"><i class="zmdi zmdi-plus"></i></button>
+    </div>
+
+    <div class="card-body c-overflow">
+        <div class="listview">
+            <a class="lv-item" href="" data-ng-repeat="currency in scope.data">
+                <div class="media">
+                    <div class="lv-avatar pull-left">{{currency.symbol}}</div>
+                    <div class="media-body">
+                        <div class="lv-title">{{currency.name}}</div>
+                        <small class="lv-small">24.8956</small>
+                    </div>
+                </div>
+            </a><a class="lv-item" href="" data-ng-repeat="currency in scope.data">
+            <div class="media">
+                <div class="lv-avatar pull-left">{{currency.symbol}}</div>
+                <div class="media-body">
+                    <div class="lv-title">{{currency.name}}</div>
+                    <small class="lv-small">24.8956</small>
+                </div>
+            </div>
+        </a>
+        </div>
+        <div class="text-center" data-ng-if="scope.loading">
+            <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+        </div>
+        <div class="text-center has-error" data-ng-if="scope.error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<ul class="main-menu" data-ng-if="!sidebar.profileMenu.opened">
+    <li class="divider"></li>
+    <li data-ui-sref-active="active" menu-item>
+        <a data-ui-sref="dashboard" data-ng-click="sidebar.close()">
+            <i class="zmdi zmdi-home"></i> Панель управления
+        </a>
+    </li>
+    <li class="sub-menu">
+        <a href="" toggle-submenu><i class="zmdi zmdi-balance-wallet"></i> Операции</a>
+        <ul>
+            <li menu-item>
+                <a data-ui-sref-active="active" data-ui-sref="transactions.list"
+                   data-ng-click="sidebar.close()">
+                    <i class="zmdi zmdi-receipt"></i> Записи
+                </a>
+            </li>
+            <li menu-item>
+                <a data-ui-sref-active="active" data-ui-sref="transactions.templates"
+                   data-ng-click="sidebar.close()">
+                    <i class="zmdi zmdi-copy"></i> Шаблоны
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li data-ui-sref-active="active" menu-item>
+        <a data-ui-sref="accounts" data-ng-click="sidebar.close()">
+            <i class="zmdi zmdi-card"></i> Счета
+        </a>
+    </li>
+    <li data-ui-sref-active="active" menu-item>
+        <a data-ui-sref="tags" data-ng-click="sidebar.close()">
+            <i class="zmdi zmdi-view-headline"></i> Категории
+        </a>
+    </li>
+    <li data-ui-sref-active="active" menu-item>
+        <a data-ui-sref="currencies" data-ng-click="sidebar.close()">
+            <i class="zmdi zmdi-money"></i> Валюты
+        </a>
+    </li>
+</ul>

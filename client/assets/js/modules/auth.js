@@ -52,7 +52,7 @@ AuthModule
             },
             logout: function (user) {
                 return $http.post(utils.getFullUrl(config.logoutUrl), user)
-                    .success(function () {
+                    .finally(function () {
                         utils.removeToken();
                     });
             },
@@ -78,13 +78,8 @@ AuthModule
                 utils.removeToken();
             }
         };
-    }]).factory('authInterceptor', ['$q', '$injector', '$timeout', 'config', 'authUtils', function ($q, $injector, $timeout, appConfig, utils) {
-
-        var state;
-
-        $timeout(function () {
-            state = $injector.get('$state');
-        });
+    }])
+    .factory('authInterceptor', ['$q', '$window', 'config', 'authUtils', function ($q, $window, appConfig, utils) {
 
         return {
             request: function (request) {
@@ -98,7 +93,8 @@ AuthModule
             responseError: function (response) {
                 if (response.status === 401) {
                     utils.removeToken();
-                    state.go('login');
+                    // redirect to auth page
+                    $window.location.href = '/auth';
                 } else {
                     return $q.reject(response);
                 }
@@ -118,17 +114,23 @@ AuthModule
             };
         }
     ])
-    .controller('SignupCtrl', ['$scope', '$state', 'auth',
-        function ($scope, $state, auth) {
+    .controller('SignupCtrl', ['$scope', '$window', 'auth',
+        function ($scope, $window, auth) {
             $scope.signup = function (user) {
+
                 $scope.submitting = true;
                 $scope.errors = {};
+
                 auth.signup(user)
                     .then(function () {
-                        $state.go('dashboard');
+                        $window.location.href = '/';
                     }, function (response) {
-                        if (response.status === 422 && response.data) {
-                            $scope.errors = response.data;
+                        if (response.data) {
+                            if (response.status === 422) {
+                                $scope.errors = response.data;
+                            } else {
+                                $scope.errors = [response.data];
+                            }
                         }
                     })
                     .finally(function () {
@@ -137,17 +139,23 @@ AuthModule
             };
         }
     ])
-    .controller('LoginCtrl', ['$scope', '$state', 'auth',
-        function ($scope, $state, auth) {
+    .controller('LoginCtrl', ['$scope', '$window', 'auth',
+        function ($scope, $window, auth) {
             $scope.login = function (user) {
+
                 $scope.submitting = true;
                 $scope.errors = {};
+
                 auth.login(user)
                     .then(function () {
-                        $state.go('dashboard');
+                        $window.location.href = '/';
                     }, function (response) {
-                        if (response.status === 422 && response.data) {
-                            $scope.errors = response.data;
+                        if (response.data) {
+                            if (response.status === 422) {
+                                $scope.errors = response.data;
+                            } else {
+                                $scope.errors = [response.data];
+                            }
                         }
                     })
                     .finally(function () {
@@ -156,12 +164,88 @@ AuthModule
             };
         }
     ])
-    .controller('LogoutCtrl', ['$scope', '$state', 'auth',
-        function ($scope, $state, auth) {
+    .controller('LogoutCtrl', ['$scope', '$window', 'auth', 'config',
+        function ($scope, $window, auth, config) {
             $scope.logout = function () {
                 auth.logout()
                     .then(function () {
+                        $window.location.href = config.authHref;
+                    });
+            };
+        }
+    ])
+    .controller('ForgotPasswordCtrl', ['$scope', '$window', '$state', 'auth',
+        function ($scope, $window, $state, auth) {
+
+            $scope.isRequest = true;
+
+            $scope.requestAccessRecovery = function (email) {
+
+                $scope.submitting = true;
+                $scope.errors = {};
+
+                auth.requestAccessRecovery({email: email})
+                    .then(function () {
+                        $scope.isRequest = false;
+                    }, function (response) {
+                        if (response.data) {
+                            if (response.status === 422) {
+                                $scope.errors = response.data;
+                            } else {
+                                $scope.errors = [response.data];
+                            }
+                        }
+                    })
+                    .finally(function () {
+                        $scope.submitting = false;
+                    });
+            };
+
+            $scope.accessRecovery = function (token) {
+
+                $scope.submitting = true;
+                $scope.errors = {};
+
+                auth.accessRecovery({token: token})
+                    .then(function () {
+                        $window.alert("На Вашу почту был отправлен временный пароль, используйте его для входа");
                         $state.go('login');
+                    }, function (response) {
+                        if (response.data) {
+                            if (response.status === 422) {
+                                $scope.errors = response.data;
+                            } else {
+                                $scope.errors = [response.data];
+                            }
+                        }
+                    })
+                    .finally(function () {
+                        $scope.submitting = false;
+                    });
+            };
+        }
+    ])
+    .controller('ChangePasswordCtrl', ['$scope', '$window', 'auth',
+        function ($scope, $window, auth) {
+            $scope.changePassword = function (data) {
+
+                $scope.submitting = true;
+                $scope.errors = {};
+
+                auth.changePassword(data)
+                    .then(function () {
+                        $window.alert("Пароль был изменен");
+                    }, function (response) {
+                        if (response.data) {
+                            if (response.status === 422) {
+                                $scope.errors = response.data;
+                            } else {
+                                $scope.errors = [response.data];
+                            }
+                        }
+                    })
+                    .finally(function () {
+                        $scope.submitting = false;
                     });
             };
         }

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--[if IE 9]>
-<html class="ie9 no-focus" data-ng-app="app"> <![endif]-->
+<html class="ie9 no-focus c-overflow" data-ng-app="app"> <![endif]-->
 <!--[if gt IE 9]><!-->
-<html class="no-focus" data-ng-app="app"> <!--<![endif]-->
+<html class="no-focus c-overflow" data-ng-app="app"> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
 
-    <title data-ng-bind="pageTitle"></title>
+    <title data-ng-bind="pageTitle">Загрузка...</title>
 
     <meta name="description" content="MOCO - Money Control">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
@@ -16,85 +16,71 @@
     <!-- END Icons -->
 
     <!-- Stylesheets -->
-    <!-- Web fonts -->
-    <link rel="stylesheet"
-          href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
-
-    <!-- Bootstrap and OneUI CSS framework -->
-    <link rel="stylesheet" id="css-bootstrap" href="assets/css/bootstrap.min.css">
-    <!-- build:remove -->
-    <link rel="stylesheet" id="css-main" href="assets/css/app.css">
-    <link rel="stylesheet" id="css-theme" href="assets/css/themes/flat.min.css">
-    <link rel="stylesheet" href="assets/js/plugins/lobibox-master/css/lobibox.css">
-    <!-- /build -->
-
-    <!-- build:template
-    <link rel="stylesheet" id="css-main" href="assets/css/app.min.css">
-    /build -->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="assets/css/loading-bar.css">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <link rel="stylesheet" href="assets/css/site-mobile.css">
     <!-- END Stylesheets -->
+
 </head>
-<body data-ng-controller="AppCtrl">
-<!-- Page loader -->
-<div id="page-loader"></div>
+<body data-ng-controller="AppCtrl" class="sw-toggled" data-ui-swipe>
 
-
-<!-- Page Container -->
-<!-- You can update template settings or enable local storage feature in js/app.js -> 'AppCtrl' controller () -->
-<div id="page-container" data-ng-controller="AuthCtrl" data-ng-class="{
-            'sidebar-l': config.settings.sidebarLeft,
-            'sidebar-r': ! config.settings.sidebarLeft,
-            'sidebar-o': config.settings.sidebarOpen,
-            'sidebar-o-xs': config.settings.sidebarOpenXs,
-            'sidebar-mini': config.settings.sidebarMini,
-            'side-overlay-o': config.settings.sideOverlayOpen,
-            'side-overlay-hover': config.settings.sideOverlayHover,
-            'side-scroll': config.settings.sideScroll,
-            'header-navbar-fixed': config.settings.headerFixed,
-            'not-authorized': !isAuthenticated()
-        }">
-
-    <!-- Sidebar -->
-    <!--<nav data-ng-if="isAuthenticated()" data-ng-include="'assets/views/partials/base_sidebar.html'" data-ng-controller="SidebarCtrl"-->
-         <!--id="sidebar"></nav>-->
+<div class="wrapper">
 
     <!-- Header -->
-    <header data-ng-if="isAuthenticated()" data-ng-include="'assets/views/partials/base_header.html'" data-ng-controller="HeaderCtrl"
-            id="header-navbar" class="content-mini content-mini-full"></header>
+    <header data-ng-include="'assets/views/partials/base-header.html'"
+            id="header" class="bgm-teal" data-ng-class="{ 'search-toggled': headerMenu.searchPanel.opened }"></header>
 
-    <!-- Main Container -->
-    <main id="main-container" data-autoscroll="true" data-ui-view></main>
+    <section id="main">
 
-    <!-- Footer -->
-    <footer data-ng-include="'assets/views/partials/base_footer.html'" id="page-footer"
-            class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix"></footer>
+        <!--Sidebar -->
+        <aside data-ng-include="'assets/views/partials/base-sidebar.html'"
+               id="sidebar" data-ng-class="{ 'toggled': sidebar.opened }"></aside>
+
+        <!-- Main Container -->
+        <section id="content">
+            <div class="container" data-ui-view></div>
+        </section>
+
+    </section>
+
 </div>
-<!-- END Page Container -->
+
+<div id="view-loader" class="background-overlay" data-view-loader></div>
+<div class="background-overlay" data-ng-if="sidebar.showOverlayOnOpened()" data-ng-click="sidebar.close()" data-ui-swipe></div>
+
+<ng-include src="'assets/views/partials/balance/adjustment-form.html'"></ng-include>
 
 <!-- JS Code -->
 <!-- build:js assets/js/app.min.js -->
 <!-- Core JS: jQuery & Bootstrap Related -->
-<script src="assets/js/core/jquery.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
-<script src="assets/js/core/jquery.slimscroll.min.js"></script>
-<script src="assets/js/core/jquery.scrollLock.min.js"></script>
-<script src="assets/js/core/jquery.appear.min.js"></script>
-<script src="assets/js/core/jquery.countTo.min.js"></script>
-<script src="assets/js/core/jquery.placeholder.min.js"></script>
-<script src="assets/js/plugins/lobibox-master/js/lobibox.js"></script>
+<script src="assets/js/plugins/jquery.min.js"></script>
+<script src="assets/js/plugins/jquery.mobile.swipe.min.js"></script>
+<script src="assets/js/plugins/jquery.number.js"></script>
+<script src="assets/js/plugins/jquery.nicescroll.min.js"></script>
+<script src="assets/js/plugins/jquery.noty.js"></script>
+<script src="assets/js/plugins/waves.min.js"></script>
 
 <!-- Core JS: AngularJS Related -->
 <script src="assets/js/core/angular.min.js"></script>
 <script src="assets/js/core/angular-ui-router.min.js"></script>
-<script src="assets/js/core/angular-ui-bootstrap-tpls.min.js"></script>
 <script src="assets/js/core/angular-messages.min.js"></script>
-<script src="assets/js/core/ocLazyLoad.min.js"></script>
 <script src="assets/js/core/ngStorage.min.js"></script>
+<script src="assets/js/core/loading-bar.js"></script>
 
 <!-- Core JS: App Related -->
 <script src="assets/js/modules/auth.js"></script>
+<script src="assets/js/modules/profile.js"></script>
+<script src="assets/js/modules/balance.js"></script>
+<script src="assets/js/modules/currency.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/services.js"></script>
 <script src="assets/js/directives.js"></script>
-<script src="assets/js/controllers.js"></script>
+<script src="assets/js/controllers/main.js"></script>
 <!-- /build -->
 </body>
 </html>

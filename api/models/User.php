@@ -212,9 +212,9 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
      * Remove access token data
      * @return bool
      */
-    public function destroyAccess()
+    public function destroyAccess($token)
     {
-        return UserAccess::destroyAccess($this);
+        return UserAccess::destroyAccess($this, $token);
     }
 
     /**

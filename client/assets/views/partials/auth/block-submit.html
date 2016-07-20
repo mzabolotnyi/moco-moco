@@ -1,0 +1,6 @@
+<button class="btn btn-login btn-danger btn-float" type="submit"
+        data-ng-disabled="form.$invalid || submitting">
+    <span data-ng-if="!form.$invalid && !submitting"><i class="zmdi zmdi-arrow-forward animated rotateIn"></i></span>
+    <span data-ng-if="form.$invalid && !submitting"><i class="zmdi zmdi-close animated bounceIn"></i></span>
+    <span data-ng-if="submitting"><i class="fa fa-sun-o icon-spin animated fadeIn"></i></span>
+</button>

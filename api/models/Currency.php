@@ -3,7 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Object;
 use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 

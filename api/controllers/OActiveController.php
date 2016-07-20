@@ -66,10 +66,11 @@ class OActiveController extends ActiveController
             ];
         }
 
-        $behaviors['rateLimiter'] = [
-            'class' => RateLimiter::className(),
-            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
-        ];
+        // отключил так как поведение странно работало на хостингере...
+//        $behaviors['rateLimiter'] = [
+//            'class' => RateLimiter::className(),
+//            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
+//        ];
 
         return $behaviors;
     }

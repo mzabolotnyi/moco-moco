@@ -1,0 +1,57 @@
+<div class="profile-menu">
+    <a href="" class="profile-menu-trigger" data-ng-click="sidebar.profileMenu.toggle()">
+        <div class="profile-pic">
+
+        </div>
+        <div class="profile-info">
+            <span class="zmdi zmdi-account zmdi-hc-lg"></span>
+            <span class="caret" data-ng-class="{ 'open': sidebar.profileMenu.opened }"></span>
+                <span class="pull-right">
+                    <money-format amount="balance.amountInMainCurrency"></money-format> {{profile.data.currency.symbol}}
+                </span>
+
+            <div class="pull-right preloader pl-xxs pls-white m-r-5"
+                 data-ng-if="balance.loading && !sidebar.profileMenu.opened">
+                <svg class="pl-circular" viewBox="25 25 50 50">
+                    <circle class="plc-path plc-path-bold" cx="50" cy="50" r="20"></circle>
+                </svg>
+            </div>
+        </div>
+    </a>
+    <ul class="main-menu" data-ng-class="{ 'open': sidebar.profileMenu.opened }">
+        <li class="balance-menu-item" data-ng-repeat="item in balance.data"
+            data-ng-if="item.amount != 0 && !balance.error">
+            <span class='balance-menu-item-account'>{{item.account.name}}</span>
+                <span class='pull-right'>
+                    <span data-ng-repeat="itemCurrency in item.currencies" data-ng-if="itemCurrency.amount != 0"
+                          class="show text-right">
+                        <a href=""
+                           data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount, true)">
+                            <span class="balance-amount"
+                                  money-format amount="itemCurrency.amount"></span>
+                        </a>
+                        <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
+                    </span>
+                </span>
+        </li>
+        <a class="balance-refresh" href data-ng-click="balance.update()"
+           data-ng-if="!balance.error && !balance.loading">Обновить</a>
+        <li class="balance-menu-item text-center" data-ng-if="balance.loading">
+            <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+        </li>
+        <li class="balance-menu-item text-center has-error" data-ng-if="balance.error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="balance.update()">Повторить</button>
+        </li>
+        <li class="divider"></li>
+        <li menu-item data-ui-sref-active="active">
+            <a data-ui-sref="settings"
+               data-ng-click="sidebar.close()">
+                <i class="zmdi zmdi-settings"></i> Настройки
+            </a>
+        </li>
+        <li data-ng-controller="LogoutCtrl">
+            <a href="" data-ng-click="logout()"><i class="zmdi zmdi-power"></i> Выйти</a>
+        </li>
+    </ul>
+</div>

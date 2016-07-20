@@ -4,10 +4,9 @@ namespace app\controllers;
 
 use app\models\Currency;
 use app\models\CurrencyRate;
-use app\models\User;
+use app\models\Transaction;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\db\Transaction;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;

@@ -2,387 +2,270 @@
  *  Document   : directives.js
  */
 
-// View loader functionality
-// By adding the attribute 'data-js-view-loader'
-App.directive('jsViewLoader', function () {
-    return {
-        link: function (scope, element) {
-            var el = jQuery(element);
+App
 
-            // Hide the view loader, populate it with content and style it
-            el
-                .hide()
-                .html('<image src="assets/img/loaders/circle.gif" width="34px" height="34px"></image>')
-                .css({
-                    'position': 'relative',
-                    'z-index': 99999
-                });
+    // Add swipe events for mobile version
+    .directive('uiSwipe', function () {
+        return {
+            link: function (scope, element) {
 
-            // On state change start event, show the element
-            scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                el.fadeIn(250);
-            });
+                if ($('html').hasClass('ismobile')) {
 
-            // On state change success event, hide the element
-            scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                el.fadeOut(250);
-            });
+                    $(element)
+                        // swipe rigth for open sidebar
+                        .on('swiperight', function () {
+                            if (!scope.sidebar.opened) {
+                                scope.$apply(function () {
+                                    if (scope.sidebar.canSwipe()) {
+                                        scope.sidebar.open();
+                                    }
+                                });
+                            }
+                        })
+                        // swipe left for close sidebar
+                        .on('swipeleft', function () {
+                            if (scope.sidebar.opened) {
+                                scope.$apply(function () {
+                                    if (scope.sidebar.canSwipe()) {
+                                        scope.sidebar.close();
+                                    }
+                                });
+                            }
+                        });
+                }
+            }
         }
-    };
-});
+    })
 
-// Main navigation functionality
-// By adding the attribute 'data-js-main-nav'
-App.directive('jsMainNav', function () {
-    return {
-        link: function (scope, element) {
-            // When a submenu link is clicked
-            jQuery('[data-toggle="nav-submenu"]', element).on('click', function (e) {
-                // Get link
-                var link = jQuery(this);
+    // View loader functionality
+    .directive('viewLoader', function () {
+        return {
+            templateUrl: function () {
 
-                // Get link's parent
-                var parentLi = link.parent('li');
+                var template = 'assets/views/partials/loaders/loading-view.html';
 
-                if (parentLi.hasClass('open')) { // If submenu is open, close it..
-                    parentLi.removeClass('open');
-                } else { // .. else if submenu is closed, close all other (same level) submenus first before open it
-                    link
-                        .closest('ul')
-                        .find('> li')
-                        .removeClass('open');
-
-                    parentLi
-                        .addClass('open');
+                if ($('html').hasClass('ismobile')) {
+                    template = 'assets/views/partials/loaders/loading-view-mobile.html';
                 }
 
-                return false;
-            });
+                return template;
+            },
+            link: function (scope, element) {
 
-            // Remove focus when clicking on a link
-            jQuery('a', element).on('click', function () {
-                jQuery(this).blur();
-            });
-
-            // On state change success event, hide the sidebar in mobile devices
-            scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                scope.config.settings.sidebarOpenXs = false;
-            });
-        }
-    };
-});
-
-// Form helper functionality (placeholder support for IE9 which uses HTML5 Placeholder plugin + Material forms)
-// Auto applied to all your form elements (<form>)
-App.directive('form', function () {
-    return {
-        restrict: 'E',
-        link: function (scope, element) {
-            // Init form placeholder (for IE9)
-            jQuery('.form-control', element).placeholder();
-
-            // Init material forms
-            jQuery('.form-material.floating > .form-control', element).each(function () {
-                var input = jQuery(this);
-                var parent = input.parent('.form-material');
-
-                if (input.val()) {
-                    parent.addClass('open');
-                }
-
-                input.on('change', function () {
-                    if (input.val()) {
-                        parent.addClass('open');
-                    } else {
-                        parent.removeClass('open');
+                // On state change start event, show the element if route has property "viewLoader"
+                scope.$on('$stateChangeSuccess', function (event, toState) {
+                    if (toState.viewLoader) {
+                        $(element).fadeIn('fast');
                     }
                 });
-            });
-        }
-    };
-});
 
-// Blocks options functionality
-// By adding the attribute 'data-js-block-option'
-App.directive('jsBlockOption', function () {
-    return {
-        link: function (scope, element) {
-            var el = jQuery(element);
-
-            // Init Icons
-            scope.helpers.uiBlocks(false, 'init', el);
-
-            // Call blocks API on click
-            el.on('click', function () {
-                scope.helpers.uiBlocks(el.closest('.block'), el.data('action'));
-            });
-        }
-    };
-});
-
-// Populate element's content with the correct copyright year
-// By adding the attribute 'data-js-year-copy'
-App.directive('jsYearCopy', function () {
-    return {
-        link: function (scope, element) {
-            var gdate = new Date();
-            var copyright = '2016';
-
-            if (gdate.getFullYear() !== 2016) {
-                copyright = copyright + '-' + gdate.getFullYear().toString().substr(2, 2);
-            }
-
-            element.text(copyright);
-        }
-    };
-});
-
-// Animated scroll to an element
-// By adding the attribute (with custom values) 'data-js-scroll-to="{target: '#target_element_id', speed: 'milliseconds'}"' to a button or a link
-App.directive('jsScrollTo', function () {
-    return {
-        link: function (scope, element, attrs) {
-            var options = (typeof scope.$eval(attrs.jsScrollTo) !== 'undefined') ? scope.$eval(attrs.jsScrollTo) : new Object();
-
-            jQuery(element).on('click', function () {
-                jQuery('html, body').animate({
-                    scrollTop: jQuery(options.target).offset().top
-                }, options.speed ? options.speed : 1000);
-            });
-        }
-    };
-});
-
-// Toggle a class to a target element
-// By adding the attribute (with custom values) 'data-js-toggle-class="{target: '#target_element_id', class: 'class_name_to_toggle'}'
-App.directive('jsToggleClass', function () {
-    return {
-        link: function (scope, element, attrs) {
-            var options = (typeof scope.$eval(attrs.jsToggleClass) !== 'undefined') ? scope.$eval(attrs.jsToggleClass) : new Object();
-
-            jQuery(element).on('click', function () {
-                jQuery(options.target).toggleClass(options.class);
-            });
-        }
-    };
-});
-
-// Removes focus from an element on click
-// By adding the attribute 'data-js-blur'
-App.directive('jsBlur', function () {
-    return {
-        link: function (scope, element) {
-            element.bind('click', function () {
-                element.blur();
-            });
-        }
-    };
-});
-
-
-/*
- * Third party jQuery plugin inits or custom ui helpers packed in Angular directives for easy
- *
- */
-
-// Bootstrap Tabs (legacy init - if you like, you can use the native implementation from Angular UI Bootstrap)
-// By adding the attribute 'data-js-tabs' to a ul with Bootstrap tabs markup
-App.directive('jsTabs', function () {
-    return {
-        link: function (scope, element) {
-            jQuery('a', element).on('click', function (e) {
-                e.preventDefault();
-                jQuery(this).tab('show');
-            });
-        }
-    };
-});
-
-// Custom Table functionality: Section toggling
-// By adding the attribute 'data-js-table-sections' to your table
-App.directive('jsTableSections', function () {
-    return {
-        link: function (scope, element) {
-            var table = jQuery(element);
-            var tableRows = jQuery('.js-table-sections-header > tr', table);
-
-            tableRows.on('click', function (e) {
-                var row = jQuery(this);
-                var tbody = row.parent('tbody');
-
-                if (!tbody.hasClass('open')) {
-                    jQuery('tbody', table).removeClass('open');
-                }
-
-                tbody.toggleClass('open');
-            });
-        }
-    };
-});
-
-// Custom Table functionality: Checkable rows
-// By adding the attribute 'data-js-table-checkable' to your table
-App.directive('jsTableCheckable', function () {
-    return {
-        link: function (scope, element) {
-            var table = jQuery(element);
-
-            // When a checkbox is clicked in thead
-            jQuery('thead input:checkbox', table).click(function () {
-                var checkedStatus = jQuery(this).prop('checked');
-
-                // Check or uncheck all checkboxes in tbody
-                jQuery('tbody input:checkbox', table).each(function () {
-                    var checkbox = jQuery(this);
-
-                    checkbox.prop('checked', checkedStatus);
-                    uiCheckRow(checkbox, checkedStatus);
+                // On state change success event, hide the element
+                scope.$on('$stateChangeSuccess', function (event, toState) {
+                    setTimeout(function () {
+                        $(element).fadeOut('fast');
+                    }, 500);
                 });
-            });
+            }
+        };
+    })
 
-            // When a checkbox is clicked in tbody
-            jQuery('tbody input:checkbox', table).click(function () {
-                var checkbox = jQuery(this);
+    // Directive for creating submit button with loading effect when submitting
+    .directive('errorMessages', ['$compile', function ($compile) {
+        return {
+            link: function (scope, element) {
 
-                uiCheckRow(checkbox, checkbox.prop('checked'));
-            });
+                // add if directive for inner content
+                element.find('span')
+                    .data('ng-if', '!submitting');
 
-            // When a row is clicked in tbody
-            jQuery('tbody > tr', table).click(function (e) {
-                if (e.target.type !== 'checkbox'
-                    && e.target.type !== 'button'
-                    && e.target.tagName.toLowerCase() !== 'a'
-                    && !jQuery(e.target).parent('label').length) {
-                    var checkbox = jQuery('input:checkbox', this);
-                    var checkedStatus = checkbox.prop('checked');
+                // content when submitting
+                var contentSubmitting = $('<span>');
+                contentSubmitting.data('ng-if', 'submitting')
+                    .html('<i class="fa fa-sun-o fa-spin"></i>');
 
-                    checkbox.prop('checked', !checkedStatus);
-                    uiCheckRow(checkbox, !checkedStatus);
-                }
-            });
+                // complete submit button
+                element.append(contentSubmitting)
+                    .data('ng-disabled', 'form.$invalid||submitting')
+                    .attr('type', 'submit');
 
-            // Checkable table functionality helper - Checks or unchecks table row
-            var uiCheckRow = function (checkbox, checkedStatus) {
-                if (checkedStatus) {
-                    checkbox
-                        .closest('tr')
-                        .addClass('active');
-                } else {
-                    checkbox
-                        .closest('tr')
-                        .removeClass('active');
-                }
-            };
+                $compile(element)(scope);
+            }
+        };
+    }])
+
+    // Submenu toggle
+    .directive('toggleSubmenu', function () {
+
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.click(function () {
+                    element.next().slideToggle(200);
+                    element.parent().toggleClass('toggled');
+                });
+            }
         }
-    };
-});
+    })
 
-// jQuery Appear, for more examples you can check out https://github.com/bas2k/jquery.appear
-// By adding the attribute (with custom values) 'data-js-appear="{speed: 1000, refreshInterval: 10, ...}'
-App.directive('jsAppear', function () {
-    return {
-        link: function (scope, element, attrs) {
-            var options = (typeof scope.$eval(attrs.jsAppear) !== 'undefined') ? scope.$eval(attrs.jsAppear) : new Object();
-            var el = jQuery(element);
-            var windowW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-
-            el.appear(function () {
-                setTimeout(function () {
-                    el.removeClass('visibility-hidden')
-                        .addClass(options.class ? options.class : 'animated fadeIn');
-                }, (jQuery('html').hasClass('ie9') || windowW < 992) ? 0 : (options.timeout ? options.timeout : 0));
-            }, {accY: options.offset ? options.offset : 0});
+    // Menu item on click must to close all opened submenus
+    .directive('menuItem', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.click(function () {
+                    var parentSubMenu = element.parent();
+                    $('.main-menu .sub-menu > ul').not(parentSubMenu).slideUp(200);
+                });
+            }
         }
-    };
-});
+    })
 
-// jQuery Appear + jQuery countTo, for more examples you can check out https://github.com/bas2k/jquery.appear and https://github.com/mhuggins/jquery-countTo
-// By adding the attribute (with custom values) 'data-js-count-to="{speed: 1000, refreshInterval: 10, ...}'
-App.directive('jsCountTo', function () {
-    return {
-        link: function (scope, element, attrs) {
-            var options = (typeof scope.$eval(attrs.jsCountTo) !== 'undefined') ? scope.$eval(attrs.jsCountTo) : new Object();
-            var el = jQuery(element);
+    // Scroll on class 'c-overflow'
+    .directive('cOverflow', function () {
+        return {
+            restrict: 'C',
+            link: function (scope, element) {
 
-            el.appear(function () {
-                el.countTo({
-                    speed: options.speed ? options.speed : 1500,
-                    refreshInterval: options.refreshInterval ? options.refreshInterval : 15,
-                    onComplete: function () {
-                        if (options.after) {
-                            el.html(el.html() + options.after);
+                //if (!$('html').hasClass('ismobile')) {
+                    $(element).niceScroll({
+                        cursorcolor: 'rgba(0,0,0,0.4)',
+                        cursorborder: 0,
+                        cursorborderradius: 0,
+                        cursorwidth: '4px',
+                        bouncescroll: true,
+                        mousescrollstep: 100,
+                    });
+                //} else {
+                //    $(element).css('overflow', 'auto');
+                //}
+            }
+        }
+    })
+
+    // Waves effect on buttons with class 'btn'
+    .directive('btn', function () {
+        return {
+            restrict: 'C',
+            link: function (scope, element) {
+                if (element.hasClass('btn-icon') || element.hasClass('btn-float')) {
+                    Waves.attach(element, ['waves-circle']);
+                }
+
+                else if (element.hasClass('btn-light')) {
+                    Waves.attach(element, ['waves-light']);
+                }
+
+                else {
+                    Waves.attach(element);
+                }
+
+                Waves.init();
+            }
+        }
+    })
+
+    // Add animated border and remove with condition when focus and blur on input with class 'form-control'
+    .directive('formControl', function () {
+        return {
+            restrict: 'C',
+            link: function (scope, element) {
+                $(element).on('focus', function () {
+                    $(this).closest('.fg-line').addClass('fg-toggled');
+                });
+
+                $(element).on('blur', function () {
+                    var p = $(this).closest('.form-group');
+                    var i = p.find('.form-control').val();
+
+                    if (p.hasClass('fg-float')) {
+                        if (i.length == 0) {
+                            $(this).closest('.fg-line').removeClass('fg-toggled');
                         }
                     }
+                    else {
+                        $(this).closest('.fg-line').removeClass('fg-toggled');
+                    }
                 });
-            });
+            }
         }
-    };
-});
+    })
 
-// SlimScroll, for more examples you can check out http://rocha.la/jQuery-slimScroll
-// By adding the attribute (with custom values) 'data-js-slimscroll="{height: '100px', size: '3px', ...}'
-App.directive('jsSlimscroll', function () {
-    return {
-        link: function (scope, element, attrs) {
-            var options = (typeof scope.$eval(attrs.jsSlimscroll) !== 'undefined') ? scope.$eval(attrs.jsSlimscroll) : new Object();
-
-            jQuery(element).slimScroll({
-                height: options.height ? options.height : '200px',
-                size: options.size ? options.size : '5px',
-                position: options.position ? options.position : 'right',
-                color: options.color ? options.color : '#000',
-                alwaysVisible: options.alwaysVisible ? true : false,
-                railVisible: options.railVisible ? true : false,
-                railColor: options.railColor ? options.railColor : '#999',
-                railOpacity: options.railOpacity ? options.railOpacity : .3
-            });
+    // Focus on input
+    .directive('autofocus', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                $(element).find('input[autofocus]').focus();
+            }
         }
-    };
-});
+    })
 
-// Directive for creating submit button with loading effect when submitting
-App.directive('errorMessages', ['$compile', function ($compile) {
-    return {
-        link: function (scope, element) {
+    // Create block header with breadcrumbs
+    .directive('uiPageHeader', ['$compile', function ($compile) {
+        return {
+            restrict: 'A',
+            compile: function compile(element, attr) {
 
-            // add if directive for inner content
-            element.find('span')
-                .data('ng-if', '!submitting');
+                var el = $(element);
 
-            // content when submitting
-            var contentSubmitting = jQuery('<span>');
-            contentSubmitting.data('ng-if', 'submitting')
-                .html('<i class="fa fa-sun-o fa-spin"></i>');
+                // add class to our element
+                el.addClass('block-header');
 
-            // complete submit button
-            element.append(contentSubmitting)
-                .data('ng-disabled', 'form.$invalid||submitting')
-                .attr('type', 'submit');
+                // append title block
+                var title = attr.pageTitle;
+                var titleBlock = $('<h2/>')
+                    .addClass('m-b-10')
+                    .text(title);
 
-            $compile(element)(scope);
+                el.append(titleBlock);
+
+                // append breadcrumbs block
+                if (attr.breadcrumbs) {
+
+                    var breadcrumbs = $.parseJSON(attr.breadcrumbs); //{'dashboard' : 'Главная', 'activeCrumb' : 'Настройки'}
+                    var breadcrumbBlock = $('<ul/>').addClass('breadcrumb');
+                    var crumb, crumbLink;
+
+                    $.each(breadcrumbs, function (key, value) {
+
+                        crumb = $('<li/>');
+
+                        if (key == 'activeCrumb') {
+                            crumb.addClass('active')
+                                .text(value);
+                        } else {
+                            crumbLink = $('<a/>')
+                                .attr('ui-sref', key)
+                                .text(value);
+                            crumb.append(crumbLink);
+                        }
+
+                        breadcrumbBlock.append(crumb);
+                    });
+
+                    el.append(breadcrumbBlock);
+                }
+            }
+        };
+    }])
+
+    // Format amount with as money with cents
+    .directive('moneyFormat', [function () {
+        return {
+            link: function (scope, element, attr) {
+                scope.$watch(attr.amount, function (value) {
+                    $(element).html($.number(value, 2, '.', ','));
+                });
+            }
+        };
+    }])
+
+    // MASKED
+    .directive('number', function () {
+        return {
+            restrict: 'C',
+            link: function (scope, element) {
+                $(element).number(true, 2);
+            }
         }
-    };
-}]);
-
-/*
- ********************************************************************************************
- *
- * All the following directives require each plugin's resources (JS, CSS) to be lazy loaded in
- * the page in order to work, so please make sure you've included them in your route configuration
- *
- ********************************************************************************************
- */
-
-// Bootstrap Datepicker, for more examples you can check out https://github.com/eternicode/bootstrap-datepicker
-// By adding the attribute 'data-js-datepicker'
-App.directive('jsDatepicker', function () {
-    return {
-        link: function (scope, element) {
-            jQuery(element).datepicker({
-                weekStart: 1,
-                autoclose: true,
-                todayHighlight: true
-            });
-        }
-    };
-});
+    })

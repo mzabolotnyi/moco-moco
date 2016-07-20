@@ -30,7 +30,8 @@ class OActiveRecord extends ActiveRecord implements ISearchable
     {
         $query = self::find();
 
-        QueryHelper::filter(self::attributes(), $query, $params);
+        $availableAttributes = self::getTableSchema()->getColumnNames();
+        QueryHelper::filter($availableAttributes, $query, $params);
 
         if (!empty($params['sort'])) {
             QueryHelper::sort($query, $params['sort']);

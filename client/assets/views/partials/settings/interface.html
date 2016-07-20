@@ -1,0 +1,34 @@
+<div class="pmb-block">
+    <div class="pmbb-header">
+        <h2>Интерфейс</h2>
+        <ul class="actions" data-ng-if="!sections.interface.edit">
+            <li>
+                <a data-ng-click="sections.interface.edit = true">
+                    <i class="zmdi zmdi-edit"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="pmbb-body p-l-30">
+        <div class="pmbb-view">
+            <div class="m-b-15" data-ng-repeat="param in sections.interface.data">
+                <div class="checkbox" data-ng-class="{disabled: !sections.interface.edit}">
+                    <label>
+                        <input type="checkbox" class="checker select-box" data-ng-model="param.value"
+                               data-ng-disabled="!sections.interface.edit">
+                        <i class="input-helper"></i>
+                        {{param.name}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="pmbb-edit" data-ng-if="sections.interface.edit">
+            <button class="btn bgm-teal btn-sm"
+                    data-ng-click="saveSettings('interface'); sections.interface.edit = false">Сохранить
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="sections.interface.edit = false">
+                Отмена
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+.ismobile body {
+    padding-bottom: 0;
+}
+
+.ismobile body #content {
+    padding: 0;
+}
+
+.ismobile .preloader-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/* CATALOG PAGE */
+.card.ismobile {
+    position: fixed;
+    display: flex;
+    flex-flow: column;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 65px);
+}
+
+.card.ismobile .card-header {
+    flex: none;
+    padding: 18px;
+    background: rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.card.ismobile .card-body {
+    flex: 1;
+    padding: 20px 0;
+}
