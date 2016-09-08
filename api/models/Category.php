@@ -86,7 +86,7 @@ class Category extends OActiveRecord
     {
         return [
             'href' => function () {
-                return Url::to("/categorys/$this->id", true);
+                return Url::to("/categories/$this->id", true);
             },
             'id',
             'name',
@@ -95,6 +95,9 @@ class Category extends OActiveRecord
             'expense',
             'active',
             'userId' => 'user_id',
+            'countTrans' => function () {
+                return (int)$this->hasMany(Transaction::className(), ['category_id' => 'id'])->count();
+            }
         ];
     }
 

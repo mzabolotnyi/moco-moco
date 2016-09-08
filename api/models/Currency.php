@@ -79,6 +79,9 @@ class Currency extends OActiveRecord
             'name',
             'symbol',
             'userId' => 'user_id',
+            'rate' => function () {
+                return $this->getRate();
+            }
         ];
     }
 
@@ -92,13 +95,19 @@ class Currency extends OActiveRecord
     }
 
     /**
-     * Finds the latest exchange rate at the date of
+     * Finds the latest exchange rate at the date of, if not exist - create default rate
      * @param string $date |null limit date, format 'yyyy-MM-dd', if 'null' get rate on today
      * @return null|CurrencyRate
      */
     public function getRate($date = null)
     {
-        return CurrencyRate::getRate($this->id, $date);
+        $rate = CurrencyRate::getRate($this->id, $date);
+
+        if ($rate === null) {
+            $rate = CurrencyRate::createDefaultRate($this->id);
+        }
+
+        return $rate;
     }
 
     /**

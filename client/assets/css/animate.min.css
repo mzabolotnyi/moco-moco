@@ -22,7 +22,7 @@
     animation-duration: .75s
 }
 
-.animated.flipOutX, .animated.flipOutY {
+.animated.flipInX, .animated.flipInY, .animated.flipOutX, .animated.flipOutY {
     -webkit-animation-duration: .75s;
     animation-duration: .75s
 }

@@ -29,8 +29,7 @@ return [
             'extraPatterns' => [
                 'GET {id}/rates' => 'get-rates',
                 'GET {id}/rates/{date}' => 'get-rates',
-                'POST {id}/rates/{date}' => 'create-rate',
-                'PUT,PATCH {id}/rates/{date}' => 'update-rate',
+                'POST {id}/rates/{date}' => 'set-rate',
                 'DELETE {id}/rates' => 'delete-rates',
                 'DELETE {id}/rates/{date}' => 'delete-rates',
             ],
@@ -47,14 +46,16 @@ return [
             ],
             'extraPatterns' => [
                 'GET {id}/currencies' => 'get-currencies',
+                'PUT,PATCH {id}/currencies' => 'set-currencies',
+                'PUT,PATCH {id}/currencies/{currency-id}' => 'bind-currency',
+                'DELETE {id}/currencies/{currency-id}' => 'unbind-currency',
                 'GET {id}/transactions' => 'get-transactions',
+                'PUT,PATCH {id}/transactions' => 'update-transactions',
+                'DELETE {id}/transactions' => 'delete-transactions',
                 'GET balance' => 'get-balance',
                 'GET {id}/balance' => 'get-balance',
                 'GET {id}/balance/{currency-id}' => 'get-balance',
                 'POST {id}/balance/{currency-id}' => 'adjust-balance',
-                'PUT,PATCH {id}/currencies/{currency-id}' => 'bind-currency',
-                'DELETE {id}/currencies/{currency-id}' => 'unbind-currency',
-                'DELETE {id}/transactions' => 'delete-transactions',
             ],
         ],
         // category
@@ -65,6 +66,7 @@ return [
             ],
             'extraPatterns' => [
                 'GET {id}/transactions' => 'get-transactions',
+                'PUT,PATCH {id}/transactions' => 'update-transactions',
                 'DELETE {id}/transactions' => 'delete-transactions',
             ],
         ],

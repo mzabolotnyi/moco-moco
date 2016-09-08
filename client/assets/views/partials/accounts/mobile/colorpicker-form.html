@@ -1,0 +1,17 @@
+<div class="modal-backdrop" data-ng-if="scope.colorpicker.opened">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Выбор цвета</h2>
+        </div>
+        <div class="modal-body c-overflow">
+            <div class="color-wrapper">
+                <div class="color-container" data-ng-style="{ 'background-color': scope.colorpicker.color }"></div>
+                <ng-farbtastic data-ng-model="scope.colorpicker.color"></ng-farbtastic>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm bgm-teal" data-ng-click="scope.colorpicker.pick()">Выбрать</button>
+            <button class="btn btn-link btn-sm" data-ng-click="scope.colorpicker.close()">Отмена</button>
+        </div>
+    </div>
+</div>

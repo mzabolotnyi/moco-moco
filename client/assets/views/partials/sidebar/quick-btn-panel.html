@@ -1,17 +1,20 @@
 <div class="quick-btn-panel">
     <div class="btn-group btn-group-justified" role="group" data-ng-if="!sidebar.profileMenu.opened">
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-sm bgm-deeporange" title="Ввести расход">
+            <button type="button" class="btn btn-sm bgm-deeporange" title="Ввести расход"
+                    data-ng-click="transaction.edit('expense')">
                 <i class="zmdi zmdi-hc-lg zmdi-minus"></i>
             </button>
         </div>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-sm btn-success" title="Ввести доход">
+            <button type="button" class="btn btn-sm btn-success" title="Ввести доход"
+                    data-ng-click="transaction.edit('income')">
                 <i class="zmdi zmdi-hc-lg zmdi-plus"></i>
             </button>
         </div>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-sm btn-primary" title="Ввести перевод">
+            <button type="button" class="btn btn-sm btn-primary" title="Ввести перевод"
+                    data-ng-click="transaction.edit('transfer')">
                 <i class="zmdi zmdi-hc-lg zmdi-swap"></i>
             </button>
         </div>

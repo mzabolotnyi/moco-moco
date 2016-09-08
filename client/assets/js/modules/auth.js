@@ -107,15 +107,9 @@ AuthModule
 
 // Defining controllers
 AuthModule
-    .controller('AuthCtrl', ['$scope', 'auth',
-        function ($scope, auth) {
-            $scope.isAuthenticated = function () {
-                return auth.isAuthenticated();
-            };
-        }
-    ])
     .controller('SignupCtrl', ['$scope', '$window', 'auth',
         function ($scope, $window, auth) {
+
             $scope.signup = function (user) {
 
                 $scope.submitting = true;
@@ -141,6 +135,7 @@ AuthModule
     ])
     .controller('LoginCtrl', ['$scope', '$window', 'auth',
         function ($scope, $window, auth) {
+
             $scope.login = function (user) {
 
                 $scope.submitting = true;
@@ -162,10 +157,21 @@ AuthModule
                         $scope.submitting = false;
                     });
             };
+
+            $scope.loginDemo = function (){
+
+                var user = {
+                    email: 'mzabolotnyi@gmail.com',
+                    password: '111111'
+                };
+
+                this.login(user);
+            };
         }
     ])
     .controller('LogoutCtrl', ['$scope', '$window', 'auth', 'config',
         function ($scope, $window, auth, config) {
+
             $scope.logout = function () {
                 auth.logout()
                     .then(function () {
@@ -227,6 +233,7 @@ AuthModule
     ])
     .controller('ChangePasswordCtrl', ['$scope', '$window', 'auth',
         function ($scope, $window, auth) {
+
             $scope.changePassword = function (data) {
 
                 $scope.submitting = true;

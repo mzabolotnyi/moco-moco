@@ -119,6 +119,11 @@ class Transaction extends OActiveRecord
         return [
             'amount' => 'Сумма',
             'date' => 'Дата',
+            'currency_id' => 'Валюта',
+            'account_id' => 'Счет',
+            'category_id' => 'Категория',
+            'recipient_currency_id' => 'Валюта получения',
+            'recipient_account_id' => 'Счет получения',
             'comment' => 'Примечание',
             'transfer' => 'Перевод',
             'expense' => 'Расход',

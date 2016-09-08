@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\helpers\Url;
+use app\models\Balance;
 
 /**
  * This is the model class for table "account".
@@ -79,6 +80,13 @@ class Account extends OActiveRecord
             'color',
             'active',
             'userId' => 'user_id',
+            'countTrans' => function () {
+                return (int)$this->hasMany(Transaction::className(), ['account_id' => 'id'])->count()
+                + (int)$this->hasMany(Transaction::className(), ['recipient_account_id' => 'id'])->count();
+            },
+            'currencies' => function () {
+                return AccountCurrency::findAll(['account_id' => $this->id]);
+            }
         ];
     }
 
@@ -105,12 +113,13 @@ class Account extends OActiveRecord
      * @param \app\models\Currency $currency
      * @return bool
      */
-    public function bindCurrency($currency)
+    public function bindCurrency($currency, $params = [])
     {
-        $params = ['account_id' => $this->id, 'currency_id' => $currency->id];
-        $model = AccountCurrency::findOne($params);
+        $pk = ['account_id' => $this->id, 'currency_id' => $currency->id];
+        $model = AccountCurrency::findOne($pk);
 
         if (!$model) {
+            $params = array_merge($pk, $params);
             $model = new AccountCurrency($params);
             return $model->save();
         }

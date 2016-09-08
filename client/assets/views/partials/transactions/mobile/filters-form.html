@@ -1,0 +1,137 @@
+<div class="modal-backdrop" data-ng-if="scope.filter.opened">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>Фильтры</h2>
+            <ul class="actions">
+                <li>
+                    <a href="" data-ng-click="scope.filter.clear()">
+                        <i class="zmdi zmdi-brush"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="modal-body c-overflow">
+
+            <form id="form" name="form" data-ng-submit="scope.filter.submit()">
+
+                <!--CATEGORY-->
+                <label>Категория</label>
+
+                <div class="input-group input-filter">
+
+                    <span class="input-group-addon">
+                        <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.category"></i>
+                        <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.category"></i>
+                    </span>
+
+                    <div class="fg-line">
+                        <select class="form-control input-sm" name="category" data-chosen
+                                data-ng-model="scope.filter.items.category"
+                                data-ng-options="category as category.name for category in global.categories">
+                            <option value="">Не выбрана...</option>
+                        </select>
+                    </div>
+
+                    <span class="input-group-addon last" data-ng-if="scope.filter.items.category">
+                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.category = undefined"></i>
+                    </span>
+
+                </div>
+                <!--end CATEGORY-->
+
+                <!--ACCOUNT-->
+                <label>Счет</label>
+
+                <div class="input-group input-filter">
+
+                    <span class="input-group-addon">
+                        <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.account"></i>
+                        <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.account"></i>
+                    </span>
+
+                    <div class="fg-line">
+                        <select class="form-control input-sm" name="account" data-chosen
+                                data-ng-model="scope.filter.items.account"
+                                data-ng-options="account as account.name for account in global.accounts">
+                            <option value="">Не выбран...</option>
+                        </select>
+                    </div>
+
+                    <span class="input-group-addon last" data-ng-if="scope.filter.items.account">
+                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.account = undefined"></i>
+                    </span>
+
+                </div>
+                <!--end ACOOUNT-->
+
+                <!--COMMENT-->
+                <div class="input-group input-filter">
+
+                    <span class="input-group-addon">
+                        <i class="zmdi zmdi-circle-o"
+                           data-ng-if="!scope.filter.items.comment || scope.filter.items.comment == ''"></i>
+                        <i class="zmdi zmdi-check-circle c-teal"
+                           data-ng-if="scope.filter.items.comment && scope.filter.items.comment != ''"></i>
+                    </span>
+
+                    <div class="fg-line">
+                        <input type="text" class="form-control input-sm" placeholder="Примечание" name="comment"
+                               data-ng-model="scope.filter.items.comment">
+                    </div>
+
+                    <span class="input-group-addon last"
+                          data-ng-if="scope.filter.items.comment && scope.filter.items.comment != ''">
+                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.comment = ''"></i>
+                    </span>
+
+                </div>
+                <!--end COMMENT-->
+
+                <!--PERIOD-->
+                <div class="input-group input-filter">
+
+                    <span class="input-group-addon">
+                        <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.period"></i>
+                        <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.period"></i>
+                    </span>
+
+                    <div class="fg-line">
+                        <input type="text" class="form-control input-sm" placeholder="Период" name="period"
+                               data-ng-value="scope.filter.items.period.displayValue"
+                               date-picker="{range: true}" date-picker-model="scope.filter.items.period">
+                    </div>
+
+                    <div class="fg-line">
+                        <input type="text" class="form-control input-sm" placeholder="Период" name="period"
+                               data-ng-value="scope.filter.items.period.displayValue"
+                               date-picker="{range: true}" date-picker-model="scope.filter.items.period">
+                    </div>
+
+                    <span class="input-group-addon last" data-ng-if="scope.filter.items.period">
+                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.period = undefined"></i>
+                    </span>
+
+                </div>
+                <!--end PERIOD-->
+
+            </form>
+
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+                    data-ng-disabled="form.$invalid || scope.filter.submitting">
+                <span>Показать</span>
+                <span data-ng-if="scope.filter.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="scope.filter.close()">Отмена</button>
+        </div>
+
+    </div>
+
+</div>

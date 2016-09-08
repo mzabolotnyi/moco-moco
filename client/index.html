@@ -10,9 +10,15 @@
 
     <meta name="description" content="MOCO - Money Control">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Manifest for using webapp separate from browser on mobile-->
+    <link rel="manifest" href="manifest.json">
+    <!-- END Manifest-->
 
     <!-- Icons -->
-    <link rel="shortcut icon" href="assets/img/favicons/favicon.png">
+    <link rel="shortcut icon" href="assets/img/favicons/icon-32x32.png">
+    <link rel="icon" sizes="128x128" href="assets/img/favicons/icon-128x128.png">
     <!-- END Icons -->
 
     <!-- Stylesheets -->
@@ -21,12 +27,17 @@
     <link rel="stylesheet" href="assets/css/animate.min.css">
     <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="assets/css/loading-bar.css">
+    <link rel="stylesheet" href="assets/css/sweetalert.css">
+    <link rel="stylesheet" href="assets/css/chosen.min.css">
+    <link rel="stylesheet" href="assets/css/farbtastic.css">
+    <link rel="stylesheet" href="assets/css/datepicker.css">
     <link rel="stylesheet" href="assets/css/site.css">
     <link rel="stylesheet" href="assets/css/site-mobile.css">
     <!-- END Stylesheets -->
 
 </head>
-<body data-ng-controller="AppCtrl" class="sw-toggled" data-ui-swipe>
+<body data-ng-controller="AppCtrl" class="sw-toggled" data-on-swipe-right="sidebar.swipeIn()"
+      data-on-swipe-left="sidebar.swipeOut()">
 
 <div class="wrapper">
 
@@ -50,19 +61,27 @@
 </div>
 
 <div id="view-loader" class="background-overlay" data-view-loader></div>
-<div class="background-overlay" data-ng-if="sidebar.showOverlayOnOpened()" data-ng-click="sidebar.close()" data-ui-swipe></div>
+<div class="background-overlay" data-ng-if="sidebar.showOverlayOnOpened()" data-ng-click="sidebar.close()"
+     data-on-swipe-right="sidebar.swipeIn()" data-on-swipe-left="sidebar.swipeOut()"></div>
 
-<ng-include src="'assets/views/partials/balance/adjustment-form.html'"></ng-include>
+<ng-include src="'assets/views/partials/balance/edit-form.html'"></ng-include>
+<ng-include src="'assets/views/partials/transactions/mobile/edit-form.html'"></ng-include>
 
 <!-- JS Code -->
 <!-- build:js assets/js/app.min.js -->
 <!-- Core JS: jQuery & Bootstrap Related -->
 <script src="assets/js/plugins/jquery.min.js"></script>
 <script src="assets/js/plugins/jquery.mobile.swipe.min.js"></script>
-<script src="assets/js/plugins/jquery.number.js"></script>
 <script src="assets/js/plugins/jquery.nicescroll.min.js"></script>
 <script src="assets/js/plugins/jquery.noty.js"></script>
+<script src="assets/js/plugins/jquery.number.js"></script>
+<script src="assets/js/plugins/chosen.jquery.js"></script>
 <script src="assets/js/plugins/waves.min.js"></script>
+<script src="assets/js/plugins/sweetalert.min.js"></script>
+<script src="assets/js/plugins/moment.min.js"></script>
+<script src="assets/js/plugins/moment-interval.js"></script>
+<script src="assets/js/plugins/moment.locale.ru.js"></script>
+<script src="assets/js/plugins/datepicker.js"></script>
 
 <!-- Core JS: AngularJS Related -->
 <script src="assets/js/core/angular.min.js"></script>
@@ -70,15 +89,23 @@
 <script src="assets/js/core/angular-messages.min.js"></script>
 <script src="assets/js/core/ngStorage.min.js"></script>
 <script src="assets/js/core/loading-bar.js"></script>
+<script src="assets/js/core/ui-bootstrap-tpls.min.js"></script>
+<script src="assets/js/core/angular-chosen.js"></script>
+<script src="assets/js/core/angular-farbtastic.js"></script>
+<script src="assets/js/core/ng-infinite-scroll.js"></script>
 
 <!-- Core JS: App Related -->
 <script src="assets/js/modules/auth.js"></script>
 <script src="assets/js/modules/profile.js"></script>
 <script src="assets/js/modules/balance.js"></script>
 <script src="assets/js/modules/currency.js"></script>
+<script src="assets/js/modules/category.js"></script>
+<script src="assets/js/modules/account.js"></script>
+<script src="assets/js/modules/transaction.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/config.js"></script>
 <script src="assets/js/services.js"></script>
+<script src="assets/js/filters.js"></script>
 <script src="assets/js/directives.js"></script>
 <script src="assets/js/controllers/main.js"></script>
 <!-- /build -->

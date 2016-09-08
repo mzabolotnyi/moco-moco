@@ -29,10 +29,10 @@ class ProfileController extends Controller
                 ],
             ],
         ];
-        $behaviors['rateLimiter'] = [
-            'class' => RateLimiter::className(),
-            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
-        ];
+//        $behaviors['rateLimiter'] = [
+//            'class' => RateLimiter::className(),
+//            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
+//        ];
 
         return $behaviors;
     }

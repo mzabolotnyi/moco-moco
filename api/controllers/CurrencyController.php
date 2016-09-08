@@ -63,66 +63,38 @@ class CurrencyController extends OActiveController
      * @throws ServerErrorHttpException
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionCreateRate($id, $date)
+    public function actionSetRate($id, $date)
     {
         /* @var $model \app\models\Currency */
         $currency = Currency::findCurrency($id);
+        $currencyRate = CurrencyRate::findRate($currency->id, $date);
+        $isNew = false;
 
-        $currencyRate = new CurrencyRate([
-            'scenario' => $this->createScenario,
-            'currency_id' => $currency->id,
-            'date' => $date,
-            'rate' => 1,
-            'size' => 1,
-        ]);
+        if ($currencyRate === null) {
+            $isNew = true;
+            $currencyRate = new CurrencyRate([
+                'currency_id' => $currency->id,
+                'date' => $date,
+                'rate' => 1,
+                'size' => 1,
+            ]);
+        }
 
+        $currencyRate->scenario = CurrencyRate::SCENARIO_DEFAULT;
         $currencyRate->load(Yii::$app->getRequest()->getBodyParams(), '');
 
         if ($currencyRate->save()) {
-            $response = Yii::$app->getResponse();
-            $response->setStatusCode(201);
-            $response->getHeaders()->set('Location', Url::to([
-                '/currency/get-rates',
-                'id' => $currencyRate->currency_id,
-                'date' => $currencyRate->date
-            ], true));
+            if ($isNew) {
+                $response = Yii::$app->getResponse();
+                $response->setStatusCode(201);
+                $response->getHeaders()->set('Location', Url::to([
+                    '/currency/get-rates',
+                    'id' => $currencyRate->currency_id,
+                    'date' => $currencyRate->date
+                ], true));
+            }
         } elseif (!$currencyRate->hasErrors()) {
             throw new ServerErrorHttpException('Не удалось создать объект по неизвестным причинам');
-        }
-
-        return $currencyRate;
-    }
-
-    /**
-     * Updates currency rate
-     * @param integer $id currency ID
-     * @param string|null $date
-     * @return CurrencyRate
-     * @throws ForbiddenHttpException
-     * @throws NotFoundHttpException
-     * @throws ServerErrorHttpException
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionUpdateRate($id, $date)
-    {
-        /* @var $currency \app\models\Currency */
-        /* @var $currencyRate \app\models\CurrencyRate */
-        $currency = Currency::findCurrency($id);
-        $currencyRate = CurrencyRate::findRate($currency->id, $date);
-
-        if ($currency->user_id !== $this->getUserId()) {
-            throw new ForbiddenHttpException('Вам не разрешено выполнять это действие');
-        }
-
-        if ($currencyRate === null) {
-            throw new NotFoundHttpException('Ресурс не найден');
-        }
-
-        $currencyRate->scenario = $this->updateScenario;
-        $currencyRate->load(Yii::$app->getRequest()->getBodyParams(), '');
-
-        if ($currencyRate->save() === false && !$currencyRate->hasErrors()) {
-            throw new ServerErrorHttpException('Не удалось изменить объект по неизвестным причинам');
         }
 
         return $currencyRate;

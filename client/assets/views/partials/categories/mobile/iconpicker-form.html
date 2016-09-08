@@ -1,0 +1,19 @@
+<div class="modal-backdrop" data-ng-if="scope.iconpicker.opened">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Выбор иконки</h2>
+        </div>
+        <div class="modal-body c-overflow">
+            <div class="icon-wrapper">
+                <div class="icon-container" data-ng-repeat="iconName in scope.iconpicker.icons"
+                     data-ng-class="{ 'active' : scope.iconpicker.isActive(iconName) }"
+                        data-ng-click="scope.iconpicker.pick(iconName)">
+                    <i class="{{scope.iconpicker.generateClassString(iconName)}}"></i>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-link btn-sm" data-ng-click="scope.iconpicker.close()">Отмена</button>
+        </div>
+    </div>
+</div>

@@ -41,6 +41,11 @@ class OActiveController extends ActiveController
      */
     public $nameUserIdAttr = 'user_id';
 
+    /**
+     * @var bool|array pagination options, default - without pagination
+     */
+    public $pagination = false;
+
     ////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////OVERRIDE INHERIT FUNCTIONS///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -261,6 +266,9 @@ class OActiveController extends ActiveController
                 'query' => $query,
             ]);
         }
+
+        // set pagination options
+        $dataProvider->pagination = $this->pagination;
 
         return $dataProvider;
     }

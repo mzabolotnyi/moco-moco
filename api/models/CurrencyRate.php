@@ -77,11 +77,10 @@ class CurrencyRate extends OActiveRecord
                 return Url::to("/currencies/$this->currency_id/rates/$this->date", true);
             },
             'date',
-            'rate',
-            'size',
-            'currency' => function () {
-                return $this->currency;
+            'rate' => function () {
+                return $this->size = 0 ? 1 : $this->rate / $this->size;
             },
+            'currencyId' => 'currency_id',
         ];
     }
 
@@ -135,5 +134,27 @@ class CurrencyRate extends OActiveRecord
             ->andWhere(['<=', 'date', $date])
             ->orderBy('date DESC')
             ->one();
+    }
+
+    /**
+     * Create default rate
+     * @param integer $id ID of currency
+     * @param string $date |null limit date, format 'yyyy-MM-dd', if 'null' get rate on today
+     * @return null|static
+     */
+    public static function createDefaultRate($id, $date = null)
+    {
+        if ($date === null) {
+            $date = Carbon::today()->format('Y-m-d');
+        }
+
+        $rate = new CurrencyRate();
+        $rate->currency_id = $id;
+        $rate->date = $date;
+
+        if (!$rate->save()){
+            return null;
+        }
+        return $rate;
     }
 }

@@ -9,20 +9,6 @@ App
                 url: '/dashboard',
                 templateUrl: 'assets/views/pages/in-developing.html',
                 controller: 'DashboardCtrl',
-                //resolve: {
-                //    deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                //        return $ocLazyLoad.load({
-                //            insertBefore: '#css-bootstrap',
-                //            serie: true,
-                //            files: [
-                //                'assets/js/plugins/slick/slick.min.css',
-                //                'assets/js/plugins/slick/slick-theme.min.css',
-                //                'assets/js/plugins/slick/slick.min.js',
-                //                'assets/js/plugins/chartjs/Chart.min.js'
-                //            ]
-                //        });
-                //    }]
-                //},
                 pageTitle: 'Панель управления',
                 viewLoader: true
             })
@@ -33,10 +19,15 @@ App
             })
             .state('transactions.list', {
                 url: '',
-                templateUrl: 'assets/views/pages/in-developing.html',
-                controller: 'TransactionsCtrl',
+                templateUrl: 'assets/views/pages/transaction.html',
+                controller: 'TransactionsListCtrl',
                 pageTitle: 'Операции',
-                viewLoader: true
+                viewLoader: true,
+                resolve: {
+                    transactions: function (transaction) {
+                        return transaction.get();
+                    }
+                }
             })
             .state('transactions.templates', {
                 url: '/templates',
@@ -47,23 +38,41 @@ App
             })
             .state('accounts', {
                 url: '/accounts',
-                templateUrl: 'assets/views/pages/in-developing.html',
+                templateUrl: 'assets/views/pages/accounts.html',
                 controller: 'AccountsCtrl',
                 pageTitle: 'Счета',
-                viewLoader: true
+                viewLoader: true,
+                resolve: {
+                    accounts: function (account) {
+                        return account.get();
+                    },
+                    currencies: function (currency) {
+                        return currency.get();
+                    }
+                }
             })
-            .state('tags', {
-                url: '/tags',
-                templateUrl: 'assets/views/pages/in-developing.html',
-                controller: 'TagsCtrl',
-                pageTitle: 'Теги',
-                viewLoader: true
+            .state('categories', {
+                url: '/categories',
+                templateUrl: 'assets/views/pages/categories.html',
+                controller: 'CategoriesCtrl',
+                pageTitle: 'Категории',
+                viewLoader: true,
+                resolve: {
+                    categories: function (category) {
+                        return category.get();
+                    }
+                }
             })
             .state('currencies', {
                 url: '/currencies',
                 templateUrl: 'assets/views/pages/currencies.html',
                 controller: 'CurrenciesCtrl',
-                viewLoader: true
+                viewLoader: true,
+                resolve: {
+                    currencies: function (currency) {
+                        return currency.get();
+                    }
+                }
             })
             .state('settings', {
                 url: '/settings',
@@ -73,17 +82,37 @@ App
                 viewLoad: true
             })
     })
-
+    // httpProvider configuration
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push(function ($q) {
+            return {
+                request: function (config) {
+                    config.timeout = 10000;
+                    return config;
+                },
+                responseError: function (rejection) {
+                    return $q.reject(rejection);
+                }
+            };
+        });
+    }])
     // Run our App
     .run(['$rootScope', '$window', 'config', 'auth', 'cfpLoadingBar', function ($rootScope, $window, config, auth, cfpLoadingBar) {
 
         // Detact Mobile Browser
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
             $('html').addClass('ismobile');
+            $rootScope.isMobile = true;
         }
 
         // Access config (constants) easily from all controllers
         $rootScope.config = config;
+
+        // Check auth
+        if (!auth.isAuthenticated()) {
+            $window.location.href = config.authHref;
+            return;
+        }
 
         // Define logic on state changing
         $rootScope.$on('$stateChangeStart', function (event, toState) {
@@ -95,9 +124,10 @@ App
         });
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-            setTimeout(function(){
+            // add little delay
+            setTimeout(function () {
                 cfpLoadingBar.complete();
             }, 500);
             $rootScope.pageTitle = toState.pageTitle ? toState.pageTitle : config.appName;
         });
-   }]);
+    }]);

@@ -4,37 +4,67 @@
 
 App
 
-    // Add swipe events for mobile version
-    .directive('uiSwipe', function () {
+    // Add swipe right event for mobile
+    .directive('onSwipeRight', function () {
         return {
-            link: function (scope, element) {
-
-                if ($('html').hasClass('ismobile')) {
-
-                    $(element)
-                        // swipe rigth for open sidebar
-                        .on('swiperight', function () {
-                            if (!scope.sidebar.opened) {
-                                scope.$apply(function () {
-                                    if (scope.sidebar.canSwipe()) {
-                                        scope.sidebar.open();
-                                    }
-                                });
-                            }
-                        })
-                        // swipe left for close sidebar
-                        .on('swipeleft', function () {
-                            if (scope.sidebar.opened) {
-                                scope.$apply(function () {
-                                    if (scope.sidebar.canSwipe()) {
-                                        scope.sidebar.close();
-                                    }
-                                });
-                            }
-                        });
-                }
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind('swiperight', function (event) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.onSwipeRight)
+                    });
+                });
             }
         }
+    })
+
+    // Add swipe left event for mobile
+    .directive('onSwipeLeft', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind('swipeleft', function (event) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.onSwipeLeft)
+                    });
+                });
+            }
+        }
+    })
+
+    // Add long press event for mobile
+    .directive('onLongPress', function ($timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind('touchstart', function (event) {
+                    // Locally scoped variable that will keep track of the long press
+                    scope.longPress = true;
+
+                    // We'll set a timeout for 600 ms for a long press
+                    $timeout(function () {
+                        if (scope.longPress) {
+                            // If the touchend event hasn't fired,
+                            // apply the function given in on the element's on-long-press attribute
+                            event.preventDefault();
+                            scope.$apply(function () {
+                                scope.$eval(attrs.onLongPress)
+                            });
+                        }
+                    }, 600);
+                });
+
+                element.bind('touchmove', function (event) {
+                    // Prevent the onLongPress event from firing
+                    scope.longPress = false;
+                });
+
+                element.bind('touchend', function (event) {
+                    // Prevent the onLongPress event from firing
+                    scope.longPress = false;
+                });
+            }
+        };
     })
 
     // View loader functionality
@@ -53,7 +83,7 @@ App
             link: function (scope, element) {
 
                 // On state change start event, show the element if route has property "viewLoader"
-                scope.$on('$stateChangeSuccess', function (event, toState) {
+                scope.$on('$stateChangeStart', function (event, toState) {
                     if (toState.viewLoader) {
                         $(element).fadeIn('fast');
                     }
@@ -126,18 +156,14 @@ App
             restrict: 'C',
             link: function (scope, element) {
 
-                //if (!$('html').hasClass('ismobile')) {
-                    $(element).niceScroll({
-                        cursorcolor: 'rgba(0,0,0,0.4)',
-                        cursorborder: 0,
-                        cursorborderradius: 0,
-                        cursorwidth: '4px',
-                        bouncescroll: true,
-                        mousescrollstep: 100,
-                    });
-                //} else {
-                //    $(element).css('overflow', 'auto');
-                //}
+                $(element).niceScroll({
+                    cursorcolor: 'rgba(0,0,0,0.4)',
+                    cursorborder: 0,
+                    cursorborderradius: 0,
+                    cursorwidth: '4px',
+                    bouncescroll: true,
+                    mousescrollstep: 100,
+                });
             }
         }
     })
@@ -169,23 +195,25 @@ App
         return {
             restrict: 'C',
             link: function (scope, element) {
-                $(element).on('focus', function () {
-                    $(this).closest('.fg-line').addClass('fg-toggled');
-                });
+                if (element.is('input')) {
+                    $(element).on('focus', function () {
+                        $(this).closest('.fg-line').addClass('fg-toggled');
+                    });
 
-                $(element).on('blur', function () {
-                    var p = $(this).closest('.form-group');
-                    var i = p.find('.form-control').val();
+                    $(element).on('blur', function () {
+                        var p = $(this).closest('.form-group');
+                        var i = p.find('.form-control').val();
 
-                    if (p.hasClass('fg-float')) {
-                        if (i.length == 0) {
+                        if (p.hasClass('fg-float')) {
+                            if (i.length == 0) {
+                                $(this).closest('.fg-line').removeClass('fg-toggled');
+                            }
+                        }
+                        else {
                             $(this).closest('.fg-line').removeClass('fg-toggled');
                         }
-                    }
-                    else {
-                        $(this).closest('.fg-line').removeClass('fg-toggled');
-                    }
-                });
+                    });
+                }
             }
         }
     })
@@ -195,7 +223,9 @@ App
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
-                $(element).find('input[autofocus]').focus();
+                if (attr.autofocus == 'true') {
+                    $(element).find('input.autofocus').focus();
+                }
             }
         }
     })
@@ -249,23 +279,84 @@ App
         };
     }])
 
-    // Format amount with as money with cents
-    .directive('moneyFormat', [function () {
+    // Format amount
+    .directive('moneyFormat', function () {
         return {
             link: function (scope, element, attr) {
+
+                var decimals = attr.decimals ? attr.decimals : 0;
+                var sign = attr.sign ? attr.sign : "";
+
                 scope.$watch(attr.amount, function (value) {
-                    $(element).html($.number(value, 2, '.', ','));
+                    var displayValue = sign.concat($.number(value, decimals, '.', ','));
+                    $(element).html(displayValue);
                 });
             }
         };
-    }])
-
-    // MASKED
-    .directive('number', function () {
-        return {
-            restrict: 'C',
-            link: function (scope, element) {
-                $(element).number(true, 2);
-            }
-        }
     })
+
+    .directive('datePicker', function () {
+        return {
+            restrict: 'A',
+            scope: {
+                datePicker: '&',
+                datePickerModel: '='
+            },
+            link: function (scope, element, attrs) {
+
+                var options = {
+                    multipleDatesSeparator: ' - '
+                };
+
+                if (scope.$parent.global.isMobile()) {
+                    options.selectButton = true;
+                    options.cancelButton = true;
+                }
+
+                options = angular.extend(options, scope.datePicker());
+
+                // view to model
+                options.onSelectByButton = function (formattedDate, date, inst) {
+
+                    if (!scope.datePickerModel){
+                        scope.datePickerModel = {};
+                    }
+
+                    scope.datePickerModel.displayDate = formattedDate;
+
+                    if (options.range) {
+                        scope.datePickerModel.start = inst.minRange;
+                        scope.datePickerModel.end = inst.maxRange;
+                    }
+                    else {
+                        scope.datePickerModel.date = inst.focused;
+                    }
+
+                    scope.$applyAsync();
+                };
+
+                // model to view
+                scope.$watch('ngModel', function (newVal) {
+                    if (!newVal) return false;
+
+                    //$(element).data('datepicker').selectDate(new Date(newVal));
+                });
+                //
+                //// init
+                //scope.$watch(function () {
+                //    return scope.options();
+                //}, function (newVal) {
+                //    if (!newVal) return false;
+                //
+                //    if (newVal.minDate) newVal.minDate = new Date(newVal.minDate);
+                //    if (newVal.maxDate) newVal.maxDate = new Date(newVal.maxDate);
+                //
+                //    $(element).data('datepicker').update(angular.extend(defaults, newVal));
+                //}, true);
+
+                $(element).datepicker(options);
+
+            }
+        };
+    })
+

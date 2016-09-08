@@ -32,7 +32,7 @@
     background: #fff;
     background: rgba(0, 0, 0, 0.1);
     position: fixed;
-    z-index: 10002;
+    z-index: 16;
     top: 0;
     left: 0;
     width: 100%;

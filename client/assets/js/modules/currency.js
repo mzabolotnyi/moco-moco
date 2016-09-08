@@ -14,12 +14,23 @@ CurrencyModule
             getOneUrl: function (id) {
                 return [appConfig.apiUrl, config.baseUrl, id].join('/')
             },
+            getRateUrl: function (id, date) {
+                return [appConfig.apiUrl, config.baseUrl, id, 'rates', date].join('/')
+            },
             prepareBodyParams: function (currency) {
 
                 var bodyParams = {
                     name: currency.name,
                     iso: currency.iso,
                     symbol: currency.symbol
+                };
+
+                return bodyParams
+            },
+            prepareRateBodyParams: function (rate) {
+
+                var bodyParams = {
+                    rate: rate
                 };
 
                 return bodyParams
@@ -49,6 +60,22 @@ CurrencyModule
             },
             delete: function (currency) {
                 return $http.delete(utils.getOneUrl(currency.id));
+            },
+            getRate: function (currency, date) {
+
+                if (!date){
+                    date = moment().format("YYYY-MM-DD");
+                }
+
+                return $http.get(utils.getRateUrl(currency.id, date));
+            },
+            setRate: function (currencyId, rate, date) {
+
+                if (!date){
+                    date = moment().format("YYYY-MM-DD");
+                }
+
+                return $http.post(utils.getRateUrl(currencyId, date), utils.prepareRateBodyParams(rate));
             }
         };
     }]);

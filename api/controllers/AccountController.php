@@ -34,6 +34,38 @@ class AccountController extends OActiveController
     }
 
     /**
+     * Binds currencies with account
+     * @param string $id account ID
+     * @throws BadRequestHttpException
+     * @throws ServerErrorHttpException
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionSetCurrencies($id)
+    {
+        /* @var $model \app\models\Account */
+        $model = $this->findModel($id);
+
+        // получим и преобразуем валюты, которые нужно установить для счета
+        $bodyParams = Yii::$app->getRequest()->getBodyParams();
+
+        if (!isset($bodyParams['currencies'])) {
+            throw new BadRequestHttpException('Не найден обязательный параметр - currencies');
+        }
+
+        $currenciesData = $bodyParams['currencies']['data'];
+
+        // удалим текущие привязки валют к счету
+        AccountCurrency::deleteAll(['account_id' => $model->id]);
+
+        // выполним привязку валют
+        foreach ($currenciesData as $row) {
+            $currency = Currency::findOne($row['currency_id']);
+            $params = isset($row['is_balance']) ? ['is_balance' => $row['is_balance']] : [];
+            $model->bindCurrency($currency, $params);
+        }
+    }
+
+    /**
      * Binds currency with account
      * @param string $id account ID
      * @param string $currencyId currency ID
@@ -97,6 +129,45 @@ class AccountController extends OActiveController
             ]);
 
         return $dataProvider;
+    }
+
+    /**
+     * Update transactions by account
+     * @param integer $id category ID
+     * @return bool
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionUpdateTransactions($id)
+    {
+        /* @var $model \app\models\Category */
+        $model = $this->findModel($id);
+
+        /* Заполним массив аттрибутов, которые могут изменятся */
+        $updateAttributes = [];
+        $bodyParams = Yii::$app->getRequest()->getBodyParams();
+
+        if (!empty($bodyParams['account_id'])) {
+            /* @var $newAccount \app\models\Account */
+            $newAccount = $this->findModel($bodyParams['account_id']);
+            $updateAttributes['account_id'] = $newAccount->id;
+        }
+
+        if (count($updateAttributes) > 0) {
+
+            $count = Transaction::updateAll($updateAttributes, ['account_id' => $model->id]);
+
+            //change account_id to recipient_account_id if this field need to update
+            if (isset($updateAttributes['account_id'])) {
+                $updateAttributes['recipient_account_id'] = $updateAttributes['account_id'];
+                unset($updateAttributes['account_id']);
+                $count += Transaction::updateAll($updateAttributes, ['recipient_account_id' => $model->id]);
+            }
+
+            return $count;
+
+        } else {
+            return 0;
+        }
     }
 
     /**

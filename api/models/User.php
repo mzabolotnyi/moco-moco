@@ -22,7 +22,7 @@ use yii\web\ServerErrorHttpException;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends OActiveRecord implements IdentityInterface, RateLimitInterface
+class User extends OActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
@@ -119,7 +119,7 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
         }
 
         $timestamp = (int)substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $expire = Yii::$app->params['passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
 
@@ -217,51 +217,51 @@ class User extends OActiveRecord implements IdentityInterface, RateLimitInterfac
         return UserAccess::destroyAccess($this, $token);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getRateLimit($request, $action)
-    {
-        return [100, 180]; //не более 100 запросов в течении 180 секунд (3 минут)
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function loadAllowance($request, $action)
-    {
-        //get allowance from cache
-        $cache = Yii::$app->cache;
-
-        if ($cache) {
-            $key = 'rate_limit_user_' . $this->getId();
-            $allowance = $cache->get($key);
-
-            if ($allowance) {
-                return $allowance;
-            }
-        }
-
-        //something wrong with cache - return default
-        return [1, time()];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function saveAllowance($request, $action, $allowance, $timestamp)
-    {
-        //set allowance to cache
-        $cache = Yii::$app->cache;
-
-        if ($cache) {
-            $key = 'rate_limit_user_' . $this->getId();
-            $cache->set($key, [
-                $allowance,
-                $timestamp,
-            ]);
-        }
-    }
+//    /**
+//     * @inheritdoc
+//     */
+//    public function getRateLimit($request, $action)
+//    {
+//        return [100, 180]; //не более 100 запросов в течении 180 секунд (3 минут)
+//    }
+//
+//    /**
+//     * @inheritdoc
+//     */
+//    public function loadAllowance($request, $action)
+//    {
+//        //get allowance from cache
+//        $cache = Yii::$app->cache;
+//
+//        if ($cache) {
+//            $key = 'rate_limit_user_' . $this->getId();
+//            $allowance = $cache->get($key);
+//
+//            if ($allowance) {
+//                return $allowance;
+//            }
+//        }
+//
+//        //something wrong with cache - return default
+//        return [1, time()];
+//    }
+//
+//    /**
+//     * @inheritdoc
+//     */
+//    public function saveAllowance($request, $action, $allowance, $timestamp)
+//    {
+//        //set allowance to cache
+//        $cache = Yii::$app->cache;
+//
+//        if ($cache) {
+//            $key = 'rate_limit_user_' . $this->getId();
+//            $cache->set($key, [
+//                $allowance,
+//                $timestamp,
+//            ]);
+//        }
+//    }
 
     /**
      * Creates user profile

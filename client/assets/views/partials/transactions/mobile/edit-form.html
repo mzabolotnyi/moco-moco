@@ -1,0 +1,210 @@
+<div class="modal-backdrop" data-ng-if="transaction.editing">
+    <div class="modal">
+        <div class="modal-header-tab">
+            <ul class="tab-nav tn-justified">
+                <li data-ng-class="{ active: transaction.expense }">
+                    <a href="" data-ng-click="transaction.edit('expense')" class="c-deeporange">
+                        <i class="zmdi zmdi-hc-lg zmdi-trending-down"></i> Расход
+                    </a>
+                </li>
+                <li data-ng-class="{ active: transaction.income }">
+                    <a href="" data-ng-click="transaction.edit('income')" class="c-green">
+                        <i class="zmdi zmdi-hc-lg zmdi-trending-up"></i> Доход
+                    </a>
+                </li>
+                <li data-ng-class="{ active: transaction.transfer }">
+                    <a href="" data-ng-click="transaction.edit('transfer')" class="c-blue">
+                        <i class="zmdi zmdi-hc-lg zmdi-swap"></i> Перевод
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="modal-body c-overflow">
+
+            <form id="form" name="form" data-ng-if="!transaction.loading" data-ng-submit="transaction.save()"
+                  data-autofocus="{{transaction.isNew()}}">
+
+                <!-- 1 row ACCOUNT - AMOUNT - CURRENCY-->
+                <div>
+                    <div>
+                        <label data-ng-if="!transaction.income">Со счета</label>
+                        <label data-ng-if="transaction.income">На счет</label>
+                    </div>
+
+                    <div>
+
+                        <!--ACCOUNT-->
+                        <div class="tr-account">
+                            <div class="form-group fg-line">
+
+                                <select class="form-control input-sm" name="account" data-chosen
+                                        data-ng-model="transaction.account"
+                                        data-ng-change="transaction.accountChangeHandler()"
+                                        data-ng-options="account as account.name for account in (global.accounts | filterActive)">
+                                </select>
+                            </div>
+                        </div>
+                        <!--end ACCOUNT-->
+
+                        <!--AMOUNT-->
+                        <div class="tr-amount">
+                            <div class="form-group fg-line">
+                                <input type="number" class="form-control input-sm autofocus"
+                                       data-ng-model="transaction.amount" data-ng-change="transaction.amountChangeHandler()"
+                                       name="amount" placeholder="0.00" min="0.01" step="0.01" required>
+                            </div>
+                        </div>
+                        <!--end AMOUNT-->
+
+                        <!--CURRENCY-->
+                        <div class="tr-currency">
+                            <div class="form-group fg-line">
+
+                                <select class="form-control input-sm" name="currency" data-chosen
+                                        data-ng-model="transaction.currency"
+                                        data-ng-options="currencyItem.currency as currencyItem.currency.symbol for currencyItem in transaction.account.currencies">
+                                </select>
+                            </div>
+                        </div>
+                        <!--end CURRENCY-->
+
+                    </div>
+
+                    <div class="has-error">
+                        <div data-ng-messages="form.amount.$error" data-ng-if="form.amount.$dirty"
+                             class="help-block animated fadeInDown">
+                            <ng-messages-include
+                                    src="assets/views/partials/error-messages-amount.html"></ng-messages-include>
+                        </div>
+                        <div data-ng-if="!transaction.checkAccount()" class="help-block animated fadeInDown">
+                            <div>Не указан счет</div>
+                        </div>
+                        <div data-ng-if="!transaction.checkCurrency()" class="help-block animated fadeInDown">
+                            <div>Не указана валюта</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end 1 row ACCOUNT - AMOUNT - CURRENCY-->
+
+                <!-- 2 row CATEGORY || RECEPIENT ACCOUNT and CURRENCY-->
+                <div>
+                    <div>
+                        <label data-ng-if="!transaction.transfer">Категория</label>
+                        <label data-ng-if="transaction.transfer">На счет</label>
+                    </div>
+
+                    <div data-ng-if="!transaction.transfer">
+                        <!--CATEGORY-->
+                        <div class="form-group fg-line">
+
+                            <!-- expense-->
+                            <select class="form-control input-sm  p-l-30" name="category" data-chosen
+                                    data-ng-if="transaction.expense"
+                                    data-ng-model="transaction.category"
+                                    data-ng-options="category as category.name for category in (global.categories | filterActive | filterExpense)">
+                                <option value="">Корректировка</option>
+                            </select>
+
+                            <!-- income-->
+                            <select class="form-control input-sm  p-l-30" name="category" data-chosen
+                                    data-ng-if="transaction.income"
+                                    data-ng-model="transaction.category"
+                                    data-ng-options="category as category.name for category in (global.categories | filterActive | filterIncome)">
+                                <option value="">Корректировка</option>
+                            </select>
+
+                            <div class="icon-container icon-container-no-label">
+                                <i class="fa {{transaction.category.icon}}" data-ng-if="transaction.category"></i>
+                                <i class="zmdi zmdi-edit" data-ng-if="!transaction.category"></i>
+                            </div>
+                        </div>
+                        <!--end CATEGORY-->
+                    </div>
+
+                    <div data-ng-if="transaction.transfer">
+                        <div>
+
+                            <!--RECEPIENT ACCOUNT-->
+                            <div class="tr-account">
+                                <div class="form-group fg-line">
+
+                                    <select class="form-control input-sm" name="recipientAccount" data-chosen
+                                            data-ng-model="transaction.recipientAccount"
+                                            data-ng-change="transaction.accountChangeHandler(true)"
+                                            data-ng-options="account as account.name for account in (global.accounts | filterActive)">
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end RECEPIENT ACCOUNT-->
+
+                            <!--RECEPIENT AMOUNT-->
+                            <div class="tr-amount">
+                                <div class="form-group fg-line">
+                                    <input type="number" class="form-control input-sm"
+                                           data-ng-model="transaction.recipientAmount"
+                                           name="recipientAmount" placeholder="0.00" min="0.01" step="0.01" required>
+                                </div>
+                            </div>
+                            <!--end RECEPIENT AMOUNT-->
+
+                            <!--RECEPIENT CURRENCY-->
+                            <div class="tr-currency">
+                                <div class="form-group fg-line">
+
+                                    <select class="form-control input-sm" name="recipientCurrency" data-chosen
+                                            data-ng-model="transaction.recipientCurrency"
+                                            data-ng-options="currencyItem.currency as currencyItem.currency.symbol for currencyItem in transaction.recipientAccount.currencies">
+                                    </select>
+                                </div>
+                            </div>
+                            <!--end RECEPIENT CURRENCY-->
+
+                        </div>
+
+                        <div class="has-error">
+                            <div data-ng-messages="form.recipientAmount.$error" data-ng-if="form.recipientAmount.$dirty"
+                                 class="help-block animated fadeInDown">
+                                <ng-messages-include
+                                        src="assets/views/partials/error-messages-amount.html"></ng-messages-include>
+                            </div>
+                            <div data-ng-if="transaction.expense && !transaction.checkCategoryExpense()"
+                                 class="help-block animated fadeInDown">
+                                <div>Не указана категория</div>
+                            </div>
+                            <div data-ng-if="transaction.income && !transaction.checkCategoryIncome()"
+                                 class="help-block animated fadeInDown">
+                                <div>Не указана категория</div>
+                            </div>
+                            <div data-ng-if="transaction.transfer && !transaction.checkRecipientAccount()"
+                                 class="help-block animated fadeInDown">
+                                <div>Не указан счет</div>
+                            </div>
+                            <div data-ng-if="transaction.transfer && !transaction.checkRecipientCurrency()"
+                                 class="help-block animated fadeInDown">
+                                <div>Не указана валюта</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end 2 row CATEGORY || RECEPIENT ACCOUNT and CURRENCY-->
+
+                <div class="has-error">
+                    <div data-ng-repeat="error in transaction.errors">
+                        <div class="help-block">{{error.message}}</div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+                    data-ng-disabled="form.$invalid || transaction.submitting || !transaction.checkFilling()">
+                <span>Сохранить</span>
+                <span data-ng-if="transaction.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="transaction.editing = false">Отмена</button>
+        </div>
+    </div>
+</div>

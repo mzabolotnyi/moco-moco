@@ -102,9 +102,9 @@ class UserSignup extends Model
      */
     protected function performInitialFilling()
     {
-        $this->getUser()->createProfile();
+        $profile = $this->getUser()->createProfile();
         $this->createDefaultCategories();
-        $this->createDefaultAccount();
+        $this->createDefaultAccount($profile->currency);
     }
 
     protected function createDefaultCategories()
@@ -147,13 +147,17 @@ class UserSignup extends Model
         }
     }
 
-    protected function createDefaultAccount()
+    protected function createDefaultAccount($defaultCurrency)
     {
         $account = new Account();
         $account->name = 'Наличные';
         $account->user_id = $this->getUser()->id;
 
-        return $account->save();
+        if ($account->save()){
+            return $account->bindCurrency($defaultCurrency);
+        }
+
+        return false;
     }
 
     /**

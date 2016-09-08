@@ -4,6 +4,7 @@
 
     # Always set these headers.
     Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Expose-Headers: "X-Pagination-Current-Page, X-Pagination-Page-Count, X-Pagination-Per-Page, X-Pagination-Total-Count"
     Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
     Header always set Access-Control-Max-Age "1000"
     Header always set Access-Control-Allow-Headers "x-requested-with, Content-Type, origin, authorization, accept, client-security-token"

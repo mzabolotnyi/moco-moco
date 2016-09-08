@@ -1,0 +1,52 @@
+<div class="page-header">
+    <h2 class="dropdown" uib-dropdown data-ng-if="!scope.hasSelected()">
+        <span uib-dropdown-toggle>
+            Операции
+            <span class="caret"></span>
+        </span>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="" data-ng-click="transaction.edit('expense')">Добавить расход</a>
+            </li>
+            <li>
+                <a href="" data-ng-click="transaction.edit('income')">Добавить доход</a>
+            </li>
+            <li>
+                <a href="" data-ng-click="transaction.edit('transfer')">Добавить перевод</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="" data-ng-click="scope.update(true)"><i class="zmdi zmdi-refresh zmdi-hc-lg"></i> Обновить</a>
+            </li>
+        </ul>
+    </h2>
+    <ul class="actions" data-ng-if="!scope.hasSelected()">
+        <li data-ng-click="scope.filter.open()">
+            <a href="">
+                <i class="zmdi zmdi-filter-list"></i>
+            </a>
+        </li>
+    </ul>
+    <ul class="actions left" data-ng-if="scope.hasSelected()">
+        <li data-ng-click="scope.deselectAll()">
+            <a href="">
+                <i class="zmdi zmdi-arrow-left"></i>
+            </a>
+        </li>
+        <li>
+            <a href="">{{scope.getCountSelected()}}</a>
+        </li>
+    </ul>
+    <ul class="actions" data-ng-if="scope.hasSelected()">
+        <li>
+            <a href="">
+                <i class="zmdi zmdi-delete"></i>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <i class="zmdi zmdi-more-vert"></i>
+            </a>
+        </li>
+    </ul>
+</div>

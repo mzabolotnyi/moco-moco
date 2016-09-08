@@ -9,6 +9,9 @@ use yii\web\ServerErrorHttpException;
 class TransactionController extends OActiveController
 {
     public $modelClass = 'app\models\Transaction';
+    public $pagination = [
+        'pageSize' => 20
+    ];
 
     /**
      * Creates a new transaction model.

@@ -7,7 +7,7 @@ return [
     'username' => 'root',
     'password' => '',
     'charset' => 'utf8',
-    'dsn' => 'mysql:host=localhost;dbname=u469820982_moco',
-    'username' => 'u469820982_admin',
-    'password' => 'max070690',
+//    'dsn' => 'mysql:host=localhost;dbname=u469820982_moco',
+//    'username' => 'u469820982_admin',
+//    'password' => 'max070690',
 ];

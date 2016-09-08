@@ -1,5 +1,12 @@
 .ismobile body {
     padding-bottom: 0;
+    background: #fff;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
 }
 
 .ismobile body #content {
@@ -18,24 +25,57 @@
 }
 
 /* CATALOG PAGE */
-.card.ismobile {
+
+.ismobile .page-header {
     position: fixed;
-    display: flex;
-    flex-flow: column;
+    padding: 18px;
+    margin: 0;
     top: 65px;
     left: 0;
+    z-index: 3;
     width: 100%;
-    height: calc(100% - 65px);
-}
-
-.card.ismobile .card-header {
-    flex: none;
-    padding: 18px;
-    background: rgba(0, 0, 0, 0.05);
+    height: 53px;
+    background: rgb(245, 245, 245);
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+    border: none;
 }
 
-.card.ismobile .card-body {
-    flex: 1;
-    padding: 20px 0;
+.ismobile .page-header h2 {
+    margin: 0;
+    line-height: 100%;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.ismobile .page-header .actions {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+}
+
+.ismobile .page-header .actions.left {
+    position: absolute;
+    left: 10px;
+    top: 13px;
+}
+
+.ismobile .page-header .btn-float {
+    right: 25px;
+    bottom: -23px;
+}
+
+.ismobile .page-body {
+    padding: 73px 0 20px 0;
+}
+
+.ismobile .count-block {
+    position: fixed;
+    bottom: 7px;
+    left: 7px;
+    background: #009485;
+    background: rgba(0, 148, 133, 0.7);
+    color: white;
+    border-radius: 15px;
+    padding: 3px 10px;
+    font-size: 11px;
 }

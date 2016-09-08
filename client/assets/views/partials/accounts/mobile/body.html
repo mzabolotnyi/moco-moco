@@ -1,0 +1,32 @@
+<div class="page-body">
+    <div class="listview">
+        <a class="lv-item" href="" data-ng-repeat="account in scope.data"
+           data-ng-click="scope.edit(account)">
+            <div class="media">
+                <div class="lv-avatar pull-left"
+                     data-ng-style="{ 'color': '#fff', 'border-color': account.color, 'background': account.color}">
+                    <i class="zmdi zmdi-card"></i>
+                </div>
+                <div class="media-body">
+                    <div class="lv-title">
+                        {{account.name}}
+                        <i class="zmdi zmdi-eye-off" data-ng-if="!account.active"></i>
+                    </div>
+                    <small class="lv-small" data-ng-repeat="itemCurrency in scope.getBalance(account)"
+                           data-ng-if="itemCurrency.amount != 0">
+                        <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
+                        {{itemCurrency.currency.symbol}}
+                    </small>
+                    <small class="lv-small" data-ng-if="scope.getBalance(account).length == 0"> нет средств на остатке</small>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="text-center" data-ng-if="scope.loading">
+        <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+    </div>
+    <div class="text-center has-error" data-ng-if="scope.error">
+        <div>Произошла ошибка...</div>
+        <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>
+    </div>
+</div>

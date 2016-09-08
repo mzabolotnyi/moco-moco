@@ -1,0 +1,23 @@
+<div class="page-body">
+    <div class="listview p-b-15" data-infinite-scroll="scope.update()"
+         data-infinite-scroll-disabled="scope.loading || scope.error || scope.isEndOfPagination()">
+        <div href="" class="lv-trans" data-ng-repeat="transaction in scope.data track by $index"
+             data-ng-click="scope.edit(transaction)" data-on-long-press="scope.toggleSelected(transaction)"
+                data-ng-class="{ 'selected':transaction.selected }">
+            <ng-include src="'assets/views/partials/transactions/mobile/item.html'"></ng-include>
+        </div>
+    </div>
+    <div class="text-center" data-ng-if="scope.loading">
+        <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+    </div>
+    <div class="text-center has-error" data-ng-if="scope.error">
+        <div>Произошла ошибка...</div>
+        <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>
+    </div>
+    <div class="text-center" data-ng-if="scope.data.length === 0 && !(scope.loading || scope.error)">
+        <ng-include src="'assets/views/partials/no-data.html'"></ng-include>
+    </div>
+    <div class="count-block">
+        {{scope.getCountInfo()}}
+    </div>
+</div>

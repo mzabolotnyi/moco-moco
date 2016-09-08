@@ -1,0 +1,48 @@
+<div class="modal-backdrop" data-ng-if="balance.adjusted">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Корректировка остатка</h2>
+        </div>
+        <div class="modal-body c-overflow">
+            <form id="form" name="form" data-ng-submit="balance.adjustment.submit()" autofocus="true">
+
+                <!--NEW BALANCE-->
+                <label>Введите актуальный остаток на счете {{balance.adjustment.account.name}}</label>
+
+                <div class="input-group">
+                    <div class="fg-line">
+                        <input type="number" class="form-control input-sm autofocus" data-ng-model="balance.adjustment.newBalance"
+                               name="newBalance" placeholder="0.00" min="0" step="0.01" required>
+                    </div>
+                    <span class="input-group-addon last">{{balance.adjustment.currency.symbol}}</span>
+                </div>
+
+                <div class="has-error">
+                    <div data-ng-messages="form.newBalance.$error" data-ng-if="form.newBalance.$dirty"
+                         role="alert" class="help-block animated fadeInDown">
+                        <ng-messages-include
+                                src="assets/views/partials/error-messages.html"></ng-messages-include>
+                    </div>
+                </div>
+                <!--end NEW BALANCE-->
+
+                <div class="has-error">
+                    <div data-ng-repeat="error in balance.adjustment.errors">
+                        <div class="help-block">{{error.message}}</div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+                    data-ng-disabled="form.$invalid || balance.adjustment.submitting">
+                <span>Скорректировать</span>
+                <span data-ng-if="balance.adjustment.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="balance.adjustment.close()">Отмена</button>
+        </div>
+    </div>
+</div>

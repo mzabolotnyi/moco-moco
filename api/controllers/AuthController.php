@@ -28,11 +28,11 @@ class AuthController extends Controller
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['rateLimiter'] = [
-            'class' => RateLimiter::className(),
-            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
-            'user' => new IpRateLimiter(),
-        ];
+//        $behaviors['rateLimiter'] = [
+//            'class' => RateLimiter::className(),
+//            'errorMessage' => 'Превышен лимит запросов, повторите действие через несколько минут',
+//            'user' => new IpRateLimiter(),
+//        ];
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::className(),
             'only' => ['logout', 'change-password'],
