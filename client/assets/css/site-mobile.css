@@ -2,10 +2,10 @@
     padding-bottom: 0;
     background: #fff;
     -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none;   /* Chrome/Safari/Opera */
-    -khtml-user-select: none;    /* Konqueror */
-    -moz-user-select: none;      /* Firefox */
-    -ms-user-select: none;       /* Internet Explorer/Edge */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
 }
 
@@ -22,6 +22,21 @@
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+}
+
+.ismobile .no-data-container{
+    text-align: center;
+}
+
+.ismobile .no-data-container .no-data-image {
+    background: url(../img/no-data.png) center center no-repeat;
+    height: 128px;
+    margin-top: 25%;
+    margin-bottom: 20px;
+}
+
+.ismobile .no-data-container .no-data-label {
+    font-size: 20px;
 }
 
 /* CATALOG PAGE */
@@ -64,8 +79,17 @@
     bottom: -23px;
 }
 
+.ismobile .page-header.page-header-dashboard {
+    height: auto;
+    box-shadow: none;
+}
+
 .ismobile .page-body {
     padding: 73px 0 20px 0;
+}
+
+.ismobile .page-body.page-body-dashboard {
+    padding-top: 60px;
 }
 
 .ismobile .count-block {
@@ -79,3 +103,120 @@
     padding: 3px 10px;
     font-size: 11px;
 }
+
+.ismobile .date-toolbar {
+    padding: 0 20px;
+    text-align: center;
+    position: relative;
+}
+
+.ismobile .date-toolbar h2 {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #009688;
+    margin: 0;
+    display: inline-block;
+    height: 25px;
+}
+
+.ismobile .date-toolbar .dt-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    outline: none !important;
+    text-align: center;
+    width: 50px;
+    height: 25px;
+    border-radius: 50%;
+    color: #009688;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.ismobile .date-toolbar .dt-btn .zmdi {
+    font-size: 24px;
+    vertical-align: -15%;
+}
+
+.ismobile .date-toolbar .dt-actions {
+    position: absolute;
+    right: 10px;
+    top: -4px;
+    color: #009688;
+}
+
+.ismobile .date-toolbar .dt-actions > li > a > i {
+    color: #009688;
+}
+
+.ismobile .date-toolbar .dt-actions > li > a > i:hover {
+    color: #009688;
+}
+
+.ismobile .date-toolbar .dt-actions > li.open > a > i {
+    color: #009688;
+}
+
+.ismobile .balance-dashboard {
+    padding: 0 20px 20px 20px;
+}
+
+.ismobile .balance-dashboard ul {
+    list-style: none;
+}
+
+.ismobile .balance-dashboard li {
+    padding: 15px 0;
+    display: block;
+    position: relative;
+    width: 100%;
+    float: left;
+    border-top: 1px solid #f0f0f0;
+}
+
+.ismobile .balance-dashboard li:first-child {
+    padding-top: 0;
+}
+
+.ismobile .balance-dashboard li .bd-title {
+    float: left;
+}
+
+.ismobile .balance-dashboard li .bd-amount {
+    float: right;
+}
+
+.ismobile .balance-dashboard li .bd-amount > span {
+    text-align: right;
+    display: block;
+}
+
+.ismobile .balance-dashboard .bd-total {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #009688;
+}
+
+.ismobile .balance-dashboard .bd-subtotal {
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 0;
+}
+
+.ismobile .balance-dashboard .bd-account {
+    font-size: 14px;
+}
+
+.ismobile .balance-dashboard .bd-account .bd-amount a {
+    border-bottom: 1px dotted;
+    color: #009688;
+}
+
+
+
+

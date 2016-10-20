@@ -48,9 +48,10 @@
 
                         <!--AMOUNT-->
                         <div class="tr-amount">
-                            <div class="form-group fg-line">
-                                <input type="number" class="form-control input-sm autofocus"
-                                       data-ng-model="transaction.amount" data-ng-change="transaction.amountChangeHandler()"
+                            <div class="fg-line form-group">
+                                <input type="number" class="form-control input-sm input-amount autofocus"
+                                       data-ng-model="transaction.amount"
+                                       data-ng-change="transaction.amountChangeHandler()"
                                        name="amount" placeholder="0.00" min="0.01" step="0.01" required>
                             </div>
                         </div>
@@ -58,8 +59,7 @@
 
                         <!--CURRENCY-->
                         <div class="tr-currency">
-                            <div class="form-group fg-line">
-
+                            <div class="fg-line form-group">
                                 <select class="form-control input-sm" name="currency" data-chosen
                                         data-ng-model="transaction.currency"
                                         data-ng-options="currencyItem.currency as currencyItem.currency.symbol for currencyItem in transaction.account.currencies">
@@ -127,7 +127,6 @@
                             <!--RECEPIENT ACCOUNT-->
                             <div class="tr-account">
                                 <div class="form-group fg-line">
-
                                     <select class="form-control input-sm" name="recipientAccount" data-chosen
                                             data-ng-model="transaction.recipientAccount"
                                             data-ng-change="transaction.accountChangeHandler(true)"
@@ -140,7 +139,7 @@
                             <!--RECEPIENT AMOUNT-->
                             <div class="tr-amount">
                                 <div class="form-group fg-line">
-                                    <input type="number" class="form-control input-sm"
+                                    <input type="number" class="form-control input-sm input-amount"
                                            data-ng-model="transaction.recipientAmount"
                                            name="recipientAmount" placeholder="0.00" min="0.01" step="0.01" required>
                                 </div>
@@ -188,6 +187,40 @@
                 </div>
                 <!-- end 2 row CATEGORY || RECEPIENT ACCOUNT and CURRENCY-->
 
+                <!-- 3 row COMMENT - DATE-->
+                <div>
+
+                    <div>
+
+                        <!--COMMENT-->
+                        <div class="tr-comment">
+                            <div class="form-group fg-line">
+                                <input type="text" class="form-control input-sm"
+                                       data-ng-model="transaction.comment"
+                                       name="comment" placeholder="Примечание">
+                            </div>
+                        </div>
+                        <!--end COMMENT-->
+
+                        <!--DATE-->
+                        <div class="tr-date">
+                            <div class="form-group fg-line">
+                                <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="date"
+                                       data-ng-model="transaction.date">
+                            </div>
+                        </div>
+                        <!--end DATE-->
+
+                    </div>
+
+                    <div class="has-error">
+                        <div data-ng-if="!transaction.checkDate()" class="help-block animated fadeInDown">
+                            <div>Не указана дата</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end 3 row COMMENT - DATE-->
+
                 <div class="has-error">
                     <div data-ng-repeat="error in transaction.errors">
                         <div class="help-block">{{error.message}}</div>
@@ -197,6 +230,13 @@
             </form>
         </div>
         <div class="modal-footer">
+            <ul class="actions">
+                <li data-ng-if="!transaction.isNew()">
+                    <a href="" data-ng-click="transaction.delete()">
+                        <i class="zmdi zmdi-delete"></i>
+                    </a>
+                </li>
+            </ul>
             <button class="btn bgm-teal btn-sm" type="submit" form="form"
                     data-ng-disabled="form.$invalid || transaction.submitting || !transaction.checkFilling()">
                 <span>Сохранить</span>

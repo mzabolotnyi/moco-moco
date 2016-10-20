@@ -5,11 +5,7 @@
         <div class="modal-header">
             <h2>Фильтры</h2>
             <ul class="actions">
-                <li>
-                    <a href="" data-ng-click="scope.filter.clear()">
-                        <i class="zmdi zmdi-brush"></i>
-                    </a>
-                </li>
+                <span data-ng-click="scope.filter.clear()">ОЧИСТИТЬ</span>
             </ul>
         </div>
 
@@ -68,6 +64,8 @@
                 <!--end ACOOUNT-->
 
                 <!--COMMENT-->
+                <label>Примечание</label>
+
                 <div class="input-group input-filter">
 
                     <span class="input-group-addon">
@@ -78,7 +76,7 @@
                     </span>
 
                     <div class="fg-line">
-                        <input type="text" class="form-control input-sm" placeholder="Примечание" name="comment"
+                        <input type="text" class="form-control input-sm" placeholder="Ключевое слово" name="comment"
                                data-ng-model="scope.filter.items.comment">
                     </div>
 
@@ -91,27 +89,44 @@
                 <!--end COMMENT-->
 
                 <!--PERIOD-->
+                <label>Период</label>
+
                 <div class="input-group input-filter">
 
                     <span class="input-group-addon">
-                        <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.period"></i>
-                        <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.period"></i>
+                        <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.startDate"></i>
+                        <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.startDate"></i>
                     </span>
 
-                    <div class="fg-line">
-                        <input type="text" class="form-control input-sm" placeholder="Период" name="period"
-                               data-ng-value="scope.filter.items.period.displayValue"
-                               date-picker="{range: true}" date-picker-model="scope.filter.items.period">
-                    </div>
+                    <span class="input-group-addon c-black">c</span>
 
                     <div class="fg-line">
-                        <input type="text" class="form-control input-sm" placeholder="Период" name="period"
-                               data-ng-value="scope.filter.items.period.displayValue"
-                               date-picker="{range: true}" date-picker-model="scope.filter.items.period">
+                        <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="startDate"
+                               data-ng-model="scope.filter.items.startDate">
                     </div>
 
-                    <span class="input-group-addon last" data-ng-if="scope.filter.items.period">
-                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.period = undefined"></i>
+                    <span class="input-group-addon last" data-ng-if="scope.filter.items.startDate">
+                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.startDate = undefined"></i>
+                    </span>
+
+                </div>
+
+                <div class="input-group input-filter">
+
+                    <span class="input-group-addon">
+                        <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.endDate"></i>
+                        <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.endDate"></i>
+                    </span>
+
+                    <span class="input-group-addon c-black">по</span>
+
+                    <div class="fg-line">
+                        <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="endDate"
+                               data-ng-model="scope.filter.items.endDate">
+                    </div>
+
+                    <span class="input-group-addon last" data-ng-if="scope.filter.items.endDate">
+                        <i class="zmdi zmdi-close" data-ng-click="scope.filter.items.endDate = undefined"></i>
                     </span>
 
                 </div>

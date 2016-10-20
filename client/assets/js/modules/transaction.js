@@ -11,7 +11,7 @@ CategoryModule
             getFullUrl: function () {
                 return [appConfig.apiUrl, config.baseUrl].join('/')
             },
-            getIndexUrl: function (filters, page) {
+            getIndexUrl: function (filters, page, perPage) {
 
                 var fullUrl = this.getFullUrl();
                 var getParams = [];
@@ -22,6 +22,10 @@ CategoryModule
                     getParams.push(httpHelper.prepareGetParam('page', page));
                 }
 
+                if (perPage) {
+                    getParams.push(httpHelper.prepareGetParam('per-page', perPage));
+                }
+
                 if (filters.category) {
                     getParams.push(httpHelper.prepareGetParam('category_id', filters.category.id));
                 }
@@ -30,8 +34,16 @@ CategoryModule
                     getParams.push(httpHelper.prepareGetParam('account_id', filters.account.id));
                 }
 
-                if (filters.period) {
-                    getParams.push(httpHelper.prepareGetParam('date', filters.period.start, 'range', filters.period.end));
+                if (filters.date) {
+                    getParams.push(httpHelper.prepareGetParam('date', filters.date));
+                }
+
+                if (filters.startDate && filters.endDate) {
+                    getParams.push(httpHelper.prepareGetParam('date', filters.startDate, 'range', filters.endDate));
+                } else if (filters.startDate) {
+                    getParams.push(httpHelper.prepareGetParam('date', filters.startDate, 'moreOrEqual'));
+                } else if (filters.endDate) {
+                    getParams.push(httpHelper.prepareGetParam('date', filters.endDate, 'lessOrEqual'));
                 }
 
                 if (filters.comment && filters.comment != '') {
@@ -84,8 +96,8 @@ CategoryModule
     }])
     .factory('transaction', ['$http', 'transactionConfig', 'transactionUtils', function ($http, config, utils) {
         return {
-            get: function (filters, page) {
-                return $http.get(utils.getIndexUrl(filters ? filters : {}, page));
+            get: function (filters, page, perPage) {
+                return $http.get(utils.getIndexUrl(filters ? filters : {}, page, perPage));
             },
             getOne: function (id) {
                 return $http.get(utils.getOneUrl(id));

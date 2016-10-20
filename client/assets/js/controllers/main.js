@@ -1,5 +1,4 @@
 App
-    // App Controller
     .controller('AppCtrl', ['$scope', '$state', '$rootScope', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService',
         function ($scope, $state, $rootScope, balance, profile, account, category, transaction, notifyService) {
 
@@ -183,6 +182,7 @@ App
                 data: [],
                 amount: 0,
                 amountInMainCurrency: 0,
+                amountInOtherCurrency: 0,
                 update: function () {
 
                     var _this = this;
@@ -202,6 +202,8 @@ App
                                 _this.amount += value.amount;
                                 _this.amountInMainCurrency += value.amountInMainCurrency;
                             });
+
+                            _this.amountInOtherCurrency = _this.amount - _this.amountInMainCurrency;
                         })
                         .error(function (error) {
                             _this.error = true;
@@ -468,7 +470,7 @@ App
                     var defaultCurrency = this.getDefaultCurrency(defaultAccount);
 
                     this.id = 0;
-                    this.date = moment().format('YYYY-MM-DD');
+                    this.date = this.date ? this.date : moment().toDate();
                     this.amount = this.amount ? this.amount : "";
                     this.account = defaultAccount;
                     this.category = defaultCategory;
@@ -493,6 +495,7 @@ App
                     }, this);
 
                     //заполним свойства-объекты
+                    this.date = moment(transaction.date).toDate();
                     this.account = this.findAccount(transaction.account.id);
                     this.currency = this.findCurrency(this.account, transaction.currency.id);
 
@@ -518,6 +521,9 @@ App
                 },
                 checkAccount: function () {
                     return this.account && $scope.global.includeObject($scope.global.accounts, this.account);
+                },
+                checkDate: function () {
+                    return this.date && (this.date instanceof Date || this.date instanceof String);
                 },
                 checkRecipientAccount: function () {
                     return this.recipientAccount && $scope.global.includeObject($scope.global.accounts, this.recipientAccount);
@@ -549,16 +555,17 @@ App
 
                     return currencies.length > 0;
                 },
-                // действия, которые будут выпонены после сохранения или удаления счета
+                // действия, которые будут выпонены после сохранения или удаления операции
                 afterEdit: function () {
 
                     //обновим данные о балансе
                     $scope.balance.update();
 
-                    //для определенных сотояний необходимо необходимо обновить список операций
+                    //для определенных состояний необходимо обновить список операций
                     var currentStateName = $state.current.name;
                     var stateNames = [
-                        'transactions.list'
+                        'transactions.list',
+                        'dashboard'
                     ];
 
                     if (stateNames.indexOf(currentStateName) != -1) {
@@ -615,6 +622,7 @@ App
                             .then(function () {
                                 notifyService.notify("Операция удалена");
                                 _this.fillDefault();
+                                _this.editing = false;
                                 _this.afterEdit();
                             }, function (error) {
                                 if (error.data) {
@@ -638,9 +646,102 @@ App
             init();
         }
     ])
-    // Dashboard Content Controller
-    .controller('DashboardCtrl', ['$scope', function ($scope) {
-    }])
+    .controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'notifyService',
+        function ($scope, transaction, transactions, notifyService) {
+
+            var today = moment().toDate();
+
+            // Scope object
+            $scope.scope = {
+                currentSection: 'transactions',
+                setCurrentSection: function (key) {
+                    this.currentSection = key;
+                },
+                checkCurrentSection: function (key) {
+                    return this.currentSection == key;
+                },
+                isSectionTransactions: function () {
+                    return this.checkCurrentSection('transactions');
+                },
+                isSectionBalance: function () {
+                    return this.checkCurrentSection('balance');
+                },
+                isSectionStats: function () {
+                    return this.checkCurrentSection('stats');
+                },
+                currentDate: today,
+                getDisplayDate: function () {
+
+                    var date = moment(this.currentDate).startOf('day');
+                    var now = moment().set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+                    var display = '';
+
+                    var days = moment.duration(date.diff(now)).asDays();
+
+                    if (date.year() === now.year()) {
+                        display = date.format('D MMMM');
+                    } else {
+                        display = date.format('D MMMM YYYY');
+                    }
+
+                    return display;
+                },
+                moveCurrentDate: function (numberDays) {
+                    this.currentDate = moment(this.currentDate).add(numberDays, 'days').toDate();
+                    $scope.scope.transactions.update();
+                },
+                setCurrentDateAsToday: function () {
+                    this.currentDate = moment().toDate();
+                    $scope.scope.transactions.update();
+                },
+                transactions: {
+                    data: transactions.data,
+                    update: function () {
+
+                        var _this = this;
+
+                        _this.loading = true;
+                        _this.error = false;
+                        _this.data = [];
+
+                        var filter = {
+                            date: $scope.scope.currentDate
+                        };
+
+                        transaction.get(filter, 1, 0)
+                            .success(function (data) {
+                                _this.data = data;
+                            })
+                            .error(function (error) {
+                                _this.error = true;
+                                notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                            })
+                            .finally(function () {
+                                _this.loading = false;
+                            });
+                    },
+                    edit: function (item) {
+                        $scope.transaction.edit(item);
+                    },
+                    getAmount: function (item) {
+                        var coef = item.expense ? -1 : 1;
+                        return item.amount * coef;
+                    },
+                    getRecipientAmount: function (item) {
+                        var coef = item.expense ? -1 : 1;
+                        return item.recipientAmount * coef;
+                    },
+                    getSign: function (item) {
+                        return this.getAmount(item) > 0 ? '+' : '';
+                    }
+                }
+            };
+
+            //установим коллбэк после записи операции
+            $scope.transaction.callback = function () {
+                $scope.scope.transactions.update();
+            };
+        }])
     .controller('TransactionsListCtrl', ['$scope', 'transaction', 'transactions', 'notifyService',
         function ($scope, transaction, transactions, notifyService) {
 
@@ -700,6 +801,50 @@ App
                     angular.forEach(this.data, function (obj) {
                         obj.selected = false;
                     })
+                },
+                deleteSelected: function () {
+
+                    var _this = this;
+                    var selectedItems = this.data.filter(function (obj) {
+                        return obj.selected;
+                    });
+
+                    var countSelected = _this.getCountSelected();
+
+                    notifyService.confirmDelete("Удалить операции (" + countSelected + ")?", function () {
+
+                        notifyService.showLoadBar();
+
+                        var failures = 0;
+
+                        angular.forEach(selectedItems, function (obj, index, array) {
+
+                            var lastIteration = (index === array.length - 1);
+
+                            _this.deleteItem(obj)
+                                .then(function () {
+                                    _this.data = _this.data.filter(function (item) {
+                                        return item.id != obj.id;
+                                    });
+                                    _this.totalCount--;
+                                }, function () {
+                                    failures++;
+                                })
+                                .finally(function () {
+                                    if (lastIteration) {
+                                        notifyService.hideLoadBar();
+                                        if (failures == 0) {
+                                            notifyService.notify("Операции удалены");
+                                        } else {
+                                            notifyService.notifyError("Не удалось удалить " + countSelected + " операции");
+                                        }
+                                    }
+                                });
+                        });
+                    }, false);
+                },
+                deleteItem: function (item, callback) {
+                    return transaction.delete(item);
                 },
                 edit: function (item) {
                     $scope.transaction.edit(item);
@@ -766,27 +911,6 @@ App
                     submit: function () {
                         this.close();
                         $scope.scope.update(true);
-                    },
-                    updateCount: function () {
-
-
-
-                        transaction.get(this.nextPage)
-                            .success(function (data, status, headers) {
-
-                                Array.prototype.push.apply(_this.data, data);
-
-                                _this.nextPage++;
-                                _this.pageCount = headers('X-Pagination-Page-Count');
-                                _this.totalCount = headers('X-Pagination-Total-Count');
-                            })
-                            .error(function (error) {
-                                _this.error = true;
-                                notifyService.notifyError($scope.global.errorMessages.generateGet(error));
-                            })
-                            .finally(function () {
-                                _this.loading = false;
-                            });
                     }
                 }
             };

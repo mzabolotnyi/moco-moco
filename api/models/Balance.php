@@ -172,6 +172,7 @@ class Balance extends Model
 
             $accountId = $row['account_id'];
             $currencyId = $row['currency_id'];
+            $currency = $this->getCurrency($currencyId);
             $balanceDataByRow = $this->prepareBalanceDataByRow($row);
 
             if (!isset($balanceData[$accountId])) {
@@ -187,7 +188,8 @@ class Balance extends Model
             }
 
             $balanceData[$accountId]['currencies'][] = $balanceDataByRow;
-            $balanceData[$accountId]['amount'] += $balanceDataByRow['amount'];
+
+            $balanceData[$accountId]['amount'] += Currency::convertToMainCurrency($balanceDataByRow['amount'], $currency, $this->date);
 
             if ($currencyId == $mainCurrency->id) {
                 $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];

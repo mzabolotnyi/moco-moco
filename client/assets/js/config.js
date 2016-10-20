@@ -7,10 +7,17 @@ App
         $stateProvider
             .state('dashboard', {
                 url: '/dashboard',
-                templateUrl: 'assets/views/pages/in-developing.html',
+                templateUrl: 'assets/views/pages/dashboard.html',
                 controller: 'DashboardCtrl',
                 pageTitle: 'Панель управления',
-                viewLoader: true
+                viewLoader: true,
+                resolve: {
+                    transactions: function (transaction) {
+                        return transaction.get({
+                            date: moment().toDate()
+                        }, 1, 0);
+                    }
+                }
             })
             .state('transactions', {
                 url: '/transactions',

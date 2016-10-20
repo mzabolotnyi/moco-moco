@@ -1,0 +1,19 @@
+<div class="page-header page-header-dashboard p-0">
+    <ul class="tab-nav tn-icon tn-justified" data-tab-color="teal">
+        <li ng-class="{ active: scope.isSectionTransactions() }">
+            <a href="" data-ng-click="scope.setCurrentSection('transactions')">
+                <i class="zmdi zmdi-balance-wallet"></i>
+            </a>
+        </li>
+        <li ng-class="{ active: scope.isSectionBalance() }">
+            <a href="" data-ng-click="scope.setCurrentSection('balance')">
+                <i class="zmdi zmdi-balance"></i>
+            </a>
+        </li>
+        <li ng-class="{ active: scope.isSectionStats() }">
+            <a href="" data-ng-click="scope.setCurrentSection('stats')">
+                <i class="zmdi zmdi-chart"></i>
+            </a>
+        </li>
+    </ul>
+</div>

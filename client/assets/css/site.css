@@ -9709,16 +9709,12 @@ body #content {
     color: #4C4C4C;
     font-weight: 500;
     position: relative;
+    width: 100%;
+    float: left;
 }
 
 .main-menu .balance-menu-item .balance-menu-item-account {
-    width: 50px;
-    position: relative;
-}
-
-.main-menu .balance-menu-item .balance-menu-item-account {
-    width: 50px;
-    position: relative;
+    float: left;
 }
 
 .main-menu .balance-menu-item .balance-amount {
@@ -10401,7 +10397,7 @@ a.lv-footer:hover {
 
 @media (max-width: 768px) {
     .tab-nav > li > a {
-        padding: 15px 8px;
+        padding: 10px 8px;
     }
 }
 
@@ -12145,7 +12141,8 @@ body.login-content:before {
 }
 
 .actions > li > a,
-.actions > a {
+.actions > a,
+.actions > span {
     width: 30px;
     height: 30px;
     line-height: 35px;
@@ -12156,7 +12153,8 @@ body.login-content:before {
 
 .actions > li > a > i,
 .actions > a > i,
-.actions > li > a {
+.actions > li > a,
+.actions > span {
     -webkit-transition: color;
     -o-transition: color;
     transition: color;
@@ -12166,8 +12164,14 @@ body.login-content:before {
     font-size: 20px;
 }
 
+.actions > span {
+    width: auto;
+    font-size: 14px;
+}
+
 .actions > li > a:hover > i,
-.actions > a:hover > i {
+.actions > a:hover > i,
+.actions > span:hover {
     color: #000;
 }
 
@@ -13751,7 +13755,7 @@ html:not(.ismobile) .preloader-container {
     top: 50%;
     left: 50%;
     width: 310px;
-    max-height: calc(100% - 30px);
+    max-height: calc(100% - 40px);
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
@@ -13761,7 +13765,7 @@ html:not(.ismobile) .preloader-container {
 
 @media all and (max-width: 767px) {
     .modal {
-        width: calc(100% - 30px);
+        width: calc(100% - 40px);
     }
 }
 
@@ -13836,6 +13840,13 @@ html:not(.ismobile) .preloader-container {
     padding: 10px;
     text-align: right;
     flex: none;
+    position: relative;
+}
+
+.modal .modal-footer .actions {
+    position: absolute;
+    left: 10px;
+    top: 9px;
 }
 
 /* Notify style */
@@ -13941,6 +13952,12 @@ html:not(.ismobile) .preloader-container {
     color: #adadad;
 }
 
+.input-amount {
+    color: #009688 !important;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 /* Colorpicker form style */
 .color-wrapper {
     margin: 0 auto;
@@ -13968,20 +13985,24 @@ html:not(.ismobile) .preloader-container {
 }
 
 /* Transaction form style */
-.tr-account {
-    display: inline-block;
-    width: 57%;
+.tr-account, .tr-comment {
+    display: table-cell;
+    width: 55%;
 }
 
 .tr-amount {
-    display: inline-block;
-    width: 25%;
-    margin: 0 2%;
+    display: table-cell;
+    padding: 0 10px;
 }
 
 .tr-currency {
-    display: inline-block;
-    width: 10%;
+    display: table-cell;
+    width: 25px;
+}
+
+.tr-date {
+    display: table-cell;
+    padding-left: 10px;
 }
 
 /* Transaction list item style */
