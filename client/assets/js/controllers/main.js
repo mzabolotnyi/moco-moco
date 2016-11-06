@@ -55,7 +55,7 @@ App
                         })
                         .finally(function () {
                             notifyService.hideLoadBar();
-                            if (_this.dataLoaded) {
+                            if (_this.dataLoaded && callback) {
                                 callback.call();
                             }
                         });
@@ -74,7 +74,7 @@ App
                     });
 
                     return filteredArray.length > 0;
-                }
+                },
             };
 
             // Sidebar
@@ -783,8 +783,12 @@ App
                             _this.loading = false;
                         });
                 },
-                toggleSelected: function (item) {
+                toggleSelected: function (item, event) {
                     item.selected = !item.selected;
+
+                    if (event) {
+                        event.stopPropagation();
+                    }
                 },
                 hasSelected: function () {
                     return this.getCountSelected() > 0;
@@ -822,17 +826,16 @@ App
                             var lastIteration = (index === array.length - 1);
 
                             _this.deleteItem(obj)
-                                .then(function () {
-                                    _this.data = _this.data.filter(function (item) {
-                                        return item.id != obj.id;
-                                    });
-                                    _this.totalCount--;
-                                }, function () {
+                                .error(function () {
                                     failures++;
                                 })
                                 .finally(function () {
                                     if (lastIteration) {
+
+                                        _this.update(true);
+
                                         notifyService.hideLoadBar();
+
                                         if (failures == 0) {
                                             notifyService.notify("Операции удалены");
                                         } else {
@@ -905,11 +908,67 @@ App
                     close: function () {
                         this.opened = false;
                     },
+                    toggle: function () {
+                        if (this.opened) {
+                            this.close();
+                        } else {
+                            this.open();
+                        }
+                    },
                     clear: function () {
+
                         this.items = {};
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
+                    },
+                    clearCategory: function () {
+
+                        this.items.category = undefined;
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
+                    },
+                    clearAccount: function () {
+
+                        this.items.account = undefined;
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
+                    },
+                    clearComment: function () {
+
+                        this.items.comment = '';
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
+                    },
+                    clearStartDate: function () {
+
+                        this.items.startDate = undefined;
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
+                    },
+                    clearEndDate: function () {
+
+                        this.items.endDate = undefined;
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
                     },
                     submit: function () {
-                        this.close();
+
+                        if ($scope.global.isMobile()) {
+                            this.close();
+                        }
+
                         $scope.scope.update(true);
                     }
                 }
@@ -919,6 +978,11 @@ App
             $scope.transaction.callback = function () {
                 $scope.scope.update(true);
             };
+
+            //данные для установки фильтров еще не подгружены - выполним загрузку (только для десктопов)
+            if (!$scope.global.isMobile() && !$scope.global.dataLoaded) {
+                $scope.global.loadData();
+            }
         }])
     .controller('TemplatesCtrl', ['$scope', function ($scope) {
 
@@ -990,6 +1054,9 @@ App
 
                     return result.length > 0;
                 },
+                isActive: function (account) {
+                    return account.id == this.account.id;
+                },
                 //инициализирует изменение объекта или создание нового
                 edit: function (account) {
 
@@ -998,6 +1065,18 @@ App
 
                     if (typeof(account) === 'object') {
                         this.account.fillByObject(account);
+                        this.selected = account;
+                    } else {
+                        this.account.fillDefault();
+                        this.selected = undefined;
+                    }
+                },
+                cancelEditing: function () {
+
+                    this.account.editing = false;
+
+                    if (this.selected) {
+                        this.account.fillByObject(this.selected);
                     } else {
                         this.account.fillDefault();
                     }
@@ -1082,7 +1161,6 @@ App
                             })
                             .then(function (response) {
                                 notifyService.notify('Счет сохранен');
-                                _this.fillDefault();
                                 $scope.scope.update();
                             })
                             .finally(function () {
@@ -1185,6 +1263,10 @@ App
 
             // Передадим отсортированные данные в scope
             $scope.scope.data = $scope.global.sortDataByField(accounts.data, 'countTrans');
+
+            if (!$scope.global.isMobile()) {
+                $scope.scope.edit($scope.scope.data[0]);
+            }
         }])
     .controller('CategoriesCtrl', ['$scope', 'categories', 'category', 'notifyService',
         function ($scope, categories, category, notifyService) {
@@ -1219,6 +1301,9 @@ App
                             _this.loading = false;
                         });
                 },
+                isActive: function (category) {
+                    return category.id == this.category.id;
+                },
                 //инициализирует изменение объекта или создание нового
                 edit: function (category) {
 
@@ -1227,6 +1312,18 @@ App
 
                     if (typeof(category) === 'object') {
                         this.category.fillByObject(category);
+                        this.selected = category;
+                    } else {
+                        this.category.fillDefault();
+                        this.selected = undefined;
+                    }
+                },
+                cancelEditing: function () {
+
+                    this.category.editing = false;
+
+                    if (this.selected) {
+                        this.category.fillByObject(this.selected);
                     } else {
                         this.category.fillDefault();
                     }
@@ -1270,7 +1367,6 @@ App
                         category.save(_this)
                             .then(function (response) {
                                 notifyService.notify('Категория сохранена');
-                                _this.fillDefault();
                                 $scope.scope.update();
                             }, function (error) {
                                 if (error.data) {
@@ -1389,7 +1485,10 @@ App
 
             // Передадим отсортированные данные в scope
             $scope.scope.data = $scope.global.sortDataByField(categories.data, 'countTrans');
-            ;
+
+            if (!$scope.global.isMobile()) {
+                $scope.scope.edit($scope.scope.data[0]);
+            }
         }])
     .controller('CurrenciesCtrl', ['$scope', 'currencies', 'currency', 'notifyService',
         function ($scope, currencies, currency, notifyService) {
@@ -1422,6 +1521,9 @@ App
                 isMainCurrency: function (currency) {
                     return $scope.profile.isMainCurrency(currency);
                 },
+                isActive: function (currency) {
+                    return currency.id == this.currency.id;
+                },
                 //инициализирует изменение объекта или создание нового
                 edit: function (currency) {
 
@@ -1430,6 +1532,18 @@ App
 
                     if (typeof(currency) === 'object') {
                         this.currency.fillByObject(currency);
+                        this.selected = currency;
+                    } else {
+                        this.currency.fillDefault();
+                        this.selected = undefined;
+                    }
+                },
+                cancelEditing: function () {
+
+                    this.currency.editing = false;
+
+                    if (this.selected) {
+                        this.currency.fillByObject(this.selected);
                     } else {
                         this.currency.fillDefault();
                     }
@@ -1463,7 +1577,9 @@ App
                     //заполнение полей по переданному объекту
                     fillByObject: function (currency) {
                         angular.forEach(currency, function (value, key) {
-                            this[key] = value;
+                            if (key != 'rate') {
+                                this[key] = value;
+                            }
                         }, this);
                         this.default = (currency.userId == null);
                         this.rate.rate = currency.rate.rate;
@@ -1494,7 +1610,6 @@ App
                             })
                             .then(function () {
                                 notifyService.notify('Валюта сохранена');
-                                _this.fillDefault();
                                 $scope.scope.update();
                             })
                             .finally(function () {
@@ -1541,6 +1656,10 @@ App
                     }
                 }
             };
+
+            if (!$scope.global.isMobile()) {
+                $scope.scope.edit($scope.scope.data[0]);
+            }
         }])
     .controller('SettingsCtrl', ['$scope', 'notifyService', function ($scope, notifyService) {
 

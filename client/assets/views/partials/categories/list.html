@@ -1,0 +1,42 @@
+<div class="card">
+    <div class="listview">
+
+        <div class="lv-header">
+            <button class="btn btn-block bgm-teal" data-ng-click="scope.edit()" data-focus-form-on-click="form">
+                Создать
+            </button>
+        </div>
+
+        <div class="lv-body">
+            <a class="lv-item" href="" data-ng-class="{ 'active':scope.isActive(category) }"
+               data-ng-repeat="category in scope.data" data-ng-click="scope.edit(category)">
+                <div class="media">
+                    <div class="lv-avatar pull-left">
+                        <i class="{{'fa ' + category.icon}}"></i>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title">
+                            {{category.name}}
+                            <i class="zmdi zmdi-eye-off" data-ng-if="!category.active"></i>
+                        </div>
+                        <small class="lv-small">Операций: {{category.countTrans}}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="text-center" data-ng-if="scope.loading">
+            <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+        </div>
+
+        <div class="text-center has-error" data-ng-if="scope.error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <a class="lv-footer" href="" data-ng-click="scope.update()">Обновить</a>
+    </div>
+
+</div>

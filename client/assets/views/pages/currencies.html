@@ -4,3 +4,7 @@
     <ng-include src="'assets/views/partials/currencies/mobile/edit-form.html'"></ng-include>
 </div>
 
+<div data-ng-if="!global.isMobile()">
+    <ng-include src="'assets/views/partials/currencies/body.html'"></ng-include>
+</div>
+

@@ -3259,11 +3259,6 @@ fieldset[disabled] .form-control {
     opacity: 1;
 }
 
-.form-control[disabled],
-fieldset[disabled] .form-control {
-    cursor: not-allowed;
-}
-
 textarea.form-control {
     height: auto;
 }
@@ -9155,13 +9150,13 @@ body #content {
 
 @media (min-width: 1200px) {
     body.sw-toggled #content {
-        padding: 30px 0 30px 200px;
+        padding: 30px 0 30px 220px;
     }
 }
 
 @media (min-width: 1200px) {
     body.sw-toggled #content > .container {
-        width: calc(100% - 30px);
+        width: 95%;
     }
 }
 
@@ -10054,6 +10049,12 @@ body:not(.sw-toggled) #sidebar {
     transition: background-color;
     -webkit-transition-duration: 300ms;
     transition-duration: 300ms;
+    border-left: 2px solid transparent;
+}
+
+.listview .lv-item.active {
+    background-color: rgba(0, 150, 136, 0.07);
+    border-left: 2px solid #009688;
 }
 
 .listview .lv-item-bordered {
@@ -10095,7 +10096,7 @@ body:not(.sw-toggled) #sidebar {
 }
 
 .listview a.lv-item:hover {
-    background: #f3f3f3;
+    background-color: rgba(0, 150, 136, 0.07);
 }
 
 .listview [class*="lv-img"] {
@@ -10267,8 +10268,10 @@ body:not(.sw-toggled) #sidebar {
 
 .lv-header-alt {
     position: relative;
-    background: #f8f8f8;
+    background: #fff;
     padding: 5px;
+    border-bottom: 1px solid #F0F0F0;
+    z-index: 4;
 }
 
 .lv-header-alt .lv-actions {
@@ -10276,6 +10279,10 @@ body:not(.sw-toggled) #sidebar {
     float: right;
     margin-top: 3px;
     position: relative;
+}
+
+.lv-header-alt .lv-actions.left {
+    float: left;
 }
 
 .lv-header-alt .lv-actions > li > a {
@@ -10545,6 +10552,10 @@ a.lv-footer:hover {
 
 .card .card-body.card-padding-sm {
     padding: 15px;
+}
+
+.card .card-body .card-control-panel {
+    padding-top: 15px;
 }
 
 .card-header:not(.ch-alt):not([class*="bgm-"]) + .card-padding {
@@ -12074,7 +12085,7 @@ body.login-content:before {
  */
 
 .block-header {
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     position: relative;
 }
 
@@ -12087,7 +12098,6 @@ body.login-content:before {
 @media screen and (max-width: 991px) {
     .block-header {
         padding: 0 15px;
-        margin-bottom: 0;
     }
 }
 
@@ -12167,6 +12177,7 @@ body.login-content:before {
 .actions > span {
     width: auto;
     font-size: 14px;
+    cursor: pointer;
 }
 
 .actions > li > a:hover > i,
@@ -14011,11 +14022,19 @@ html:not(.ismobile) .preloader-container {
     display: block;
     padding: 10px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    min-height: 55px;
+    cursor: pointer;
+}
+
+.listview .lv-trans:hover {
+    background: rgba(0, 150, 136, 0.07);
 }
 
 .listview .lv-trans.selected {
     background: #f3f3f3;
 }
+
+
 
 .listview .lv-trans .lv-trans-icon {
     float: left;
@@ -14044,6 +14063,16 @@ html:not(.ismobile) .preloader-container {
     white-space: nowrap;
     display: block;
     color: #000;
+}
+
+.listview .lv-trans .lv-trans-body .lv-trans-body-title .lv-trans-details {
+    font-size: 14px;
+    color: #5B5B5B;
+}
+
+.listview .lv-trans .lv-trans-body .lv-trans-body-title .lv-trans-details .lv-trans-comment {
+    font-size: 12px;
+    color: #A9A9A9;
 }
 
 .listview .lv-trans .lv-trans-body .lv-trans-body-title .lv-trans-body-amount {

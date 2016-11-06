@@ -12,7 +12,7 @@
         <a href="" data-ui-sref="dashboard">{{config.appName}}</a>
     </li>
 
-    <li class="pull-right">
+    <li class="pull-right" data-ng-if="global.isMobile()">
         <ul class="top-menu">
             <li>
                 <a class="tm-add" data-ng-click="transaction.edit()" href=""></a>

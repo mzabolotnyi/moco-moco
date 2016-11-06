@@ -1,24 +1,24 @@
-<ul class="balance-dashboard" data-ng-if="!balance.loading">
-    <li class="bd-total">
+<div class="balance-dashboard" data-ng-if="!balance.loading">
+    <div class="bd-item bd-total">
         <span class="bd-title">Баланс</span>
         <span class="bd-amount">
             <money-format amount="balance.amount"></money-format> {{profile.data.currency.symbol}}
         </span>
-    </li>
-    <li class="bd-subtotal">
+    </div>
+    <div class="bd-item bd-subtotal">
         <span class="bd-title">збережения в {{profile.data.currency.iso}}</span>
         <span class="bd-amount">
             <money-format amount="balance.amountInMainCurrency"></money-format> {{profile.data.currency.symbol}}
         </span>
-    </li>
-    <li class="bd-subtotal">
+    </div>
+    <div class="bd-item bd-subtotal">
         <span class="bd-title">збережения в других валютах</span>
         <span class="bd-amount">
             <money-format amount="balance.amountInOtherCurrency"></money-format> {{profile.data.currency.symbol}}
         </span>
-    </li>
+    </div>
 
-    <li class="bd-account" data-ng-repeat="item in balance.data"
+    <div class="bd-item bd-account" data-ng-repeat="item in balance.data"
         data-ng-if="item.amount != 0 && !balance.error">
         <span class="bd-title">{{item.account.name}}</span>
         <span class='bd-amount'>
@@ -31,8 +31,8 @@
                 <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
             </span>
         </span>
-    </li>
-</ul>
+    </div>
+</div>
 
 <div class="text-center" data-ng-if="balance.loading">
     <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>

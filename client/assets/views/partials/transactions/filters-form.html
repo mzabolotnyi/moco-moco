@@ -1,0 +1,133 @@
+<div class="card" data-fixed-on-scroll="">
+    <div class="card-header">
+        <h2>Фильтры</h2>
+        <ul class="actions">
+            <span data-ng-click="scope.filter.clear()">ОЧИСТИТЬ</span>
+        </ul>
+    </div>
+    <div class="card-body card-padding">
+
+        <form id="filter-form" name="filter-form" data-ng-submit="scope.filter.submit()">
+
+            <!--CATEGORY-->
+            <label>Категория</label>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.category"></i>
+                    <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.category"></i>
+                </span>
+
+                <div class="fg-line">
+                    <select class="form-control input-sm" name="category" data-ng-model="scope.filter.items.category"
+                            data-ng-options="category as category.name for category in global.categories"
+                            data-ng-change="scope.update(true)">
+                        <option value="">Не выбрана...</option>
+                    </select>
+                </div>
+
+                <span class="input-group-addon last" data-ng-if="scope.filter.items.category">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearCategory()"></i>
+                </span>
+
+            </div>
+            <!--end CATEGORY-->
+
+            <!--ACCOUNT-->
+            <label>Счет</label>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.account"></i>
+                    <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.account"></i>
+                </span>
+
+                <div class="fg-line">
+                    <select class="form-control input-sm" name="account" data-ng-model="scope.filter.items.account"
+                            data-ng-options="account as account.name for account in global.accounts"
+                            data-ng-change="scope.update(true)">
+                        <option value="">Не выбран...</option>
+                    </select>
+                </div>
+
+                <span class="input-group-addon last" data-ng-if="scope.filter.items.account">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearAccount()"></i>
+                </span>
+
+            </div>
+            <!--end ACOOUNT-->
+
+            <!--COMMENT-->
+            <label>Примечание</label>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o"
+                       data-ng-if="!scope.filter.items.comment || scope.filter.items.comment == ''"></i>
+                    <i class="zmdi zmdi-check-circle c-teal"
+                       data-ng-if="scope.filter.items.comment && scope.filter.items.comment != ''"></i>
+                </span>
+
+                <div class="fg-line">
+                    <input type="text" class="form-control input-sm" placeholder="Ключевое слово" name="comment"
+                           data-ng-model="scope.filter.items.comment" data-ng-change="scope.update(true)">
+                </div>
+
+                <span class="input-group-addon last"
+                      data-ng-if="scope.filter.items.comment && scope.filter.items.comment != ''">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearComment()"></i>
+                </span>
+
+            </div>
+            <!--end COMMENT-->
+
+            <!--PERIOD-->
+            <label>Период</label>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.startDate"></i>
+                    <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.startDate"></i>
+                </span>
+
+                <span class="input-group-addon c-black">c</span>
+
+                <div class="fg-line">
+                    <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="startDate"
+                           data-ng-model="scope.filter.items.startDate" data-ng-change="scope.update(true)">
+                </div>
+
+                <span class="input-group-addon last" data-ng-if="scope.filter.items.startDate">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearStartDate()"></i>
+                </span>
+
+            </div>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.endDate"></i>
+                    <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.endDate"></i>
+                </span>
+
+                <span class="input-group-addon c-black">по</span>
+
+                <div class="fg-line">
+                    <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="endDate"
+                           data-ng-model="scope.filter.items.endDate" data-ng-change="scope.update(true)">
+                </div>
+
+                <span class="input-group-addon last" data-ng-if="scope.filter.items.endDate">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearEndDate()"></i>
+                </span>
+
+            </div>
+            <!--end PERIOD-->
+
+        </form>
+    </div>
+</div>

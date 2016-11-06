@@ -1,0 +1,144 @@
+<div class="card" data-fixed-on-scroll="">
+    <div class="card-header">
+        <h2 data-ng-if="scope.category.isNew()">Создание категории</h2>
+
+        <h2 data-ng-if="!scope.category.isNew()">{{scope.category.name}}</h2>
+
+        <ul class="actions">
+            <li data-ng-if="!scope.category.isNew()" uib-tooltip="Удалить">
+                <a href="" data-ng-click="scope.category.delete()">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body card-padding">
+
+        <form id="form" name="form" data-ng-submit="scope.category.save()"
+              data-autofocus="{{scope.category.isNew()}}">
+
+            <!--NAME-->
+            <div class="form-group fg-line">
+                <label>Название</label>
+                <input type="text" class="form-control input-sm autofocus" data-ng-model="scope.category.name"
+                       name="name" placeholder="Название" data-ng-maxlength="255" required>
+            </div>
+
+            <div class="has-error">
+                <div data-ng-messages="form.name.$error" data-ng-if="form.name.$dirty"
+                     class="help-block animated fadeInDown">
+                    <ng-messages-include
+                            src="assets/views/partials/error-messages.html"></ng-messages-include>
+                </div>
+            </div>
+            <!--end NAME-->
+
+            <!--ICON-->
+            <div class="form-group fg-line">
+                <label>Иконка</label>
+
+                <div data-ng-click="scope.iconpicker.open()">
+                    <input type="text" class="form-control input-sm p-l-30" data-ng-model="scope.category.icon"
+                           name="icon" placeholder="Без иконки" data-ng-maxlength="255"
+                           disabled>
+
+                    <div class="icon-container">
+                        <i class="fa {{scope.category.icon}}"></i>
+                        <i class="zmdi zmdi-close" data-ng-if="scope.category.icon == ''"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="has-error">
+                <div data-ng-messages="form.icon.$error" data-ng-if="form.icon.$dirty"
+                     class="help-block animated fadeInDown">
+                    <ng-messages-include
+                            src="assets/views/partials/error-messages.html"></ng-messages-include>
+                </div>
+            </div>
+            <!--end ICON-->
+
+            <!--INCOME-->
+            <div class="form-group p-t-10">
+                <div class="toggle-switch">
+                    <label for="expense" class="ts-label">Использовать в расходах</label>
+                    <input id="expense" type="checkbox" hidden="hidden" data-ng-model="scope.category.expense">
+                    <label for="expense" class="ts-helper pull-right"></label>
+                </div>
+            </div>
+            <!--end INCOME-->
+
+            <!--EXPENSE-->
+            <div class="form-group">
+                <div class="toggle-switch">
+                    <label for="income" class="ts-label">Использовать в доходах</label>
+                    <input id="income" type="checkbox" hidden="hidden" data-ng-model="scope.category.income">
+                    <label for="income" class="ts-helper pull-right"></label>
+                </div>
+            </div>
+            <!--end EXPENSE-->
+
+            <!--ACTIVE-->
+            <div class="form-group">
+                <div class="toggle-switch">
+                    <label for="active" class="ts-label">Отображать</label>
+                    <input id="active" type="checkbox" hidden="hidden" data-ng-model="scope.category.active">
+                    <label for="active" class="ts-helper pull-right"></label>
+                </div>
+            </div>
+            <!--end ACTIVE-->
+
+            <div class="has-error">
+                <div data-ng-repeat="error in scope.category.errors">
+                    <div class="help-block">{{error.message}}</div>
+                </div>
+            </div>
+
+        </form>
+
+        <!--TRANSFER TRANSACTIONS-->
+        <div data-ng-if="scope.category.countTrans > 0">
+            <form name="transfer" data-ng-submit="scope.category.moveTransactionsToCategory()">
+                <div class="form-group p-t-5">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" class="checker select-box"
+                                   data-ng-model="scope.category.isTransfer">
+                            <i class="input-helper"></i>
+                            Перенести все операции ({{scope.category.countTrans}}) в категорию
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group" data-ng-if="scope.category.isTransfer">
+                    <select class="form-control input-sm p-l-30"  data-ng-model="scope.newCategory"
+                            data-ng-options="category as category.name for category in scope.data">
+                        <option value="">Не выбрана...</option>
+                    </select>
+
+                    <div class="icon-container icon-container-no-label">
+                        <i class="fa {{scope.newCategory.icon}}"></i>
+                        <i class="zmdi zmdi-close"
+                           data-ng-if="!scope.newCategory || scope.newCategory.icon == ''"></i>
+                    </div>
+                    <span class="input-group-addon last">
+                        <button type="submit" class="btn btn-link">ок</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <!--end TRANSFER TRANSACTIONS-->
+
+        <div class="card-control-panel">
+            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+                    data-ng-disabled="form.$invalid || scope.category.submitting">
+                <span>Сохранить</span>
+                <span data-ng-if="scope.category.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="scope.category.editing = false">Отмена</button>
+        </div>
+
+    </div>
+</div>

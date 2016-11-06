@@ -168,6 +168,38 @@ App
         }
     })
 
+    // Fixed block on scrolling
+    .directive('fixedOnScroll', function () {
+        return {
+            link: function (scope, element, attr) {
+
+                var elementPosition = $(element).offset();
+                var elementWidth = $(element).outerWidth();
+                var top = attr.fixedOnScroll == "" ? 85 : parseFloat(attr.fixedOnScroll);
+
+                $(window).scroll(function () {
+
+                    var fromTop = elementPosition.top - $(window).scrollTop();
+
+                    if (fromTop < top) {
+                        $(element).css({
+                            'position': 'fixed',
+                            'width': elementWidth,
+                            'top': top
+                        });
+                    } else {
+                        $(element).css({
+                            'position': 'static',
+                            'width': 'auto'
+                        });
+
+                        elementWidth = $(element).outerWidth();
+                    }
+                });
+            }
+        };
+    })
+
     // Waves effect on buttons with class 'btn'
     .directive('btn', function () {
         return {
@@ -230,54 +262,20 @@ App
         }
     })
 
-    // Create block header with breadcrumbs
-    .directive('uiPageHeader', ['$compile', function ($compile) {
+    // Reset form
+    .directive('focusFormOnClick', function () {
         return {
             restrict: 'A',
-            compile: function compile(element, attr) {
+            link: function (scope, element, attr) {
 
-                var el = $(element);
+                var formId = attr.focusFormOnClick;
 
-                // add class to our element
-                el.addClass('block-header');
-
-                // append title block
-                var title = attr.pageTitle;
-                var titleBlock = $('<h2/>')
-                    .addClass('m-b-10')
-                    .text(title);
-
-                el.append(titleBlock);
-
-                // append breadcrumbs block
-                if (attr.breadcrumbs) {
-
-                    var breadcrumbs = $.parseJSON(attr.breadcrumbs); //{'dashboard' : 'Главная', 'activeCrumb' : 'Настройки'}
-                    var breadcrumbBlock = $('<ul/>').addClass('breadcrumb');
-                    var crumb, crumbLink;
-
-                    $.each(breadcrumbs, function (key, value) {
-
-                        crumb = $('<li/>');
-
-                        if (key == 'activeCrumb') {
-                            crumb.addClass('active')
-                                .text(value);
-                        } else {
-                            crumbLink = $('<a/>')
-                                .attr('ui-sref', key)
-                                .text(value);
-                            crumb.append(crumbLink);
-                        }
-
-                        breadcrumbBlock.append(crumb);
-                    });
-
-                    el.append(breadcrumbBlock);
-                }
+                $(element).click(function () {
+                    $('#' + formId).find('input.autofocus').focus();
+                })
             }
-        };
-    }])
+        }
+    })
 
     // Format amount
     .directive('moneyFormat', function () {

@@ -1,0 +1,67 @@
+<div class="card">
+    <div class="listview lv-bordered lv-lg p-b-15" data-infinite-scroll="scope.update()"
+         data-infinite-scroll-disabled="scope.loading || scope.error || scope.isEndOfPagination()">
+        <div class="lv-header-alt clearfix" data-fixed-on-scroll="65">
+
+            <ul class="lv-actions actions left">
+                <li data-ng-click="scope.deselectAll()" data-ng-if="scope.hasSelected()">
+                    <a href="">
+                        <i class="zmdi zmdi-arrow-left"></i>
+                    </a>
+                </li>
+                <li data-ng-if="scope.hasSelected()">
+                    <a href="">{{scope.getCountSelected()}}</a>
+                </li>
+                <li data-ng-if="!scope.hasSelected()">
+                    <a href="">Найдено операций: {{scope.totalCount}}</a>
+                </li>
+            </ul>
+
+            <ul class="lv-actions actions">
+                <li>
+                    <a href="" data-ng-if="scope.hasSelected()" data-ng-click="scope.deleteSelected()"
+                       uib-tooltip="Удалить" tooltip-placement="bottom">
+                        <i class="zmdi zmdi-delete"></i>
+                    </a>
+                </li>
+                <li data-ng-click="scope.update(true)" uib-tooltip="Обновить" tooltip-placement="bottom">
+                    <a href="">
+                        <i class="zmdi zmdi-refresh"></i>
+                    </a>
+                </li>
+                <li class="dropdown" uib-dropdown="">
+                    <a href="" uib-dropdown-toggle="" class="dropdown-toggle">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a href="">Refresh</a>
+                        </li>
+                        <li>
+                            <a href="">Listview Settings</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="lv-body">
+            <div href="" class="lv-trans" data-ng-repeat="transaction in scope.data track by $index"
+                 data-ng-click="scope.edit(transaction)"
+                 data-ng-class="{ 'selected':transaction.selected }">
+                <ng-include src="'assets/views/partials/transactions/item.html'"></ng-include>
+            </div>
+        </div>
+    </div>
+    <div class="text-center p-b-10" data-ng-if="scope.loading">
+        <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+    </div>
+    <div class="text-center p-b-10 has-error" data-ng-if="scope.error">
+        <div>Произошла ошибка...</div>
+        <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>
+    </div>
+    <div class="text-center p-b-10" data-ng-if="scope.data.length === 0 && !(scope.loading || scope.error)">
+        <ng-include src="'assets/views/partials/no-data.html'"></ng-include>
+    </div>
+</div>

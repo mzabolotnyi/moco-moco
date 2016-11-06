@@ -82,7 +82,7 @@ class Balance extends Model
 
         $currentBalance = 0;
         if (count($balanceData) > 0) {
-            $currentBalance = $balanceData[0]['amount'];
+            $currentBalance = $balanceData[0]['currencies'][0]['amount'];
         }
 
         return $this->createTransaction($currentBalance);

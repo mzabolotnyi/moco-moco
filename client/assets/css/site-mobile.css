@@ -69,7 +69,6 @@
 }
 
 .ismobile .page-header .actions.left {
-    position: absolute;
     left: 10px;
     top: 13px;
 }
@@ -162,57 +161,59 @@
 }
 
 .ismobile .balance-dashboard {
-    padding: 0 20px 20px 20px;
+    padding-bottom: 20px;
 }
 
-.ismobile .balance-dashboard ul {
-    list-style: none;
-}
-
-.ismobile .balance-dashboard li {
+.ismobile .balance-dashboard .bd-item {
     padding: 15px 0;
     display: block;
     position: relative;
     width: 100%;
     float: left;
     border-top: 1px solid #f0f0f0;
+    padding: 10px 20px;
 }
 
-.ismobile .balance-dashboard li:first-child {
+.ismobile .balance-dashboard .bd-item:first-child {
     padding-top: 0;
+    border-top: none;
 }
 
-.ismobile .balance-dashboard li .bd-title {
+.ismobile .balance-dashboard .bd-item .bd-title {
     float: left;
 }
 
-.ismobile .balance-dashboard li .bd-amount {
+.ismobile .balance-dashboard .bd-item .bd-amount {
     float: right;
 }
 
-.ismobile .balance-dashboard li .bd-amount > span {
+.ismobile .balance-dashboard .bd-item .bd-amount > span {
     text-align: right;
     display: block;
+    padding-top: 5px;
 }
 
-.ismobile .balance-dashboard .bd-total {
+.ismobile .balance-dashboard .bd-item .bd-amount > span:first-child {
+    padding-top: 0;
+}
+
+.ismobile .balance-dashboard .bd-item.bd-total {
     font-size: 16px;
     font-weight: 700;
     text-transform: uppercase;
     color: #009688;
 }
 
-.ismobile .balance-dashboard .bd-subtotal {
+.ismobile .balance-dashboard .bd-item.bd-subtotal {
     font-size: 15px;
     font-weight: 700;
-    padding: 10px 0;
 }
 
-.ismobile .balance-dashboard .bd-account {
-    font-size: 14px;
+.ismobile .balance-dashboard .bd-item.bd-account {
+    font-size: 15px;
 }
 
-.ismobile .balance-dashboard .bd-account .bd-amount a {
+.ismobile .balance-dashboard .bd-item.bd-account .bd-amount a {
     border-bottom: 1px dotted;
     color: #009688;
 }
