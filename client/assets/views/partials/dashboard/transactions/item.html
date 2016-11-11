@@ -1,0 +1,66 @@
+<!--icon for income/expense-->
+<div class="lv-trans-icon animated flipInY" data-ng-if="!transaction.transfer"
+     data-ng-style="{ 'background':transaction.account.color }">
+    <i class="{{'fa ' + transaction.category.icon}}" data-ng-if="transaction.category"></i>
+    <i class="zmdi zmdi-edit" data-ng-if="!transaction.category"></i>
+</div>
+
+<!--icon for transfer-->
+<div class="lv-trans-icon animated flipInY" data-ng-if="transaction.transfer"
+     data-ng-style="{ 'background':'linear-gradient(to right,'.concat(transaction.account.color, ' 50%', ',', transaction.recipientAccount.color, ' 50%)') }">
+    <i class="zmdi zmdi-swap"></i>
+</div>
+
+<!--item body-->
+<div class="lv-trans-body">
+
+    <!--title-->
+    <div class="lv-trans-body-title">
+
+        <!--details for income/expense-->
+        <span class="lv-trans-details" data-ng-if="!transaction.transfer">
+            <span class="zmdi zmdi-card"></span>
+            {{transaction.account.name}}
+            <span data-ng-if="transaction.category">
+                <span class="zmdi zmdi-long-arrow-right" data-ng-if="transaction.expense"></span>
+                <span class="zmdi zmdi-long-arrow-left" data-ng-if="transaction.income"></span>
+                {{transaction.category.name}}
+            </span>
+            <span  class="lv-trans-comment" data-ng-if="transaction.comment != ''">
+                ({{transaction.comment}})
+            </span>
+        </span>
+
+        <!--details for transafer-->
+        <span class="lv-trans-details" data-ng-if="transaction.transfer">
+            <span class="zmdi zmdi-card"></span>
+            {{transaction.account.name}}
+            <span class="zmdi zmdi-long-arrow-right"></span>
+            <span class="zmdi zmdi-card"></span>
+            {{transaction.recipientAccount.name}}
+        </span>
+
+        <!--amount for income/expense-->
+        <span class="lv-trans-body-amount pull-right" data-ng-if="!transaction.transfer"
+              data-ng-class="{ 'c-green':transaction.income, 'c-deeporange':transaction.expense }">
+            {{transaction.currency.symbol}}
+                <money-format amount="{{scope.transactions.getAmount(transaction)}}" decimals="2"
+                              sign="{{scope.transactions.getSign(transaction)}}"></money-format>
+        </span>
+
+        <!--amount for transfer-->
+        <span class="lv-trans-body-amount pull-right" data-ng-if="transaction.transfer">
+            {{transaction.currency.symbol}}
+                <money-format amount="{{scope.transactions.getAmount(transaction)}}" decimals="2"></money-format>
+                <span class="zmdi zmdi-long-arrow-right"></span>
+                {{transaction.recipientCurrency.symbol}}
+                <money-format amount="{{scope.transactions.getRecipientAmount(transaction)}}"
+                              decimals="2"></money-format>
+        </span>
+
+    </div>
+
+    <!--date-->
+    <span class="lv-small">{{scope.getDisplayDate(transaction)}}</span>
+
+</div>

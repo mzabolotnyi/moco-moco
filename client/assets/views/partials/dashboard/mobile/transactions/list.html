@@ -1,0 +1,39 @@
+<div class="date-toolbar">
+    <span>
+        <button class="dt-btn" data-ng-click="scope.moveCurrentDate(-1)">
+            <i class="zmdi zmdi-chevron-left"></i>
+        </button>
+        <h2>{{scope.getDisplayDate()}}</h2>
+        <button class="dt-btn" data-ng-click="scope.moveCurrentDate(1)">
+            <i class="zmdi zmdi-chevron-right"></i>
+        </button>
+    </span>
+    <ul class="actions dt-actions">
+        <li class="dropdown" dropdown="" style="">
+            <a href="" dropdown-toggle class="dropdown-toggle">
+                <i class="zmdi zmdi-more-vert"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="" data-ng-click="scope.setCurrentDateAsToday()">Сегодня</a></li>
+                <li class="divider"></li>
+                <li><a href="" data-ng-click="scope.transactions.update()">Обновить</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="listview p-b-15">
+    <div href="" class="lv-trans" data-ng-repeat="transaction in scope.transactions.data track by $index"
+         data-ng-click="scope.transactions.edit(transaction)">
+        <ng-include src="'assets/views/partials/dashboard/mobile/transactions/item.html'"></ng-include>
+    </div>
+</div>
+<div class="text-center" data-ng-if="scope.transactions.loading">
+    <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+</div>
+<div class="text-center has-error" data-ng-if="scope.transactions.error">
+    <div>Произошла ошибка...</div>
+    <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.transactions.update()">Повторить</button>
+</div>
+<div data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
+    <ng-include src="'assets/views/partials/no-data.html'"></ng-include>
+</div>

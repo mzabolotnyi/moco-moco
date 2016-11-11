@@ -841,6 +841,9 @@ App
                                         } else {
                                             notifyService.notifyError("Не удалось удалить " + countSelected + " операции");
                                         }
+
+                                        //обновим данные о балансе
+                                        $scope.balance.update();
                                     }
                                 });
                         });

@@ -1,0 +1,112 @@
+<!--<div class="card">-->
+<!--<div class="card-body">-->
+<!--<div class="balance-dashboard" data-ng-if="!balance.loading">-->
+<!--<div class="bd-item bd-total">-->
+<!--<span class="bd-title">Баланс</span>-->
+<!--<span class="bd-amount">-->
+<!--<money-format amount="balance.amount"></money-format> {{profile.data.currency.symbol}}-->
+<!--</span>-->
+<!--</div>-->
+<!--<div class="bd-item bd-subtotal">-->
+<!--<span class="bd-title">збережения в {{profile.data.currency.iso}}</span>-->
+<!--<span class="bd-amount">-->
+<!--<money-format amount="balance.amountInMainCurrency"></money-format> {{profile.data.currency.symbol}}-->
+<!--</span>-->
+<!--</div>-->
+<!--<div class="bd-item bd-subtotal">-->
+<!--<span class="bd-title">збережения в других валютах</span>-->
+<!--<span class="bd-amount">-->
+<!--<money-format amount="balance.amountInOtherCurrency"></money-format> {{profile.data.currency.symbol}}-->
+<!--</span>-->
+<!--</div>-->
+
+<!--<div class="bd-item bd-account" data-ng-repeat="item in balance.data"-->
+<!--data-ng-if="item.amount != 0 && !balance.error">-->
+<!--<span class="bd-title">{{item.account.name}}</span>-->
+<!--<span class='bd-amount'>-->
+<!--<span data-ng-repeat="itemCurrency in item.currencies" data-ng-if="itemCurrency.amount != 0">-->
+<!--<a href=""-->
+<!--data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">-->
+<!--<span class="balance-amount"-->
+<!--money-format amount="itemCurrency.amount"></span>-->
+<!--</a>-->
+<!--<span class="balance-currency">{{itemCurrency.currency.symbol}}</span>-->
+<!--</span>-->
+<!--</span>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+
+<div class="card" data-fixed-on-scroll="">
+    <div class="card-header">
+        <h2 class="f-700 c-teal">
+            Баланс
+            <span class="pull-right m-t-0">
+                <money-format amount="balance.amount"></money-format> {{profile.data.currency.symbol}}
+            </span>
+        </h2>
+    </div>
+    <div class="card-body">
+        <table class="table table-inner table-vmiddle">
+            <tbody>
+            <tr class="f-700 bgm-teal c-white">
+                <td>В основной валюте</td>
+                <td class="text-right">
+                    <money-format amount="balance.amountInMainCurrency"></money-format>
+                    {{profile.data.currency.symbol}}
+                </td>
+            </tr>
+            </tbody>
+
+            <tbody data-ng-repeat="item in balance.data">
+            <tr data-ng-repeat="itemCurrency in item.currencies"
+                data-ng-if="itemCurrency.amount != 0 && profile.isMainCurrency(itemCurrency.currency)">
+                <td>{{item.account.name}}</td>
+                <td class="text-right">
+                    <a href=""
+                       data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
+                        <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
+                    </a>
+                    <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
+                </td>
+            </tr>
+            </tbody>
+
+
+            <tbody>
+            <tr class="f-700 bgm-teal c-white">
+                <td>В других валютах</td>
+                <td class="text-right">
+                    <money-format amount="balance.amountInOtherCurrency"></money-format>
+                    {{profile.data.currency.symbol}}
+                </td>
+            </tr>
+            </tbody>
+
+            <tbody data-ng-repeat="item in balance.data">
+            <tr data-ng-repeat="itemCurrency in item.currencies"
+                data-ng-if="itemCurrency.amount != 0 && !profile.isMainCurrency(itemCurrency.currency)">
+                <td>{{item.account.name}}</td>
+                <td class="text-right">
+                    <a href=""
+                       data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
+                        <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
+                    </a>
+                    <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="text-center" data-ng-if="balance.loading">
+            <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+        </div>
+        <div class="text-center has-error" data-ng-if="balance.error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="balance.update()">Повторить</button>
+        </div>
+
+    </div>
+</div>

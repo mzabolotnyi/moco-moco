@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="listview lv-bordered lv-lg p-b-15" data-infinite-scroll="scope.update()"
+         data-infinite-scroll-disabled="scope.loading || scope.error || scope.isEndOfPagination()">
+        <div class="lv-header-alt clearfix">
+
+            <div class="date-toolbar pull-left">
+                <span>
+                    <button class="dt-btn" data-ng-click="scope.moveCurrentDate(-1)">
+                        <i class="zmdi zmdi-chevron-left"></i>
+                    </button>
+                    <h2>{{scope.getDisplayDate()}}</h2>
+                    <button class="dt-btn" data-ng-click="scope.moveCurrentDate(1)">
+                        <i class="zmdi zmdi-chevron-right"></i>
+                    </button>
+                </span>
+            </div>
+
+            <ul class="lv-actions actions">
+                <li class="dropdown" dropdown="" style="">
+                    <a href="" dropdown-toggle class="dropdown-toggle">
+                        <i class="zmdi zmdi-more-vert"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="" data-ng-click="scope.setCurrentDateAsToday()">Сегодня</a></li>
+                        <li class="divider"></li>
+                        <li><a href="" data-ng-click="scope.transactions.update()">Обновить</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="lv-body" id="lv-trans-body">
+            <div href="" class="lv-trans" data-ng-repeat="transaction in scope.transactions.data track by $index"
+                 data-ng-click="scope.transactions.edit(transaction)">
+                <ng-include src="'assets/views/partials/dashboard/transactions/item.html'"></ng-include>
+            </div>
+        </div>
+    </div>
+    <div class="text-center p-b-10" data-ng-if="scope.transactions.loading">
+        <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+    </div>
+    <div class="text-center p-b-10 has-error" data-ng-if="scope.transactions.error">
+        <div>Произошла ошибка...</div>
+        <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.transactions.update()">Повторить</button>
+    </div>
+    <div class="text-center p-b-10" data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
+        <div>Нет операций за {{scope.getDisplayDate()}}</div>
+    </div>
+</div>

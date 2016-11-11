@@ -2915,10 +2915,6 @@ th {
     border-top: 0;
 }
 
-.table > tbody + tbody {
-    border-top: 2px solid #f0f0f0;
-}
-
 .table .table {
     background-color: #edecec;
 }
@@ -9712,7 +9708,7 @@ body #content {
     float: left;
 }
 
-.main-menu .balance-menu-item .balance-amount {
+.main-menu .balance-menu-item .balance-amount, td .balance-amount {
     border-bottom: 1px dotted;
     color: #009688;
 }
@@ -14034,8 +14030,6 @@ html:not(.ismobile) .preloader-container {
     background: #f3f3f3;
 }
 
-
-
 .listview .lv-trans .lv-trans-icon {
     float: left;
     width: 35px;
@@ -14094,8 +14088,52 @@ html:not(.ismobile) .preloader-container {
     width: 100%;
 }
 
+.date-toolbar {
+    padding-top: 7px;
+    text-align: center;
+    position: relative;
+}
 
+.date-toolbar h2 {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #009688;
+    margin: 0;
+    display: inline-block;
+    height: 25px;
+}
 
+.date-toolbar .dt-btn {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    outline: none !important;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: #009688;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-transition: all;
+    -o-transition: all;
+    transition: all;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms;
+}
+
+.date-toolbar .dt-btn:hover {
+    background: rgba(0, 150, 136, 0.2);
+}
+
+.date-toolbar .dt-btn .zmdi {
+    font-size: 24px;
+    vertical-align: -15%;
+}
 
 
 

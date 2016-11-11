@@ -181,6 +181,10 @@ App
 
                     var fromTop = elementPosition.top - $(window).scrollTop();
 
+                    if (attr.widthRelation) {
+                        elementWidth = $("#" + attr.widthRelation).outerWidth();
+                    }
+
                     if (fromTop < top) {
                         $(element).css({
                             'position': 'fixed',
