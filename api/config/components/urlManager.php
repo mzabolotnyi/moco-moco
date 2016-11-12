@@ -77,5 +77,13 @@ return [
                 'transaction',
             ],
         ],
+        // transaction
+        [
+            'class' => 'yii\rest\UrlRule',
+            'pluralize' => false,
+            'controller' => [
+                'statistics',
+            ],
+        ],
     ],
 ];
