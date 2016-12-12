@@ -77,12 +77,16 @@ return [
                 'transaction',
             ],
         ],
-        // transaction
+        // charts
         [
             'class' => 'yii\rest\UrlRule',
             'pluralize' => false,
             'controller' => [
-                'statistics',
+                'analytics',
+            ],
+            'patterns' => [
+                'GET expense' => 'expense',
+                'GET income' => 'income',
             ],
         ],
     ],

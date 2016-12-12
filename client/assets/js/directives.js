@@ -297,3 +297,53 @@ App
         };
     })
 
+    // Directive for pie charts, pass in title and data only
+    .directive('hcPieChart', function () {
+        return {
+            template: '<div></div>',
+            scope: {
+                data: '=',
+                showLabels: '='
+            },
+            link: function (scope, element, attr) {
+
+                scope.$watch('data', function () {
+                    var colorSet = Highcharts.colorSets[attr.colorSet]
+                        ? Highcharts.colorSets[attr.colorSet] : Highcharts.getOptions().colors;
+
+                    Highcharts.chart(element[0], {
+                        title: false,
+                        colors: colorSet,
+                        series: [{
+                            data: scope.data,
+                            slicedOffset: 0,
+                            dataLabels: {
+                                enabled: scope.showLabels == undefined ? false : scope.showLabels,
+                                format: '<b>{point.name}</b>: {point.y:.2f} ({point.percentage:.1f}%)'
+                            }
+                        }],
+                        tooltip: {
+                            headerFormat: '<span style="font-size:14px">{point.key}</span><br>',
+                            pointFormat: '<b>{point.y:.2f}</b> ({point.percentage:.1f}%)'
+                        },
+                        chart: {
+                            type: 'pie',
+                            events: {
+                                load: function (event) {
+                                    var total = this.series[0].data[0].total;
+                                    var text = this.renderer.text(
+                                        'Всего: ' + total.toFixed(2),
+                                        this.plotLeft,
+                                        this.plotTop
+                                    ).attr({
+                                            zIndex: 5
+                                        }).add(); // write it to the upper left hand corner
+                                }
+                            }
+                        }
+                    });
+                })
+            }
+        };
+    })
+

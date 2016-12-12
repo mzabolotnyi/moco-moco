@@ -227,7 +227,7 @@ class Balance extends Model
         if (isset($this->_currencies[$id])) {
             $currency = $this->_currencies[$id];
         } else {
-            $currency = Currency::findOne($id);
+            $currency = Currency::findCurrency($id);
             $this->_currencies[$id] = $currency;
         }
 

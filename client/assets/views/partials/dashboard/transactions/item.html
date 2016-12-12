@@ -26,9 +26,6 @@
                 <span class="zmdi zmdi-long-arrow-left" data-ng-if="transaction.income"></span>
                 {{transaction.category.name}}
             </span>
-            <span  class="lv-trans-comment" data-ng-if="transaction.comment != ''">
-                ({{transaction.comment}})
-            </span>
         </span>
 
         <!--details for transafer-->
@@ -60,7 +57,10 @@
 
     </div>
 
-    <!--date-->
-    <span class="lv-small">{{scope.getDisplayDate(transaction)}}</span>
+    <!--comment-->
+    <small class="lv-small" data-ng-if="transaction.comment != ''">
+        <span class="fa fa-pencil-square-o"></span>
+        {{transaction.comment}}
+    </small>
 
 </div>

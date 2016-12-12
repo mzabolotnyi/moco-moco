@@ -199,8 +199,14 @@ class Currency extends OActiveRecord
      */
     public static function getMainCurrency()
     {
-        // TODO можно реализовать через кэш
-        return Yii::$app->user->getIdentity()->getProfile()->currency;
+        if (!isset(Yii::$app->params['mainCurrency'])) {
+            $mainCurrency = Yii::$app->user->getIdentity()->getProfile()->currency;
+            Yii::$app->params['mainCurrency'] = $mainCurrency;
+        } else {
+            $mainCurrency = Yii::$app->params['mainCurrency'];
+        }
+
+        return $mainCurrency;
     }
 
 

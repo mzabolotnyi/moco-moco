@@ -1,15 +1,14 @@
 <div class="card">
-    <div class="listview lv-bordered lv-lg p-b-15" data-infinite-scroll="scope.update()"
-         data-infinite-scroll-disabled="scope.loading || scope.error || scope.isEndOfPagination()">
+    <div class="listview lv-bordered lv-lg p-b-15">
         <div class="lv-header-alt clearfix">
 
             <div class="date-toolbar pull-left">
                 <span>
-                    <button class="dt-btn" data-ng-click="scope.moveCurrentDate(-1)">
+                    <button class="dt-btn" data-ng-click="scope.transactions.moveCurrentDate(-1)">
                         <i class="zmdi zmdi-chevron-left"></i>
                     </button>
-                    <h2>{{scope.getDisplayDate()}}</h2>
-                    <button class="dt-btn" data-ng-click="scope.moveCurrentDate(1)">
+                    <h2>{{scope.transactions.getDisplayDate()}}</h2>
+                    <button class="dt-btn" data-ng-click="scope.transactions.moveCurrentDate(1)">
                         <i class="zmdi zmdi-chevron-right"></i>
                     </button>
                 </span>
@@ -21,7 +20,7 @@
                         <i class="zmdi zmdi-more-vert"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="" data-ng-click="scope.setCurrentDateAsToday()">Сегодня</a></li>
+                        <li><a href="" data-ng-click="scope.transactions.setCurrentDateAsToday()">Сегодня</a></li>
                         <li class="divider"></li>
                         <li><a href="" data-ng-click="scope.transactions.update()">Обновить</a></li>
                     </ul>
@@ -44,6 +43,9 @@
         <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.transactions.update()">Повторить</button>
     </div>
     <div class="text-center p-b-10" data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
-        <div>Нет операций за {{scope.getDisplayDate()}}</div>
+        <div>
+            Нет операций за {{scope.getDisplayDate()}}
+            <button class="btn btn-xs bgm-teal m-l-10" data-ng-click="transaction.edit('expense')">Создать</button>
+        </div>
     </div>
 </div>
