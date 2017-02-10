@@ -28,15 +28,21 @@ class Analytics extends Model
     /**
      * Factory method
      *
-     * @param string $startDate
-     * @param string $endDate
+     * @param string|Carbon $startDate
+     * @param string|Carbon $endDate
      * @return Analytics
      */
     public static function create($startDate, $endDate)
     {
         $analytics = new Analytics();
-        $analytics->startDate = gettype($startDate) === 'string' ? new Carbon($startDate) : $startDate;
-        $analytics->endDate = gettype($endDate) === 'string' ? new Carbon($endDate) : $endDate;
+
+        $analytics->startDate = gettype($startDate) === 'string'
+            ? Carbon::createFromFormat('Y-m-d', $startDate)
+            : clone $startDate;
+
+        $analytics->endDate = gettype($endDate) === 'string'
+            ? Carbon::createFromFormat('Y-m-d', $endDate)
+            : clone $endDate;
 
         return $analytics;
     }
@@ -143,6 +149,7 @@ class Analytics extends Model
 
     /**
      * Returns currency by ID
+     *
      * @param string $id currency ID
      * @return Currency|null
      */
@@ -156,5 +163,25 @@ class Analytics extends Model
         }
 
         return $currency;
+    }
+
+    /**
+     * Returns total expense in period
+     *
+     * @return number
+     */
+    public function getTotalExpense()
+    {
+        return array_sum(array_column($this->getExpenseByCategoryData(), 'amount'));
+    }
+
+    /**
+     * Returns total income in period
+     *
+     * @return number
+     */
+    public function getTotalIncome()
+    {
+        return array_sum(array_column($this->getIncomeByCategoryData(), 'amount'));
     }
 }

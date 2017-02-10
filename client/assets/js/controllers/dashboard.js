@@ -1,6 +1,6 @@
 App
-    .controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'chart', 'notifyService',
-        function ($scope, transaction, transactions, chart, notifyService) {
+    .controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analytics', 'notifyService',
+        function ($scope, transaction, transactions, analytics, notifyService) {
 
             // Scope object
             $scope.scope = {
@@ -20,8 +20,15 @@ App
                 isSectionStats: function () {
                     return this.checkCurrentSection('stats');
                 },
+                update: function () {
+                    this.transactions.update();
+                    this.charts.update();
+                    this.widget.update();
+                    $scope.balance.update();
+                },
                 transactions: {
                     data: transactions.data,
+                    currentDate: moment().toDate(),
                     update: function () {
 
                         var _this = this;
@@ -60,7 +67,6 @@ App
                     getSign: function (item) {
                         return this.getAmount(item) > 0 ? '+' : '';
                     },
-                    currentDate: moment().toDate(),
                     getDisplayDate: function () {
 
                         var date = moment(this.currentDate).startOf('day');
@@ -112,7 +118,7 @@ App
                             var startDate = moment(_this.month).startOf('month').toDate();
                             var endDate = moment(_this.month).endOf('month').toDate();
 
-                            chart.getExpense(startDate, endDate)
+                            analytics.getExpenseByCategory(startDate, endDate)
                                 .success(function (data) {
                                     _this.data = angular.forEach(data, function (value, key) {
                                         value.y = value.amount;
@@ -157,7 +163,52 @@ App
                             var startDate = moment(_this.month).startOf('month').toDate();
                             var endDate = moment(_this.month).endOf('month').toDate();
 
-                            chart.getIncome(startDate, endDate)
+                            analytics.getIncomeByCategory(startDate, endDate)
+                                .success(function (data) {
+                                    _this.data = angular.forEach(data, function (value, key) {
+                                        value.y = value.amount;
+                                    });
+
+                                    if (_this.data.length === 0) {
+                                        _this.data = [{name: 'Нет доходов', y: 0.001}]
+                                    }
+                                })
+                                .error(function (error) {
+                                    _this.error = true;
+                                    notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                                })
+                                .finally(function () {
+                                    _this.loading = false;
+                                });
+                        },
+                        fullScreen: false,
+                        toggleFullScreen: function () {
+                            this.fullScreen = !this.fullScreen;
+                            this.update();
+                        }
+                    },
+                    incExpColumn: {
+                        data: [],
+                        month: moment().startOf('month').toDate(),
+                        getDisplayMonth: function () {
+                            return moment(this.month).format('MMMM YYYY');
+                        },
+                        moveMonth: function (numberMonths) {
+                            this.month = moment(this.month).add(numberMonths, 'months').toDate();
+                            this.update();
+                        },
+                        update: function () {
+
+                            var _this = this;
+
+                            _this.loading = true;
+                            _this.error = false;
+                            _this.data = [];
+
+                            var startDate = moment(_this.month).startOf('month').toDate();
+                            var endDate = moment(_this.month).endOf('month').toDate();
+
+                            analytics.getIncomeByCategory(startDate, endDate)
                                 .success(function (data) {
                                     _this.data = angular.forEach(data, function (value, key) {
                                         value.y = value.amount;
@@ -181,14 +232,109 @@ App
                             this.update();
                         }
                     }
+                },
+                widget: {
+                    update: function () {
+
+                        var _this = this;
+
+                        _this.loading = true;
+                        _this.error = false;
+
+                        var period = moment(_this.month).startOf('month').toDate();
+
+                        analytics.getWidgetData(period)
+                            .success(function (data) {
+
+                                if (data.expense) {
+                                    _this.expense.amount = data.expense.amount;
+                                    _this.expense.dynamics = data.expense.dynamics;
+                                }
+
+                                if (data.income) {
+                                    _this.income.amount = data.income.amount;
+                                    _this.income.dynamics = data.income.dynamics;
+                                }
+
+                                if (data.profit) {
+                                    _this.profit.amount = data.profit.amount;
+                                    _this.profit.dynamics = data.profit.dynamics;
+                                }
+                            })
+                            .error(function (error) {
+                                _this.error = true;
+                                notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                            })
+                            .finally(function () {
+                                _this.loading = false;
+                            });
+                    },
+                    expense: {
+                        amount: 0,
+                        dynamics: 0,
+                        isOk: function () {
+                            return this.dynamics < 0;
+                        },
+                        isBad: function () {
+                            return this.dynamics > 0;
+                        },
+                        getDisplayDynamics: function () {
+                            return Math.abs(this.dynamics);
+                        }
+                    },
+                    income: {
+                        amount: 0,
+                        dynamics: 0,
+                        isOk: function () {
+                            return this.dynamics > 0;
+                        },
+                        isBad: function () {
+                            return this.dynamics < 0;
+                        },
+                        getDisplayDynamics: function () {
+                            return Math.abs(this.dynamics);
+                        }
+                    },
+                    profit: {
+                        amount: 0,
+                        dynamics: 0,
+                        isOk: function () {
+                            return this.dynamics > 0;
+                        },
+                        isBad: function () {
+                            return this.dynamics < 0;
+                        },
+                        getTitle: function () {
+                            return this.amount >= 0 ? 'Экономия' : 'Перерасход'
+                        },
+                        getDisplayDynamics: function () {
+                            return Math.abs(this.dynamics);
+                        }
+                    }
                 }
             };
 
             //установим коллбэк после записи операции
             $scope.transaction.callback = function () {
                 $scope.scope.transactions.update();
+                $scope.scope.charts.update();
+                $scope.scope.widget.update();
+            };
+
+            //установим коллбэк после корректировки баланса
+            $scope.balance.adjustment.callback = function () {
+
+                $scope.scope.charts.update();
+                $scope.scope.widget.update();
+
+                if ($scope.scope.transactions.currentDate.toDateString() == (new Date).toDateString()) {
+                    $scope.scope.transactions.update();
+                }
             };
 
             //инициализируем обновление графиков
             $scope.scope.charts.update();
+
+            //инициализируем обновление виджетов
+            $scope.scope.widget.update();
         }])

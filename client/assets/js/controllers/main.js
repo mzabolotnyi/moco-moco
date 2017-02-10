@@ -183,12 +183,18 @@ App
                 amount: 0,
                 amountInMainCurrency: 0,
                 amountInOtherCurrency: 0,
+                reset: function () {
+                    this.data = [];
+                    this.amount = 0;
+                    this.amountInMainCurrency = 0;
+                    this.amountInOtherCurrency = 0;
+                },
                 update: function () {
 
                     var _this = this;
                     _this.loading = true;
                     _this.error = false;
-                    _this.data = [];
+                    _this.reset();
 
                     balance.get()
                         .success(function (response) {
@@ -252,6 +258,7 @@ App
                                 _this.close();
                                 notifyService.notify('Баланс изменен');
                                 $scope.balance.update();
+                                _this.afterAdjust();
                             }, function (error) {
                                 if (error.data) {
                                     if (error.status === 422) {
@@ -265,7 +272,23 @@ App
                             .finally(function () {
                                 _this.submitting = false;
                             });
-                    }
+                    },
+                    // действия, которые будут выпонены после изменения баланса
+                    afterAdjust: function () {
+
+                        //для определенных состояний необходимо обновить список операций
+                        var currentStateName = $state.current.name;
+                        var stateNames = [
+                            'transactions.list',
+                            'dashboard'
+                        ];
+
+                        if (stateNames.indexOf(currentStateName) != -1) {
+                            if (angular.isFunction(this.callback)) {
+                                this.callback.call();
+                            }
+                        }
+                    },
                 }
             };
 
@@ -883,6 +906,11 @@ App
 
             //установим коллбэк после записи операции
             $scope.transaction.callback = function () {
+                $scope.scope.update(true);
+            };
+
+            //установим коллбэк после корректировки баланса
+            $scope.balance.adjustment.callback = function () {
                 $scope.scope.update(true);
             };
 

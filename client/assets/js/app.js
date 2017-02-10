@@ -13,7 +13,8 @@ var App = angular.module('app', [
     'mocoCurrency',
     'mocoCategory',
     'mocoAccount',
-    'mocoTransaction'
+    'mocoTransaction',
+    'mocoAnalytics'
 ]);
 
 App

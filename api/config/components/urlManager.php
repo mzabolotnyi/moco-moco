@@ -87,6 +87,7 @@ return [
             'patterns' => [
                 'GET expense' => 'expense',
                 'GET income' => 'income',
+                'GET widgetData' => 'widget-data',
             ],
         ],
     ],

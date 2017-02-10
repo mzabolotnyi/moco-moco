@@ -60,7 +60,7 @@ class Balance extends Model
     public function rules()
     {
         return [
-            [['accountId', 'currencyId', 'amount'], 'required', 'on' => self::SCENARIO_ADJUST],
+            [['accountId', 'currencyId'], 'required', 'on' => self::SCENARIO_ADJUST],
             ['date', 'date', 'format' => 'yyyy-MM-dd'],
             ['amount', 'number', 'numberPattern' => '/^[-+]?[0-9]*\.?[0-9]{1,2}$/'],
             ['currencyId', 'exist', 'targetClass' => Currency::className(), 'targetAttribute' => ['currencyId' => 'id']],
@@ -68,6 +68,7 @@ class Balance extends Model
             ['date', 'default', 'value' => Carbon::today()->format('Y-m-d')],
             ['currencyId', 'default', 'value' => null],
             ['accountId', 'default', 'value' => null],
+            ['amount', 'default', 'value' => 0],
         ];
     }
 

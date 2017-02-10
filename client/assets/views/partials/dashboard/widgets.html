@@ -1,10 +1,7 @@
 <div class="row">
 
     <div class="col-sm-4">
-
         <div class="card card-widget">
-
-
             <div class="card-header">
                 <h2 class="f-700 c-teal">Доходы</h2>
                 <ul class="actions">
@@ -15,57 +12,113 @@
                 </ul>
             </div>
 
-            <div class="card-body">
-                <h4>26,374 ₴</h4>
+            <div class="card-body" data-ng-if="!scope.widget.loading && !scope.widget.error">
+                <h4>
+                    <money-format amount="scope.widget.income.amount"></money-format>
+                    {{profile.data.currency.symbol}}
+                </h4>
                 <span>Общий доход</span>
-                <span class="f-700 pull-right c-green" title="Результат прошлого месяца: 10,170 ₴">
-                    <i class="fa fa-caret-up"></i> 159%
+                <span class="f-700 pull-right"
+                      data-ng-class="{ 'c-green':scope.widget.income.isOk(), 'c-red':scope.widget.income.isBad() }">
+                    <i class="fa"
+                       data-ng-class="{ 'fa-caret-up':scope.widget.income.isOk(), 'fa-caret-down':scope.widget.income.isBad() }"> </i>
+                       {{scope.widget.income.getDisplayDynamics()}}%
                 </span>
             </div>
 
+            <div class="card-body" data-ng-if="scope.widget.loading">
+                <div class="text-center">
+                    <ng-include src="'assets/views/partials/loaders/loading-only-preloader.html'"></ng-include>
+                </div>
+            </div>
+
+            <div class="card-body" data-ng-if="scope.widget.error">
+                <div class="text-center has-error">
+                    <div>Произошла ошибка...</div>
+                    <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.widget.update()">Повторить
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+
     <div class="col-sm-4">
-
         <div class="card card-widget">
-
-
             <div class="card-header">
                 <h2 class="f-700 c-teal">Расходы</h2>
                 <ul class="actions">
                     <li>
                         <a href="" uib-tooltip="Новый расход" data-ng-click="transaction.edit('expense')"><i
-                                class="zmdi zmdi-plus"></i></a></li>
+                                class="zmdi zmdi-plus"></i></a>
+                    </li>
                 </ul>
             </div>
 
-            <div class="card-body">
-                <h4>12,419 ₴</h4>
+            <div class="card-body" data-ng-if="!scope.widget.loading && !scope.widget.error">
+                <h4>
+                    <money-format amount="scope.widget.expense.amount"></money-format>
+                    {{profile.data.currency.symbol}}
+                </h4>
                 <span>Общий расход</span>
-        <span class="f-700 pull-right c-red" title="Результат прошлого месяца: 9,824 ₴">
-                <i class="fa fa-caret-up"></i>
-            26%</span>
+                <span class="f-700 pull-right"
+                      data-ng-class="{ 'c-green':scope.widget.expense.isOk(), 'c-red':scope.widget.expense.isBad() }">
+                    <i class="fa"
+                       data-ng-class="{ 'fa-caret-down':scope.widget.expense.isOk(), 'fa-caret-up':scope.widget.expense.isBad() }"> </i>
+                       {{scope.widget.expense.getDisplayDynamics()}}%
+                </span>
             </div>
 
+            <div class="card-body" data-ng-if="scope.widget.loading">
+                <div class="text-center">
+                    <ng-include src="'assets/views/partials/loaders/loading-only-preloader.html'"></ng-include>
+                </div>
+            </div>
+
+            <div class="card-body" data-ng-if="scope.widget.error">
+                <div class="text-center has-error">
+                    <div>Произошла ошибка...</div>
+                    <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.widget.update()">Повторить
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+
     <div class="col-sm-4">
-
         <div class="card card-widget">
-
-
             <div class="card-header">
                 <h2 class="f-700 c-teal">Прибыль</h2>
             </div>
 
-            <div class="card-body">
-                <h4>13,955 ₴</h4>
-                <span>Экономия</span>
-        <span class="f-700 pull-right c-green" title="Результат прошлого месяца: 346 ₴">
-                <i class="fa fa-caret-up"></i>
-            13,609 ₴</span>
+            <div class="card-body" data-ng-if="!scope.widget.loading && !scope.widget.error">
+                <h4>
+                    <money-format amount="scope.widget.profit.amount"></money-format>
+                    {{profile.data.currency.symbol}}
+                </h4>
+                <span>{{scope.widget.profit.getTitle()}}</span>
+                <span class="f-700 pull-right"
+                      data-ng-class="{ 'c-green':scope.widget.profit.isOk(), 'c-red':scope.widget.profit.isBad() }">
+                    <i class="fa"
+                       data-ng-class="{ 'fa-caret-up':scope.widget.profit.isOk(), 'fa-caret-down':scope.widget.profit.isBad() }"> </i>
+                    <money-format amount="scope.widget.profit.dynamics"></money-format>
+                    {{profile.data.currency.getDisplayDynamics()}}
+                </span>
             </div>
 
+            <div class="card-body" data-ng-if="scope.widget.loading">
+                <div class="text-center">
+                    <ng-include src="'assets/views/partials/loaders/loading-only-preloader.html'"></ng-include>
+                </div>
+            </div>
+
+            <div class="card-body" data-ng-if="scope.widget.error">
+                <div class="text-center has-error">
+                    <div>Произошла ошибка...</div>
+                    <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.widget.update()">Повторить
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>

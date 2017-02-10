@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="listview lv-bordered lv-lg p-b-15">
+    <div class="listview lv-bordered lv-lg">
         <div class="lv-header-alt clearfix">
 
             <div class="date-toolbar pull-left">
@@ -35,14 +35,14 @@
             </div>
         </div>
     </div>
-    <div class="text-center p-b-10" data-ng-if="scope.transactions.loading">
+    <div class="text-center p-t-10 p-b-10" data-ng-if="scope.transactions.loading">
         <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
     </div>
-    <div class="text-center p-b-10 has-error" data-ng-if="scope.transactions.error">
+    <div class="text-center p-t-10 p-b-10 has-error" data-ng-if="scope.transactions.error">
         <div>Произошла ошибка...</div>
         <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.transactions.update()">Повторить</button>
     </div>
-    <div class="text-center p-b-10" data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
+    <div class="text-center p-t-10 p-b-10" data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
         <div>
             Нет операций за {{scope.getDisplayDate()}}
             <button class="btn btn-xs bgm-teal m-l-10" data-ng-click="transaction.edit('expense')">Создать</button>
