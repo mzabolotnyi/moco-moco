@@ -33,6 +33,12 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        'generators' => [
+            'crud' => ['class' => 'dee\gii\generators\crud\Generator'],
+            'angular' => ['class' => 'dee\gii\generators\angular\Generator'],
+            'mvc' => ['class' => 'dee\gii\generators\mvc\Generator'],
+            'migration' => ['class' => 'dee\gii\generators\migration\Generator'],
+        ]
     ];
 }
 

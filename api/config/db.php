@@ -5,7 +5,7 @@ return [
     'enableSchemaCache' => true,
     'dsn' => 'mysql:host=localhost;dbname=moco_moco',
     'username' => 'root',
-    'password' => '',
+    'password' => 'qwerty',
     'charset' => 'utf8',
 //    'dsn' => 'mysql:host=localhost;dbname=u469820982_moco',
 //    'username' => 'u469820982_admin',

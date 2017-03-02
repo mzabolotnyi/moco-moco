@@ -9,6 +9,37 @@
 
         <form id="filter-form" name="filter-form" data-ng-submit="scope.filter.submit()">
 
+            <!-- TYPES-->
+            <label>Типы</label>
+
+            <div>
+                <div class="checkbox d-inline-block m-r-5">
+                    <label>
+                        <input type="checkbox" class="checker select-box"
+                               data-ng-model="scope.filter.items.types.expense" data-ng-change="scope.update(true)">
+                        <i class="input-helper"></i>
+                        Расходы
+                    </label>
+                </div>
+                <div class="checkbox d-inline-block m-r-5">
+                    <label>
+                        <input type="checkbox" class="checker select-box"
+                               data-ng-model="scope.filter.items.types.income" data-ng-change="scope.update(true)">
+                        <i class="input-helper"></i>
+                        Доходы
+                    </label>
+                </div>
+                <div class="checkbox d-inline-block">
+                    <label>
+                        <input type="checkbox" class="checker select-box"
+                               data-ng-model="scope.filter.items.types.transfer" data-ng-change="scope.update(true)">
+                        <i class="input-helper"></i>
+                        Переводы
+                    </label>
+                </div>
+            </div>
+            <!-- end TYPES-->
+
             <!--CATEGORY-->
             <label>Категория</label>
 

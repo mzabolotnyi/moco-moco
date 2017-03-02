@@ -44,7 +44,7 @@
     </div>
     <div class="text-center p-t-10 p-b-10" data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
         <div>
-            Нет операций за {{scope.getDisplayDate()}}
+            Нет операций за {{scope.transactions.getDisplayDate()}}
             <button class="btn btn-xs bgm-teal m-l-10" data-ng-click="transaction.edit('expense')">Создать</button>
         </div>
     </div>

@@ -101,13 +101,7 @@ class Currency extends OActiveRecord
      */
     public function getRate($date = null)
     {
-        $rate = CurrencyRate::getRate($this->id, $date);
-
-        if ($rate === null) {
-            $rate = CurrencyRate::createDefaultRate($this->id);
-        }
-
-        return $rate;
+        return CurrencyRate::getRate($this, $date);
     }
 
     /**

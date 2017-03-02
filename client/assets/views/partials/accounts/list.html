@@ -25,9 +25,7 @@
                             <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
                             {{itemCurrency.currency.symbol}}
                         </small>
-                        <small class="lv-small" data-ng-if="scope.getBalance(account).length == 0"> нет средств на
-                            остатке
-                        </small>
+                        <small class="lv-small" data-ng-if="scope.getBalance(account).length == 0">нет доступных средств</small>
                     </div>
                 </div>
             </a>

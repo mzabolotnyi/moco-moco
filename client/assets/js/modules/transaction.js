@@ -26,6 +26,26 @@ CategoryModule
                     getParams.push(httpHelper.prepareGetParam('per-page', perPage));
                 }
 
+                if (filters.types) {
+
+                    var types = [];
+                    angular.forEach(filters.types, function (value, key) {
+                        if (value) {
+                            this.push(key);
+                        }
+                    }, types);
+
+                    getParams.push(httpHelper.prepareGetParam('types', types.join(';')));
+                }
+
+                if (filters.income != undefined) {
+                    getParams.push(httpHelper.prepareGetParam('income', Number(filters.income)));
+                }
+
+                if (filters.transfer != undefined) {
+                    getParams.push(httpHelper.prepareGetParam('transfer', Number(filters.transfer)));
+                }
+
                 if (filters.category) {
                     getParams.push(httpHelper.prepareGetParam('category_id', filters.category.id));
                 }

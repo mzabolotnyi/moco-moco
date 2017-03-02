@@ -43,4 +43,34 @@ class TransactionController extends OActiveController
 
         return $model;
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function prepareDataProvider()
+    {
+        $dataProvider = parent::prepareDataProvider();
+
+        $queryParams = Yii::$app->request->queryParams;
+
+        // filter by types
+        if (isset($queryParams['types'])) {
+
+            $types = explode(';', $queryParams['types']);
+            $typesAvailable = ['expense', 'income', 'transfer'];
+            $condition = null;
+
+            foreach ($types as $type) {
+                if (in_array($type, $typesAvailable)) {
+                    $condition .= (!$condition ? '' : ' OR ') . "$type=1";
+                }
+            }
+
+            if ($condition) {
+                $dataProvider->query->andWhere($condition);
+            }
+        }
+
+        return $dataProvider;
+    }
 }

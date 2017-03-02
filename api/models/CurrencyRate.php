@@ -109,52 +109,111 @@ class CurrencyRate extends OActiveRecord
 
     /**
      * Finds rate for currency on date
-     * @param integer $id ID of currency
+     * @param Currency $currency
      * @param string $date date which need to check, format 'yyyy-MM-dd'
      * @return null|static
      */
-    public static function findRate($id, $date)
+    public static function findRate($currency, $date)
     {
-        return self::findOne(['currency_id' => $id, 'date' => $date]);
+        $cache = \Yii::$app->cache;
+        $key = 'currency_rate_' . $currency->id . '_' . $date;
+
+        if ($cache) {
+            if ($rate = $cache->get($key)) {
+                return $rate;
+            }
+        }
+
+        $rate = self::findOne(['currency_id' => $currency->id, 'date' => $date]);
+
+        if ($cache) {
+            $cache->set($key, $rate);
+        }
+
+        return $rate;
     }
 
     /**
      * Finds the latest exchange rate at the date of
-     * @param integer $id ID of currency
+     * @param Currency $currency
      * @param string $date |null limit date, format 'yyyy-MM-dd', if 'null' get rate on today
      * @return null|static
      */
-    public static function getRate($id, $date = null)
+    public static function getRate($currency, $date = null)
     {
-        if ($date === null) {
+        if (!$date) {
             $date = Carbon::today()->format('Y-m-d');
         }
 
-        return self::find()->where(['currency_id' => $id])
-            ->andWhere(['<=', 'date', $date])
-            ->orderBy('date DESC')
-            ->one();
+        $rate = self::findRate($currency, $date);
+
+        if (!$rate) {
+            $rate = self::createDefaultRate($currency, $date);
+        }
+
+        return $rate;
     }
 
     /**
      * Create default rate
-     * @param integer $id ID of currency
+     * @param Currency $currency
      * @param string $date |null limit date, format 'yyyy-MM-dd', if 'null' get rate on today
      * @return null|static
      */
-    public static function createDefaultRate($id, $date = null)
+    protected static function createDefaultRate($currency, $date = null)
     {
         if ($date === null) {
             $date = Carbon::today()->format('Y-m-d');
         }
 
         $rate = new CurrencyRate();
-        $rate->currency_id = $id;
+        $rate->currency_id = $currency->id;
         $rate->date = $date;
 
-        if (!$rate->save()){
+        // for default currency set rate getting by nbu api
+        if (!$currency->user_id) {
+            $rateData = self::getRateDataNBU($currency->iso, Carbon::createFromFormat('Y-m-d', $date)->format('Ymd'));
+            $rate->rate = $rateData['rate'];
+            $rate->size = $rateData['size'];
+        }
+
+
+        if (!$rate->save()) {
             return null;
         }
         return $rate;
+    }
+
+    /**
+     * Returns rate data from nbu api
+     *
+     * Example:
+     * https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=EUR&date=20170226&json
+     * [{"r030":978,"txt":"Євро","rate":28.448016,"cc":"EUR","exchangedate":"26.02.2017"}]
+     *
+     * @param $ISO
+     * @param $date
+     * @return array
+     */
+    protected function getRateDataNBU($ISO, $date)
+    {
+        $url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=$ISO&date=$date&json";
+        $rateData = null;
+
+        if ($curl = curl_init()) {
+
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $curlResult = curl_exec($curl);
+            $rateData = json_decode($curlResult);
+
+            curl_close($curl);
+        }
+
+        return [
+            'rate' => $rateData && isset($rateData[0]) ? $rateData[0]->rate : 1,
+            'size' => 1,
+        ];
     }
 }

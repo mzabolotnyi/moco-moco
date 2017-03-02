@@ -21,7 +21,7 @@
         </div>
         <div class="modal-body c-overflow">
 
-            <form id="form" name="form" data-ng-if="!transaction.loading" data-ng-submit="transaction.save()"
+            <form id="form-transaction-edit" name="form-transaction-edit" data-ng-if="!transaction.loading" data-ng-submit="transaction.save()"
                   data-autofocus="{{transaction.isNew()}}">
 
                 <!-- 1 row ACCOUNT - AMOUNT - CURRENCY-->
@@ -236,7 +236,7 @@
                     </a>
                 </li>
             </ul>
-            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+            <button class="btn bgm-teal btn-sm" type="submit" form="form-transaction-edit"
                     data-ng-disabled="form.$invalid || transaction.submitting || !transaction.checkFilling()">
                 <span>Сохранить</span>
                 <span data-ng-if="transaction.submitting">

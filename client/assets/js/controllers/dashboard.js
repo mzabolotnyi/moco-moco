@@ -1,5 +1,4 @@
-App
-    .controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analytics', 'notifyService',
+App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analytics', 'notifyService',
         function ($scope, transaction, transactions, analytics, notifyService) {
 
             // Scope object

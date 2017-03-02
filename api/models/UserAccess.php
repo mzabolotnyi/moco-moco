@@ -57,7 +57,7 @@ class UserAccess extends OActiveRecord
      */
     public static function generateAccess($user)
     {
-        if ($user === null) {
+        if ($user == null) {
             return null;
         }
 

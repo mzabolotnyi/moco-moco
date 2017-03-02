@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\OActiveRecord;
 use yii\filters\AccessControl;
 use yii\filters\Cors;
 use yii\filters\RateLimiter;
@@ -242,7 +243,7 @@ class OActiveController extends ActiveController
      */
     protected function prepareDataProvider()
     {
-        /* @var $modelClass \yii\db\BaseActiveRecord */
+        /* @var $modelClass OActiveRecord */
         $modelClass = $this->modelClass;
 
         if (isset(class_implements($modelClass)['app\models\ISearchable'])) {
