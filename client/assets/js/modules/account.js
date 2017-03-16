@@ -2,7 +2,7 @@
 var AccountModule = angular.module('mocoAccount', []);
 
 // Defining logic
-CategoryModule
+AccountModule
     .constant('accountConfig', {
         baseUrl: 'accounts'
     })

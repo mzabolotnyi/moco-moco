@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Balance;
 use app\models\AccountCurrency;
+use app\models\Category;
 use app\models\Currency;
 use app\models\Transaction;
 use Yii;
@@ -235,10 +236,17 @@ class AccountController extends OActiveController
         $model = $this->findModel($id);
         $currency = Currency::findCurrency($currencyId);
 
+        if ($categoryId = Yii::$app->request->post('category')) {
+            $category = Category::findOne($categoryId);
+        } else {
+            $category = null;
+        }
+
         $balance = new Balance([
             'scenario' => Balance::SCENARIO_ADJUST,
             'accountId' => $model->id,
             'currencyId' => $currency->id,
+            'categoryId' => $category ? $category->id : null,
             'date' => $date,
         ]);
 

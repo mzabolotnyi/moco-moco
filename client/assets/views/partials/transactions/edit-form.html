@@ -48,7 +48,11 @@
                         <!--AMOUNT-->
                         <div class="tr-amount">
                             <div class="fg-line form-group">
-                                <input type="number" class="form-control input-sm input-amount autofocus"
+                                <input type="text" data-ng-if="!global.isMobile()" class="form-control input-sm input-amount text-right autofocus"
+                                       data-ng-model="transaction.amount"
+                                       data-ng-change="transaction.amountChangeHandler()"
+                                       name="amount" placeholder="0.00" required>
+                                <input type="number" data-ng-if="global.isMobile()" class="form-control input-sm input-amount autofocus"
                                        data-ng-model="transaction.amount"
                                        data-ng-change="transaction.amountChangeHandler()"
                                        name="amount" placeholder="0.00" min="0.01" step="0.01" required>
@@ -138,7 +142,10 @@
                             <!--RECEPIENT AMOUNT-->
                             <div class="tr-amount">
                                 <div class="form-group fg-line">
-                                    <input type="number" class="form-control input-sm input-amount"
+                                    <input type="text" data-ng-if="!global.isMobile()" class="form-control input-sm input-amount text-right"
+                                           data-ng-model="transaction.recipientAmount"
+                                           name="recipientAmount" placeholder="0.00" required>
+                                    <input type="number" data-ng-if="global.isMobile()" class="form-control input-sm input-amount"
                                            data-ng-model="transaction.recipientAmount"
                                            name="recipientAmount" placeholder="0.00" min="0.01" step="0.01" required>
                                 </div>

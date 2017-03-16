@@ -161,8 +161,8 @@ AuthModule
             $scope.loginDemo = function (){
 
                 var user = {
-                    email: 'mzabolotnyi@gmail.com',
-                    password: '111111'
+                    email: 'demo@gmail.com',
+                    password: 'demo'
                 };
 
                 this.login(user);

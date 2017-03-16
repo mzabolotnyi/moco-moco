@@ -21,8 +21,14 @@ BalanceModule
             get: function () {
                 return $http.get(utils.getFullUrl(config.baseUrl));
             },
-            adjust: function (accountId, currencyId, amount) {
+            adjust: function (accountId, currencyId, amount, categoryId) {
+
                 var bodyParams = {amount: amount};
+
+                if (categoryId) {
+                    bodyParams.category = categoryId;
+                }
+
                 return $http.post(utils.getAdjustUrl(accountId, currencyId), bodyParams);
             }
         };

@@ -1,8 +1,8 @@
 // Create new angular module
-var TransactionModule = angular.module('mocoAnalytics', []);
+var AnalyticsModule = angular.module('mocoAnalytics', []);
 
 // Defining logic
-CategoryModule
+AnalyticsModule
     .constant('analyticsConfig', {
         baseUrl: 'analytics',
         startPeriodParamName: 'startDate',

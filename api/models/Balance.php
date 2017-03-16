@@ -22,6 +22,7 @@ class Balance extends Model
     public $date;
     public $accountId;
     public $currencyId;
+    public $categoryId;
     public $amount;
     public $comment = 'Корректировка остатка';
 
@@ -279,6 +280,10 @@ class Balance extends Model
         $model->currency_id = $this->currencyId;
         $model->user_id = Yii::$app->user->getId();
         $model->comment = $this->comment;
+
+        if ($this->categoryId){
+            $model->category_id = $this->categoryId;
+        }
 
         if ($model->save()) {
             $response = Yii::$app->getResponse();

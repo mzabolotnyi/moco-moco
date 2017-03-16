@@ -2,7 +2,7 @@
 var TransactionModule = angular.module('mocoTransaction', []);
 
 // Defining logic
-CategoryModule
+TransactionModule
     .constant('transactionConfig', {
         baseUrl: 'transactions'
     })
@@ -110,7 +110,7 @@ CategoryModule
                     comment: transaction.comment
                 };
 
-                return bodyParams
+                return bodyParams;
             }
         }
     }])

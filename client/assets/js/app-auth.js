@@ -9,7 +9,6 @@ App
     // Constants definition
     .constant('config', {
         apiUrl: 'http://api.moco-moco',
-        //apiUrl: 'http://mocoservice.xyz',
         siteUrl: 'http://moco-moco',
         authHref: '/auth',
         appName: 'Money Control',

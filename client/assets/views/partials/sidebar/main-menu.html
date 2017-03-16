@@ -37,4 +37,34 @@
             <i class="zmdi zmdi-money"></i> Валюты
         </a>
     </li>
+
+    <li class="sub-menu">
+        <a href="" toggle-submenu><i class="zmdi zmdi-shopping-basket"></i> Продажи</a>
+        <ul>
+            <li menu-item>
+                <a data-ui-sref-active="active" data-ui-sref="sales.orders"
+                   data-ng-click="sidebar.close()">
+                    <i class="zmdi zmdi-shopping-cart"></i> Заказы
+                </a>
+            </li>
+            <li menu-item>
+                <a data-ui-sref-active="active" data-ui-sref="sales.sizes"
+                   data-ng-click="sidebar.close()">
+                    <i class="zmdi zmdi-format-size"></i> Размеры
+                </a>
+            </li>
+            <li menu-item>
+                <a data-ui-sref-active="active" data-ui-sref="sales.sizes1"
+                   data-ng-click="sidebar.close()">
+                    <i class="zmdi zmdi-mall"></i> Бренды
+                </a>
+            </li>
+            <li menu-item>
+                <a data-ui-sref-active="active" data-ui-sref="sales.sizes2"
+                   data-ng-click="sidebar.close()">
+                    <i class="zmdi zmdi-accounts"></i> Источники
+                </a>
+            </li>
+        </ul>
+    </li>
 </ul>

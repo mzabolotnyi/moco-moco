@@ -88,15 +88,44 @@ App
                 pageTitle: 'Настройки',
                 viewLoad: true
             })
+            .state('sales', {
+                url: '/sales',
+                templateUrl: 'assets/views/pages/common.html',
+                abstract: true
+            })
+            .state('sales.orders', {
+                url: '',
+                templateUrl: 'assets/views/pages/sales/orders.html',
+                controller: 'OrdersCtrl',
+                pageTitle: 'Продажи - Заказы',
+                viewLoad: true,
+                resolve: {
+                    orders: function (order) {
+                        return order.get();
+                    }
+                }
+            })
+            .state('sales.sizes', {
+                url: '/sizes',
+                templateUrl: 'assets/views/pages/sales/sizes.html',
+                controller: 'SizesCtrl',
+                pageTitle: ' Продажи - Размеры',
+                viewLoad: true,
+                resolve: {
+                    categories: function (sizeCategory) {
+                        return sizeCategory.get();
+                    }
+                }
+            })
     })
     // httpProvider configuration
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q) {
             return {
-                request: function (config) {
-                    config.timeout = 10000;
-                    return config;
-                },
+                // request: function (config) {
+                //     config.timeout = 10000;
+                //     return config;
+                // },
                 responseError: function (rejection) {
                     return $q.reject(rejection);
                 }
