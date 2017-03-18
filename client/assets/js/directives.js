@@ -67,6 +67,16 @@ App
         };
     })
 
+    // BOOTSTRAP SELECT
+    .directive('selectPicker', function(){
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                element.selectpicker();
+            }
+        }
+    })
+
     // View loader functionality
     .directive('viewLoader', function () {
         return {
@@ -258,7 +268,7 @@ App
             link: function (scope, element, attr) {
                 if (attr.autofocus == 'true') {
                     $timeout(function () {
-                        $(element).find('input.autofocus').focus();
+                        $(element).find('input.autofocus').focus().select();
                     }, 100);
                 }
             }

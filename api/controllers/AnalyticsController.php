@@ -66,17 +66,17 @@ class AnalyticsController extends Controller
             'expense' => [
                 'amount' => $totalExpense,
                 'amountPrev' => $totalExpensePrev,
-                'dynamics'=>$dynamicsExpense,
+                'dynamics' => $dynamicsExpense,
             ],
             'income' => [
                 'amount' => $totalIncome,
                 'amountPrev' => $totalIncomePrev,
-                'dynamics'=>$dynamicsIncome,
+                'dynamics' => $dynamicsIncome,
             ],
             'profit' => [
                 'amount' => $profit,
                 'amountPrev' => $profitPrev,
-                'dynamics'=>$dynamicsProfit,
+                'dynamics' => $dynamicsProfit,
             ]
         ];
     }

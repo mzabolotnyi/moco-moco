@@ -11,7 +11,8 @@
 
                 <div class="input-group">
                     <div class="fg-line">
-                        <input type="number" class="form-control input-sm input-amount autofocus" data-ng-model="balance.adjustment.newBalance"
+                        <input type="number" class="form-control input-sm input-amount autofocus"
+                               data-ng-model="balance.adjustment.newBalance"
                                name="newBalance" placeholder="0.00" min="0" step="0.01">
                     </div>
                     <span class="input-group-addon last">{{balance.adjustment.currency.symbol}}</span>
@@ -42,6 +43,10 @@
                         <i class="fa {{balance.adjustment.category.icon}}" data-ng-if="balance.adjustment.category"></i>
                         <i class="zmdi zmdi-edit" data-ng-if="!balance.adjustment.category"></i>
                     </div>
+                    <!--<select class="selectpicker" name="category" data-ng-model="balance.adjustment.category"-->
+                    <!--data-ng-options="category as category.name for category in (global.categories | filterActive)">-->
+                    <!--<option value="">Корректировка</option>-->
+                    <!--</select>-->
                 </div>
                 <!--end CATEGORY-->
 
