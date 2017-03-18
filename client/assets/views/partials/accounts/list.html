@@ -22,7 +22,7 @@
                         </div>
                         <small class="lv-small" data-ng-repeat="itemCurrency in scope.getBalance(account)"
                                data-ng-if="itemCurrency.amount != 0">
-                            <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
+                            <span class="balance-amount">{{itemCurrency.amount | number}}</span>
                             {{itemCurrency.currency.symbol}}
                         </small>
                         <small class="lv-small" data-ng-if="scope.getBalance(account).length == 0">нет доступных средств</small>

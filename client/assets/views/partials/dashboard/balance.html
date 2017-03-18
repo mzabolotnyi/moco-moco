@@ -3,7 +3,7 @@
         <h2 class="f-700 c-teal">
             Баланс
             <span class="pull-right m-t-0">
-                <money-format amount="balance.amount"></money-format> {{profile.data.currency.symbol}}
+                {{balance.amount | number:0}} {{profile.data.currency.symbol}}
             </span>
         </h2>
     </div>
@@ -14,7 +14,7 @@
             <tr class="f-700 bgm-teal c-white">
                 <td>В основной валюте</td>
                 <td class="text-right">
-                    <money-format amount="balance.amountInMainCurrency"></money-format>
+                    {{balance.amountInMainCurrency | number:0}}
                     {{profile.data.currency.symbol}}
                 </td>
             </tr>
@@ -27,7 +27,7 @@
                 <td class="text-right">
                     <a href=""
                        data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
-                        <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
+                        <span class="balance-amount">{{itemCurrency.amount | number:0}}</span>
                     </a>
                     <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
                 </td>
@@ -38,7 +38,7 @@
             <tr class="f-700 bgm-teal c-white">
                 <td>В других валютах</td>
                 <td class="text-right">
-                    <money-format amount="balance.amountInOtherCurrency"></money-format>
+                    {{balance.amountInOtherCurrency | number:0}}
                     {{profile.data.currency.symbol}}
                 </td>
             </tr>
@@ -51,7 +51,7 @@
                 <td class="text-right">
                     <a href=""
                        data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
-                        <span class="balance-amount" money-format amount="itemCurrency.amount"></span>
+                        <span class="balance-amount">{{itemCurrency.amount | number:0}}</span>
                     </a>
                     <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
                 </td>

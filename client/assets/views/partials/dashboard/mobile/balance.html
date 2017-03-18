@@ -2,19 +2,19 @@
     <div class="bd-item bd-total">
         <span class="bd-title">Баланс</span>
         <span class="bd-amount">
-            <money-format amount="balance.amount"></money-format> {{profile.data.currency.symbol}}
+            {{balance.amount | number:0}} {{profile.data.currency.symbol}}
         </span>
     </div>
     <div class="bd-item bd-subtotal">
         <span class="bd-title">збережения в {{profile.data.currency.iso}}</span>
         <span class="bd-amount">
-            <money-format amount="balance.amountInMainCurrency"></money-format> {{profile.data.currency.symbol}}
+            {{balance.amountInMainCurrency | number:0}} {{profile.data.currency.symbol}}
         </span>
     </div>
     <div class="bd-item bd-subtotal">
         <span class="bd-title">збережения в других валютах</span>
         <span class="bd-amount">
-            <money-format amount="balance.amountInOtherCurrency"></money-format> {{profile.data.currency.symbol}}
+            {{balance.amountInOtherCurrency | number:0}} {{profile.data.currency.symbol}}
         </span>
     </div>
 
@@ -25,8 +25,7 @@
             <span data-ng-repeat="itemCurrency in item.currencies" data-ng-if="itemCurrency.amount != 0">
                 <a href=""
                    data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
-                    <span class="balance-amount"
-                          money-format amount="itemCurrency.amount"></span>
+                    <span class="balance-amount">{{itemCurrency.amount | number:0}}</span>
                 </a>
                 <span class="balance-currency">{{itemCurrency.currency.symbol}}</span>
             </span>

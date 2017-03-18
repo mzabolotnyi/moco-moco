@@ -8,7 +8,7 @@
                     <div class="lv-title" data-ng-class="{ 'f-700' : scope.isMainCurrency(currency) }">
                         {{currency.name}}
                     </div>
-                    <small class="lv-small money-format">{{currency.rate.rate}}</small>
+                    <small class="lv-small">{{currency.rate.rate | number}}</small>
                 </div>
             </div>
         </a>
