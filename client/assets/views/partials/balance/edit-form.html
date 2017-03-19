@@ -31,8 +31,6 @@
                 <label class="m-t-15">Категория, на которую будет списана разница</label>
 
                 <div class="form-group fg-line">
-
-                    <!-- expense-->
                     <select class="form-control input-sm  p-l-30" name="category"
                             data-ng-model="balance.adjustment.category"
                             data-ng-options="category as category.name for category in (global.categories | filterActive)">
@@ -43,10 +41,6 @@
                         <i class="fa {{balance.adjustment.category.icon}}" data-ng-if="balance.adjustment.category"></i>
                         <i class="zmdi zmdi-edit" data-ng-if="!balance.adjustment.category"></i>
                     </div>
-                    <!--<select class="selectpicker" name="category" data-ng-model="balance.adjustment.category"-->
-                    <!--data-ng-options="category as category.name for category in (global.categories | filterActive)">-->
-                    <!--<option value="">Корректировка</option>-->
-                    <!--</select>-->
                 </div>
                 <!--end CATEGORY-->
 

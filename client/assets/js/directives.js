@@ -67,16 +67,6 @@ App
         };
     })
 
-    // BOOTSTRAP SELECT
-    .directive('selectPicker', function(){
-        return {
-            restrict: 'A',
-            link: function(scope, element, attrs) {
-                element.selectpicker();
-            }
-        }
-    })
-
     // View loader functionality
     .directive('viewLoader', function () {
         return {
