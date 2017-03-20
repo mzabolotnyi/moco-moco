@@ -22,8 +22,18 @@ SizeModule
                 return [appConfig.apiUrlSales, config.sizeUrl, id].join('/')
             },
             prepareBodyParams: function (object) {
+
+                var sizes = [];
+
+                angular.forEach(object.sizes, function(size) {
+                    this.push({
+                        name: size.name
+                    });
+                }, sizes);
+
                 return {
-                    name: object.name
+                    name: object.name,
+                    sizes: sizes
                 };
             }
         }

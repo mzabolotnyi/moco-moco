@@ -17,6 +17,13 @@ App.controller('SizesCtrl', ['$scope', 'size', 'sizeCategory', 'categories', 'no
                 sizeCategory.get()
                     .success(function (response) {
                         _this.data = response;
+                        if (_this.selected) {
+                            angular.forEach(_this.data, function ($obj) {
+                                if ($obj.id === _this.selected.id) {
+                                    this.edit($obj);
+                                }
+                            }, _this);
+                        }
                     })
                     .error(function (error) {
                         _this.error = true;
@@ -68,20 +75,43 @@ App.controller('SizesCtrl', ['$scope', 'size', 'sizeCategory', 'categories', 'no
                 isNew: function () {
                     return this.id === 0;
                 },
-                checkFilling: function () {
-                    return this.sizes.length > 0;
+                validate: function () {
+
+                    var success = true;
+
+                    if (this.name == '') {
+                        this.errors.push({'message': 'Необходимо указать название категории'});
+                        success = false;
+                    }
+
+                    if (this.sizes.length == 0) {
+                        this.errors.push({'message': 'Необходимо указать хотя бы один размер'});
+                        success = false;
+                    }
+
+                    angular.forEach(this.sizes, function (size) {
+                        if (size.name == '') {
+                            size.editing = true;
+                            size.errors.push({'message': 'Необходимо указать название размера'});
+                            success = false;
+                        }
+                    }, this.errors);
+
+                    return success;
                 },
                 //заполнение полей по умолчанию (для новых)
                 fillDefault: function () {
                     this.id = 0;
                     this.name = "";
                     this.sizes = [];
+                    this.sizesOrigin = [];
                 },
                 //заполнение полей по переданному объекту
                 fillByObject: function (category) {
-                    angular.forEach(category, function (value, key) {
-                        this[key] = value;
-                    }, this);
+                    this.id = category.id;
+                    this.name = category.name;
+                    this.sizesOrigin = category.sizes;
+                    this.sizes = JSON.parse(JSON.stringify(category.sizes));
                 },
                 //отправляет запрос на сохранение объекта
                 save: function () {
@@ -89,11 +119,14 @@ App.controller('SizesCtrl', ['$scope', 'size', 'sizeCategory', 'categories', 'no
                     var _this = this;
 
                     _this.submitting = true;
+                    $scope.scope.size.clear();
                     _this.errors = [];
 
-                    if (!_this.checkFilling()) {
+                    if (!_this.validate()) {
+                        if (_this.errors.length == 0) {
+                            _this.errors.push({'message': 'При проверке данных были обнаружены ошибки'});
+                        }
                         _this.submitting = false;
-                        _this.errors.push({'message': ' Необходимо указать хотя бы один размер'});
                         return;
                     }
 
@@ -148,10 +181,30 @@ App.controller('SizesCtrl', ['$scope', 'size', 'sizeCategory', 'categories', 'no
             },
             size: {
                 edit: function (size) {
+                    this.clear();
                     size.editing = true;
                 },
                 cancelEditing: function (size) {
                     size.editing = false;
+                },
+                clear: function () {
+                    angular.forEach($scope.scope.category.sizes, function (obj) {
+                        this.cancelEditing(obj);
+                        obj.errors = [];
+                    }, this);
+                },
+                add: function () {
+
+                    var newSize = {
+                        'name': ''
+                    };
+
+                    $scope.scope.category.sizes.push(newSize);
+                    this.edit(newSize);
+                },
+                remove: function (size) {
+                    var index = $scope.scope.category.sizes.indexOf(size);
+                    $scope.scope.category.sizes.splice(index, 1);
                 }
             }
         };

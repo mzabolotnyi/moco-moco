@@ -21,6 +21,9 @@
                 </div>
             </a>
         </div>
+        <div data-ng-if="scope.data.length == 0 && !scope.loading && !scope.error" class="text-center">
+            <span>Нет данных</span>
+        </div>
 
         <div class="text-center" data-ng-if="scope.loading">
             <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
@@ -30,8 +33,6 @@
             <div>Произошла ошибка...</div>
             <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.update()">Повторить</button>
         </div>
-
-        <div class="clearfix"></div>
 
         <a class="lv-footer" href="" data-ng-click="scope.update()">Обновить</a>
     </div>

@@ -36,21 +36,28 @@
             <!--SIZES-->
             <label class="m-t-15">Размеры</label>
             <div class="form-group">
-                <span data-ng-repeat="size in scope.category.sizes" class="m-r-15"
-                      data-ng-click="scope.size.edit(size)">
-                    <span data-ng-if="!size.editing" class="btn btn-default m-t-15">{{size.name}}</span>
-                <span data-ng-if="size.editing" class="btn btn-default m-t-15">
-                    <input type="text" data-ng-model="size.name">
-                    <ul class="actions">
-                        <li data-ng-if="!scope.category.isNew()" uib-tooltip="Удалить">
-                            <a href="" data-ng-click="scope.category.delete()">
-                                <i class="zmdi zmdi-delete"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </span>
-                </span>
-                <button class="btn bgm-teal btn-icon-text m-t-15">
+                <div data-ng-repeat="size in scope.category.sizes" class="tag-editable" data-ng-class="{ 'has-error':size.errors.length > 0 }">
+                    <div data-ng-if="!size.editing" class="tag-content">{{size.name}}</div>
+                    <div data-ng-if="size.editing" class="tag-content">
+                        <div content-editable edit-autofocus="true" edit-callback="scope.size.cancelEditing(size)"
+                              data-ng-model="size.name"></div>
+                    </div>
+                    <div class="tag-actions" data-ng-if="!size.editing">
+                        <ul class="actions">
+                            <li uib-tooltip="Изменить">
+                                <a href="" data-ng-click="scope.size.edit(size)">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </a>
+                            </li>
+                            <li uib-tooltip="Удалить">
+                                <a href="" data-ng-click="scope.size.remove(size)">
+                                    <i class="zmdi zmdi-delete"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <button type="button" class="btn bgm-teal btn-icon-text tag-editable-add m-t-15" data-ng-click="scope.size.add()">
                     <span class="zmdi zmdi-plus"></span>
                 </button>
             </div>

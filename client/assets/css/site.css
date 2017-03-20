@@ -14206,3 +14206,72 @@ html:not(.ismobile) .preloader-container {
 .full-screen .chart {
     height: 500px !important;
 }
+
+/* TAG EDITABLE */
+.tag-editable {
+    position: relative;
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 15px;
+    color: #333333;
+    background-color: #ffffff;
+    border-color: #cccccc;
+    min-height: 37px;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 3px 12px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    border-radius: 2px;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.tag-editable.has-error {
+    background-color: #ff9890;
+    border-color: #cc6562;
+}
+
+.tag-editable .tag-content {
+    display: inline-block;
+    margin-top: 9px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #009688;
+}
+
+.tag-editable .tag-actions {
+    display: inline-block;
+    position: relative;
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s;
+}
+
+.tag-editable:hover .tag-actions {
+    width: 70px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.tag-editable .tag-actions .actions {
+    padding-left: 7px;
+}
+
+.tag-editable .tag-content .editable {
+    min-width: 10px;
+}
+
+.tag-editable-add {
+    height: 37px;
+}
