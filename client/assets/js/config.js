@@ -117,7 +117,20 @@ App
                     }
                 }
             })
+            .state('sales.shops', {
+                url: '/shops',
+                templateUrl: 'assets/views/pages/sales/shops.html',
+                controller: 'ShopsCtrl',
+                pageTitle: ' Продажи - Магазины',
+                viewLoad: true,
+                resolve: {
+                    shops: function (shop) {
+                        return shop.get();
+                    }
+                }
+            })
     })
+
     // httpProvider configuration
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push(function ($q) {

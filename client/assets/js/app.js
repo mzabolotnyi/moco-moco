@@ -15,8 +15,9 @@ var App = angular.module('app', [
     'mocoAccount',
     'mocoTransaction',
     'mocoAnalytics',
-    'salesOrder',
-    'salesSize'
+    'salesSize',
+    'salesShop',
+    'salesOrder'
 ]);
 
 App

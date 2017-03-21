@@ -27,8 +27,7 @@
             <div class="has-error">
                 <div data-ng-messages="form.name.$error" data-ng-if="form.name.$dirty"
                      class="help-block animated fadeInDown">
-                    <ng-messages-include
-                            src="assets/views/partials/error-messages.html"></ng-messages-include>
+                    <ng-messages-include src="assets/views/partials/error-messages.html"></ng-messages-include>
                 </div>
             </div>
             <!--end NAME-->
@@ -36,11 +35,12 @@
             <!--SIZES-->
             <label class="m-t-15">Размеры</label>
             <div class="form-group">
-                <div data-ng-repeat="size in scope.category.sizes" class="tag-editable" data-ng-class="{ 'has-error':size.errors.length > 0 }">
+                <div data-ng-repeat="size in scope.category.sizes" class="tag-editable"
+                     data-ng-class="{ 'has-error':size.errors.length > 0 }">
                     <div data-ng-if="!size.editing" class="tag-content">{{size.name}}</div>
                     <div data-ng-if="size.editing" class="tag-content">
                         <div content-editable edit-autofocus="true" edit-callback="scope.size.cancelEditing(size)"
-                              data-ng-model="size.name"></div>
+                             data-ng-model="size.name"></div>
                     </div>
                     <div class="tag-actions" data-ng-if="!size.editing">
                         <ul class="actions">
@@ -57,7 +57,8 @@
                         </ul>
                     </div>
                 </div>
-                <button type="button" class="btn bgm-teal btn-icon-text tag-editable-add m-t-15" data-ng-click="scope.size.add()">
+                <button type="button" class="btn bgm-teal btn-icon-text tag-editable-add m-t-15"
+                        data-ng-click="scope.size.add()">
                     <span class="zmdi zmdi-plus"></span>
                 </button>
             </div>

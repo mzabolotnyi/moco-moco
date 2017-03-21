@@ -14275,3 +14275,7 @@ html:not(.ismobile) .preloader-container {
 .tag-editable-add {
     height: 37px;
 }
+
+.input-group a.input-group-addon:hover .zmdi {
+    color: #000;
+}

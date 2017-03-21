@@ -5,7 +5,6 @@ var SizeModule = angular.module('salesSize', []);
 SizeModule
     .constant('sizeConfig', {
         baseUrl: 'sizecategories',
-        sizeUrl: 'sizes'
     })
     .factory('sizeUtils', ['config', 'sizeConfig', function (appConfig, config) {
         return {
@@ -15,24 +14,18 @@ SizeModule
             getOneUrl: function (id) {
                 return [appConfig.apiUrlSales, config.baseUrl, id].join('/')
             },
-            getSizeFullUrl: function () {
-                return [appConfig.apiUrlSales, config.sizeUrl].join('/')
-            },
-            getSizeOneUrl: function (id) {
-                return [appConfig.apiUrlSales, config.sizeUrl, id].join('/')
-            },
-            prepareBodyParams: function (object) {
+            prepareBodyParams: function (category) {
 
                 var sizes = [];
 
-                angular.forEach(object.sizes, function(size) {
+                angular.forEach(category.sizes, function(size) {
                     this.push({
                         name: size.name
                     });
                 }, sizes);
 
                 return {
-                    name: object.name,
+                    name: category.name,
                     sizes: sizes
                 };
             }
@@ -61,32 +54,6 @@ SizeModule
             },
             delete: function (category) {
                 return $http.delete(utils.getOneUrl(category.id));
-            }
-        };
-    }])
-    .factory('size', ['$http', 'sizeUtils', function ($http, utils) {
-        return {
-            get: function () {
-                return $http.get(utils.getSizeFullUrl());
-            },
-            getOne: function (id) {
-                return $http.get(utils.getSizeOneUrl(id));
-            },
-            save: function (size) {
-                if (size.id === 0) {
-                    return this.create(size);
-                } else {
-                    return this.update(size);
-                }
-            },
-            create: function (size) {
-                return $http.post(utils.getSizeFullUrl(size), utils.prepareBodyParams(size));
-            },
-            update: function (size) {
-                return $http.put(utils.getSizeOneUrl(size.id), utils.prepareBodyParams(size));
-            },
-            delete: function (size) {
-                return $http.delete(utils.getSizeOneUrl(size.id));
             }
         };
     }]);
