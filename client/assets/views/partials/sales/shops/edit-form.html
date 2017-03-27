@@ -1,4 +1,4 @@
-<div class="card" data-fixed-on-scroll="">
+<div class="card">
     <div class="card-header">
         <h2 data-ng-if="scope.shop.isNew()">Создание бренда</h2>
 
@@ -33,17 +33,20 @@
             <!--end NAME-->
 
             <!--URL-->
-            <label>Сайт</label>
-            <div class="input-group">
-                <a data-ng-if="scope.shop.hasUrl()" href="{{scope.shop.url}}" target="_blank" class="input-group-addon">
-                    <i class="zmdi zmdi-open-in-browser"></i>
-                </a>
-                <span data-ng-if="!scope.shop.hasUrl()" class="input-group-addon">
+            <div class="form-group">
+                <label>Сайт</label>
+                <div class="input-group">
+                    <a data-ng-if="scope.shop.hasUrl()" href="{{scope.shop.url}}" target="_blank"
+                       class="input-group-addon">
+                        <i class="zmdi zmdi-open-in-browser"></i>
+                    </a>
+                    <span data-ng-if="!scope.shop.hasUrl()" class="input-group-addon">
                     <i class="zmdi zmdi-open-in-browser"></i>
                 </span>
-                <div class="fg-line">
-                    <input type="text" class="form-control input-sm" data-ng-model="scope.shop.url"
-                           name="url" placeholder="Ссылка" data-ng-maxlength="255">
+                    <div class="fg-line">
+                        <input type="url" class="form-control input-sm" data-ng-model="scope.shop.url"
+                               name="url" placeholder="Ссылка" data-ng-maxlength="255">
+                    </div>
                 </div>
             </div>
 
@@ -54,6 +57,69 @@
                 </div>
             </div>
             <!--end URL-->
+
+            <div class="row">
+                <!--ICON-->
+                <div class="col-sm-6">
+                    <div class="m-b-10">
+                        <label>Логотип</label>
+                    </div>
+                    <div class="fileinput">
+                        <a class="fileinput-preview thumbnail" data-ng-image-popup
+                           data-mfp-src="{{global.image.getSrc(scope.shop.icon)}}"
+                           data-ng-if="global.image.hasSrc(scope.shop.icon)">
+                            <img data-ng-src="{{global.image.getSrc(scope.shop.icon)}}">
+                        </a>
+                        <div class="fileinput-preview thumbnail"
+                             data-ng-if="!global.image.hasSrc(scope.shop.icon)">
+                            <ng-include src="'assets/views/partials/no-image.html'"></ng-include>
+                        </div>
+                        <div>
+                            <span class="btn btn-sm btn-info btn-file f-11">
+                                <span data-ng-if="!global.image.hasSrc(scope.shop.icon)">Выбрать</span>
+                                <span data-ng-if="global.image.hasSrc(scope.shop.icon)">Изменить</span>
+                                <input type="file" name="icon" data-ng-model="scope.shop.icon"
+                                       base-sixty-four-input accept="image/*">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--end ICON-->
+                <!--SIZE GUIDE-->
+                <div class="col-sm-6">
+                    <div class="m-b-10">
+                        <label>Размерная сетка</label>
+                    </div>
+                    <div class="fileinput">
+                        <a class="fileinput-preview thumbnail" data-ng-image-popup
+                           data-mfp-src="{{global.image.getSrc(scope.shop.sizeGuide)}}"
+                           data-ng-if="global.image.hasSrc(scope.shop.sizeGuide)">
+                            <img data-ng-src="{{global.image.getSrc(scope.shop.sizeGuide)}}">
+                        </a>
+                        <div class="fileinput-preview thumbnail"
+                             data-ng-if="!global.image.hasSrc(scope.shop.sizeGuide)">
+                            <ng-include src="'assets/views/partials/no-image.html'"></ng-include>
+                        </div>
+                        <div>
+                            <span class="btn btn-sm btn-info btn-file f-11">
+                                <span data-ng-if="!global.image.hasSrc(scope.shop.sizeGuide)">Выбрать</span>
+                                <span data-ng-if="global.image.hasSrc(scope.shop.sizeGuide)">Изменить</span>
+                                <input type="file" name="sizeGuide" data-ng-model="scope.shop.sizeGuide"
+                                       base-sixty-four-input accept="image/*">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--end SIZE GUIDE-->
+            </div>
+
+            <!--COMMENT-->
+            <div class="form-group fg-line m-t-15">
+                <label>Примечание</label>
+                <textarea class="form-control" data-ng-model="scope.shop.comment" data-auto-size name="comment"
+                          placeholder="Введите примечание"></textarea>
+            </div>
+            <!--end COMMENT-->
 
             <div class="has-error">
                 <div data-ng-repeat="error in scope.shop.errors">

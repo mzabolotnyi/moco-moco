@@ -13158,6 +13158,7 @@ select.form-control {
     width: 200px;
     height: 150px;
     position: relative;
+    line-height: 150px;
 }
 
 .fileinput .fileinput-preview img {

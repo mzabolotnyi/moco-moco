@@ -15,10 +15,27 @@ ShopModule
                 return [appConfig.apiUrlSales, config.baseUrl, id].join('/')
             },
             prepareBodyParams: function (shop) {
-                return {
+                var body = {
                     name: shop.name,
-                    url: shop.url
+                    url: shop.url,
+                    comment: shop.comment
                 };
+
+                if (shop.sizeGuide && shop.sizeGuide.data) {
+                    body.sizeGuide = {
+                        data: shop.sizeGuide.data,
+                        origin: shop.sizeGuide.origin
+                    }
+                }
+
+                if (shop.icon && shop.icon.data) {
+                    body.icon = {
+                        data: shop.icon.data,
+                        origin: shop.icon.origin
+                    }
+                }
+
+                return body;
             }
         }
     }])

@@ -76,6 +76,27 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             toMain: function () {
                 $state.go('dashboard', {}, {reload: true});
+            },
+            image: {
+                getSrc: function (object) {
+
+                    if (!object) {
+                        return null;
+                    }
+
+                    if (object.data) {
+                        return object.data;
+                    }
+
+                    if (object.path) {
+                        return object.path;
+                    }
+
+                    return null;
+                },
+                hasSrc: function (object) {
+                    return !!this.getSrc(object);
+                }
             }
         };
 
@@ -112,11 +133,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             canSwipe: function () {
                 // если есть видимые модальные окна, то меню нельзя открыть
-                if ($(".sweet-alert.visible, .modal-backdrop").length > 0) {
-                    return false;
-                } else {
-                    return true;
-                }
+                return !($(".sweet-alert.visible, .modal-backdrop").length > 0 || !$scope.global.isMobile());
             }
         };
 
@@ -234,7 +251,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 calledFromMenu: false,
                 savedCategoryAlias: 'adjustment-category',
                 setCategory: function (category) {
-                    if (category){
+                    if (category) {
                         $localStorage[this.savedCategoryAlias] = category.id;
                     }
                 },

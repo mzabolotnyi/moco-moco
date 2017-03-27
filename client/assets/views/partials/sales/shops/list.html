@@ -11,7 +11,12 @@
             <a class="lv-item" href="" data-ng-class="{ 'active':scope.isActive(shop) }"
                data-ng-repeat="shop in scope.data" data-ng-click="scope.edit(shop)">
                 <div class="media">
-                    <div class="lv-avatar pull-left">{{shop.name.charAt(0)}}</div>
+                    <div class="lv-avatar pull-left" data-ng-if="!global.image.hasSrc(shop.icon)">
+                        {{shop.name.charAt(0)}}
+                    </div>
+                    <div class="pull-left" data-ng-if="global.image.hasSrc(shop.icon)">
+                        <img class="lv-img-sm" data-ng-src="{{shop.icon.path}}">
+                    </div>
                     <div class="media-body">
                         <div class="lv-title">
                             {{shop.name}}

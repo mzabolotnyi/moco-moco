@@ -65,7 +65,7 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
 
                     var success = true;
 
-                    if (this.name == '') {
+                    if (!this.name) {
                         this.errors.push({'message': 'Необходимо указать название бренда'});
                         success = false;
                     }
@@ -77,12 +77,18 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
                     this.id = 0;
                     this.name = "";
                     this.url = "";
+                    this.comment = "";
+                    this.sizeGuide = {};
+                    this.icon = {};
                 },
                 //заполнение полей по переданному объекту
                 fillByObject: function (shop) {
                     this.id = shop.id;
                     this.name = shop.name;
                     this.url = shop.url;
+                    this.comment = shop.comment;
+                    this.sizeGuide = shop.sizeGuide;
+                    this.icon = shop.icon;
                 },
                 //отправляет запрос на сохранение объекта
                 save: function () {
