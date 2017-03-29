@@ -1,9 +1,9 @@
-App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
-    function ($scope, shop, shops, notifyService) {
+App.controller('SourcesCtrl', ['$scope', 'source', 'sources', 'notifyService',
+    function ($scope, source, sources, notifyService) {
 
         // Scope object
         $scope.scope = {
-            data: shops.data,
+            data: sources.data,
             update: function () {
 
                 var _this = this;
@@ -12,9 +12,9 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
                 _this.error = false;
                 _this.data = [];
 
-                _this.shop.editing = false;
+                _this.source.editing = false;
 
-                shop.get()
+                source.get()
                     .success(function (response) {
                         _this.data = response;
                     })
@@ -26,34 +26,34 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
                         _this.loading = false;
                     });
             },
-            isActive: function (shop) {
-                return shop.id == this.shop.id;
+            isActive: function (source) {
+                return source.id == this.source.id;
             },
             //инициализирует изменение объекта или создание нового
-            edit: function (shop) {
+            edit: function (source) {
 
-                this.shop.editing = true;
-                this.shop.errors = {};
+                this.source.editing = true;
+                this.source.errors = {};
 
-                if (typeof(shop) === 'object') {
-                    this.shop.fillByObject(shop);
-                    this.selected = shop;
+                if (typeof(source) === 'object') {
+                    this.source.fillByObject(source);
+                    this.selected = source;
                 } else {
-                    this.shop.fillDefault();
+                    this.source.fillDefault();
                     this.selected = undefined;
                 }
             },
             cancelEditing: function () {
 
-                this.shop.editing = false;
+                this.source.editing = false;
 
                 if (this.selected) {
-                    this.shop.fillByObject(this.selected);
+                    this.source.fillByObject(this.selected);
                 } else {
-                    this.shop.fillDefault();
+                    this.source.fillDefault();
                 }
             },
-            shop: {
+            source: {
                 //проверяет является ли объект новым или же это редактирование существующего
                 isNew: function () {
                     return this.id === 0;
@@ -66,7 +66,7 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
                     var success = true;
 
                     if (!this.name) {
-                        this.errors.push({'message': 'Необходимо указать название бренда'});
+                        this.errors.push({'message': 'Необходимо указать название источника'});
                         success = false;
                     }
 
@@ -78,17 +78,15 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
                     this.name = "";
                     this.url = "";
                     this.comment = "";
-                    this.sizeGuide = {};
                     this.icon = {};
                 },
                 //заполнение полей по переданному объекту
-                fillByObject: function (shop) {
-                    this.id = shop.id;
-                    this.name = shop.name;
-                    this.url = shop.url;
-                    this.comment = shop.comment;
-                    this.sizeGuide = shop.sizeGuide;
-                    this.icon = shop.icon;
+                fillByObject: function (source) {
+                    this.id = source.id;
+                    this.name = source.name;
+                    this.url = source.url;
+                    this.comment = source.comment;
+                    this.icon = source.icon;
                 },
                 //отправляет запрос на сохранение объекта
                 save: function () {
@@ -108,7 +106,7 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
 
                     notifyService.showLoadBar();
 
-                    shop.save(_this)
+                    source.save(_this)
                         .then(function () {
                             notifyService.notify('Бренд сохранен');
                             $scope.scope.update();
@@ -134,13 +132,13 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
 
                     _this.errors = {};
 
-                    notifyService.confirmDelete("Удалить бренд " + _this.name + "?", function () {
+                    notifyService.confirmDelete("Удалить источник " + _this.name + "?", function () {
 
                         notifyService.showLoadBar();
 
-                        shop.delete(_this)
+                        source.delete(_this)
                             .then(function () {
-                                notifyService.notify("Бренд " + _this.name + " удален");
+                                notifyService.notify("Источник " + _this.name + " удален");
                                 _this.fillDefault();
                                 $scope.scope.update();
                             }, function (error) {
@@ -160,5 +158,4 @@ App.controller('ShopsCtrl', ['$scope', 'shop', 'shops', 'notifyService',
         if (!$scope.global.isMobile()) {
             $scope.scope.edit($scope.scope.data[0]);
         }
-
     }]);

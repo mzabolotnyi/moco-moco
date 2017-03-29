@@ -8,20 +8,20 @@
         </div>
 
         <div class="lv-body">
-            <a class="lv-item" href="" data-ng-class="{ 'active':scope.isActive(shop) }"
-               data-ng-repeat="shop in scope.data" data-ng-click="scope.edit(shop)">
+            <a class="lv-item" href="" data-ng-class="{ 'active':scope.isActive(source) }"
+               data-ng-repeat="source in scope.data" data-ng-click="scope.edit(source)">
                 <div class="media">
-                    <div class="lv-avatar pull-left" data-ng-if="!global.image.hasSrc(shop.icon)">
-                        {{shop.name.charAt(0)}}
+                    <div class="lv-avatar pull-left" data-ng-if="!global.image.hasSrc(source.icon)">
+                        {{source.name.charAt(0)}}
                     </div>
-                    <div class="pull-left" data-ng-if="global.image.hasSrc(shop.icon)">
-                        <img class="lv-img-sm" data-ng-src="{{shop.icon.path}}">
+                    <div class="pull-left" data-ng-if="global.image.hasSrc(source.icon)">
+                        <img class="lv-img-sm" data-ng-src="{{source.icon.path}}">
                     </div>
                     <div class="media-body">
                         <div class="lv-title">
-                            {{shop.name}}
+                            {{source.name}}
                         </div>
-                        <small class="lv-small">{{shop.comment}}</small>
+                        <small class="lv-small">{{source.comment}}</small>
                     </div>
                 </div>
             </a>

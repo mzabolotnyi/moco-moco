@@ -129,6 +129,18 @@ App
                     }
                 }
             })
+            .state('sales.sources', {
+                url: '/sources',
+                templateUrl: 'assets/views/pages/sales/sources.html',
+                controller: 'SourcesCtrl',
+                pageTitle: ' Продажи - Источники',
+                viewLoad: true,
+                resolve: {
+                    sources: function (source) {
+                        return source.get();
+                    }
+                }
+            })
     })
 
     // httpProvider configuration

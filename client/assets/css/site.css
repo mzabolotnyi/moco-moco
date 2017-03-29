@@ -13161,6 +13161,13 @@ select.form-control {
     line-height: 150px;
 }
 
+.fileinput .fileinput-preview.fileinput-preview-lg {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    line-height: 300px;
+}
+
 .fileinput .fileinput-preview img {
     display: inline-block;
     vertical-align: middle;
