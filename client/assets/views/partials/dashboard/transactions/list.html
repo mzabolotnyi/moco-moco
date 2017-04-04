@@ -15,16 +15,16 @@
             </div>
 
             <ul class="lv-actions actions">
-                <li class="dropdown" dropdown="" style="">
-                    <a href="" dropdown-toggle class="dropdown-toggle">
-                        <i class="zmdi zmdi-more-vert"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="" data-ng-click="scope.transactions.setCurrentDateAsToday()">Сегодня</a></li>
-                        <li class="divider"></li>
-                        <li><a href="" data-ng-click="scope.transactions.update()">Обновить</a></li>
-                    </ul>
-                </li>
+                <li class="expense"><a href="" data-ng-click="transaction.edit('expense')" uib-tooltip="Новый расход"><i
+                        class="zmdi zmdi-plus"></i></a></li>
+                <li class="income"><a href="" data-ng-click="transaction.edit('income')" uib-tooltip="Новый доход"><i
+                        class="zmdi zmdi-plus"></i></a></li>
+                <li class="transfer"><a href="" data-ng-click="transaction.edit('transfer')" uib-tooltip="Новый перевод"><i
+                        class="zmdi zmdi-plus"></i></a></li>
+                <li><a href="" data-ng-click="scope.transactions.setCurrentDateAsToday()" uib-tooltip="Сегодня"><i
+                        class="zmdi zmdi-calendar-check"></i></a></li>
+                <li><a href="" data-ng-click="scope.transactions.update()" uib-tooltip="Обновить"><i
+                        class="zmdi zmdi-refresh"></i></a></li>
             </ul>
         </div>
 
@@ -42,7 +42,8 @@
         <div>Произошла ошибка...</div>
         <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.transactions.update()">Повторить</button>
     </div>
-    <div class="text-center p-t-10 p-b-10" data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
+    <div class="text-center p-t-10 p-b-10"
+         data-ng-if="scope.transactions.data.length === 0 && !(scope.transactions.loading || scope.transactions.error)">
         <div>
             Нет операций за {{scope.transactions.getDisplayDate()}}
             <button class="btn btn-xs bgm-teal m-l-10" data-ng-click="transaction.edit('expense')">Создать</button>

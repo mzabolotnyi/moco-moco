@@ -14287,3 +14287,57 @@ html:not(.ismobile) .preloader-container {
 .input-group a.input-group-addon:hover .zmdi {
     color: #000;
 }
+
+.actions > li.expense > a > i,
+.actions > a.expense > i,
+.actions > li.expense > a,
+.actions > span.expense {
+    color: #ff5722;
+}
+
+.actions > li.income > a > i,
+.actions > a.income > i,
+.actions > li.income > a,
+.actions > span.income {
+    color: #4caf50;
+}
+
+.actions > li.transfer > a > i,
+.actions > a.transfer > i,
+.actions > li.transfer > a,
+.actions > span.transfer {
+    color: #2196f3;
+}
+
+.actions > li.expense > a:hover > i,
+.actions > a.expense:hover > i,
+.actions > span.expense:hover {
+    color: #ff4403;
+}
+
+.actions > li.income > a:hover > i,
+.actions > a.income:hover > i,
+.actions > span.income:hover {
+    color: #0aaf20;
+}
+
+.actions > li.transfer > a:hover > i,
+.actions > a.transfer:hover > i,
+.actions > span.transfer:hover {
+    color: #0587f3;
+}
+
+.actions > li.expense > a:before,
+.actions > a.expense:before {
+    background-color: rgba(255, 68, 3, 0.2);
+}
+
+.actions > li.income > a:before,
+.actions > a.income:before {
+    background-color: rgba(10, 175, 32, 0.2);
+}
+
+.actions > li.transfer > a:before,
+.actions > a.transfer:before {
+    background-color: rgba(5, 135, 243, 0.2);
+}
