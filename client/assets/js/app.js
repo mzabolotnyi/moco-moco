@@ -18,6 +18,7 @@ var App = angular.module('app', [
     'salesSize',
     'salesShop',
     'salesSource',
+    'salesOrderStatus',
     'salesOrder'
 ]);
 

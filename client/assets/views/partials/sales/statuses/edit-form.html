@@ -1,0 +1,149 @@
+<div class="card">
+    <div class="card-header">
+        <h2 data-ng-if="scope.shop.isNew()">Создание бренда</h2>
+
+        <h2 data-ng-if="!scope.shop.isNew()">{{scope.shop.name}}</h2>
+
+        <ul class="actions">
+            <li data-ng-if="!scope.shop.isNew()" uib-tooltip="Удалить">
+                <a href="" data-ng-click="scope.shop.delete()">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body card-padding">
+
+        <form id="form" name="form" data-ng-submit="scope.shop.save()"
+              data-autofocus="{{scope.shop.isNew()}}">
+
+            <div class="row">
+                <div class="col-md-7">
+
+                    <!--NAME-->
+                    <div class="form-group fg-line">
+                        <label>Название</label>
+                        <input type="text" class="form-control input-sm autofocus" data-ng-model="scope.shop.name"
+                               name="name" placeholder="Название" data-ng-maxlength="255" required>
+                    </div>
+
+                    <div class="has-error">
+                        <div data-ng-messages="form.name.$error" data-ng-if="form.name.$dirty"
+                             class="help-block animated fadeInDown">
+                            <ng-messages-include src="assets/views/partials/error-messages.html"></ng-messages-include>
+                        </div>
+                    </div>
+                    <!--end NAME-->
+
+                    <!--URL-->
+                    <div class="form-group">
+                        <label>Сайт</label>
+                        <div class="input-group">
+                            <a data-ng-if="scope.shop.hasUrl()" href="{{scope.shop.url}}" target="_blank"
+                               class="input-group-addon">
+                                <i class="zmdi zmdi-open-in-browser"></i>
+                            </a>
+                            <span data-ng-if="!scope.shop.hasUrl()" class="input-group-addon">
+                                <i class="zmdi zmdi-open-in-browser"></i>
+                            </span>
+                            <div class="fg-line">
+                                <input type="url" class="form-control input-sm" data-ng-model="scope.shop.url"
+                                       name="url" placeholder="Ссылка" data-ng-maxlength="255">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="has-error">
+                        <div data-ng-messages="form.url.$error" data-ng-if="form.url.$dirty"
+                             class="help-block animated fadeInDown">
+                            <ng-messages-include src="assets/views/partials/error-messages.html"></ng-messages-include>
+                        </div>
+                    </div>
+                    <!--end URL-->
+
+                    <!--COMMENT-->
+                    <div class="form-group fg-line m-t-15">
+                        <label>Примечание</label>
+                        <textarea class="form-control" data-ng-model="scope.shop.comment" data-auto-size name="comment"
+                                  placeholder="Введите примечание"></textarea>
+                    </div>
+                    <!--end COMMENT-->
+
+                </div>
+                <div class="col-md-5">
+
+                    <!--ICON-->
+                    <div class="m-b-10">
+                        <label>Логотип</label>
+                        <span class="btn btn-xs btn-link btn-file f-14 m-l-5">
+                            <span class="zmdi zmdi-edit"></span>
+                            <input type="file" name="icon" data-ng-model="scope.shop.icon"
+                                   base-sixty-four-input accept="image/*">
+                        </span>
+                    </div>
+                    <div class="fileinput">
+                        <a class="fileinput-preview thumbnail" data-ng-image-popup
+                           data-mfp-src="{{global.image.getSrc(scope.shop.icon)}}"
+                           data-ng-if="global.image.hasSrc(scope.shop.icon)">
+                            <img data-ng-src="{{global.image.getSrc(scope.shop.icon)}}">
+                        </a>
+                        <div class="fileinput-preview thumbnail"
+                             data-ng-if="!global.image.hasSrc(scope.shop.icon)">
+                            <ng-include src="'assets/views/partials/no-image.html'"></ng-include>
+                        </div>
+                    </div>
+                    <!--end ICON-->
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <!--SIZE GUIDE-->
+                    <div class="m-b-10">
+                        <label>Размерная сетка</label>
+                        <span class="btn btn-xs btn-link btn-file f-14 m-l-5">
+                            <span class="zmdi zmdi-edit"></span>
+                            <input type="file" name="sizeGuide" data-ng-model="scope.shop.sizeGuide"
+                                   base-sixty-four-input accept="image/*">
+                        </span>
+                    </div>
+                    <div class="fileinput">
+                        <a class="fileinput-preview fileinput-preview-lg thumbnail" data-ng-image-popup
+                           data-mfp-src="{{global.image.getSrc(scope.shop.sizeGuide)}}"
+                           data-ng-if="global.image.hasSrc(scope.shop.sizeGuide)">
+                            <img data-ng-src="{{global.image.getSrc(scope.shop.sizeGuide)}}">
+                        </a>
+                        <div class="fileinput-preview fileinput-preview-lg thumbnail"
+                             data-ng-if="!global.image.hasSrc(scope.shop.sizeGuide)">
+                            <ng-include src="'assets/views/partials/no-image.html'"></ng-include>
+                        </div>
+                    </div>
+                    <!--end SIZE GUIDE-->
+
+                </div>
+            </div>
+
+            <div class="has-error">
+                <div data-ng-repeat="error in scope.shop.errors">
+                    <div class="help-block">{{error.message}}</div>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="card-control-panel">
+            <button class="btn bgm-teal btn-sm" type="submit" form="form"
+                    data-ng-disabled="form.$invalid || scope.shop.submitting">
+                <span>Сохранить</span>
+                <span data-ng-if="scope.shop.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="scope.cancelEditing()">Отмена</button>
+        </div>
+
+    </div>
+</div>

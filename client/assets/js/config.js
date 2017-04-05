@@ -141,6 +141,18 @@ App
                     }
                 }
             })
+            .state('sales.statuses', {
+                url: '/statuses',
+                templateUrl: 'assets/views/pages/sales/statuses.html',
+                controller: 'OrderStatusesCtrl',
+                pageTitle: ' Продажи - Статусы заказов',
+                viewLoad: true,
+                resolve: {
+                    orderStatuses: function (orderStatus) {
+                        return orderStatus.get();
+                    }
+                }
+            })
     })
 
     // httpProvider configuration
