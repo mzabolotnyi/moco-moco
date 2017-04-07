@@ -14048,6 +14048,18 @@ html:not(.ismobile) .preloader-container {
     left: 0;
     border-radius: 5px;
     background: transparent;
+    border: 1px solid #cacaca;
+}
+
+.form-group .color-container {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 28px;
+    left: 0;
+    border-radius: 5px;
+    background: transparent;
+    border: 1px solid #cacaca;
 }
 
 /* Transaction form style */

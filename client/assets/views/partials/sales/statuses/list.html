@@ -8,15 +8,18 @@
         </div>
 
         <div class="lv-body">
-            <a class="lv-item" href="" data-ng-class="{ 'active':scope.isActive(status) }"
-               data-ng-repeat="status in scope.data" data-ng-click="scope.edit(status)">
+            <a class="lv-item" href="" data-ng-class="{ 'active':scope.isActive(orderStatus) }"
+               data-ng-repeat="orderStatus in scope.data" data-ng-click="scope.edit(orderStatus)">
                 <div class="media">
-                    <div class="lv-avatar pull-left">{{status.name.charAt(0)}}</div>
+                    <div class="lv-avatar pull-left" data-ng-if="orderStatus.icon">
+                        <i class="{{'fa ' + orderStatus.icon}}"></i>
+                    </div>
+                    <div class="lv-avatar pull-left" data-ng-if="!orderStatus.icon">{{orderStatus.name.charAt(0)}}</div>
                     <div class="media-body">
                         <div class="lv-title">
-                            {{status.name}}
+                            {{orderStatus.name}}
                         </div>
-                        <!--<small class="lv-small">{{status.asClosed}}</small>-->
+                        <small class="lv-small" data-ng-if="orderStatus.asClosed">Считать закрытым</small>
                     </div>
                 </div>
             </a>

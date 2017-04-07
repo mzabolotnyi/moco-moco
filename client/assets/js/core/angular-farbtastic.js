@@ -459,17 +459,20 @@
                                 var farbtastic;
 
                                 ngModel.$render = function(){
+
+                                    var color = ngModel.$viewValue ? ngModel.$viewValue : '#808080';
+
                                     if (!farbtastic) {
                                         farbtastic = new Farbtastic($element, function(color) {
                                             safeApply($scope, function() {
                                                 ngModel.$setViewValue(color);
                                             });
                                         }, {
-                                            color: ngModel.$viewValue
+                                            color: color
                                         });
                                     }
                                     else{
-                                        farbtastic.setColor(ngModel.$viewValue);
+                                        farbtastic.setColor(color);
                                     }
                                 }
                             }

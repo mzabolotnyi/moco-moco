@@ -18,7 +18,9 @@ OrderStatusModule
                 return {
                     name: orderStatus.name,
                     color: orderStatus.color,
-                    asClosed: orderStatus.asClosed
+                    asClosed: orderStatus.asClosed,
+                    noColor: orderStatus.noColor,
+                    icon: orderStatus.icon
                 };
             }
         }
