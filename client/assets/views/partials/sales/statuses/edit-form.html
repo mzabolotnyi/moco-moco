@@ -18,7 +18,7 @@
               data-autofocus="{{scope.orderStatus.isNew()}}">
 
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-8">
 
                     <!--NAME-->
                     <div class="form-group fg-line">
@@ -36,10 +36,10 @@
                     <!--end NAME-->
 
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-4">
 
                     <!--AS CLOSED-->
-                    <div class="checkbox m-t-30">
+                    <div class="checkbox m-t-30 p-t-5">
                         <label>
                             <input type="checkbox" class="checker select-box"
                                    data-ng-model="scope.orderStatus.asClosed">
@@ -53,36 +53,22 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-1">
 
                     <!--COLOR-->
                     <div class="form-group fg-line">
                         <label>Цвет</label>
-
                         <div data-ng-click="scope.colorpicker.open()">
-                            <input type="text" class="form-control input-sm p-l-30" data-ng-class="{ 'text-strikeout':scope.orderStatus.noColor }"
-                                   data-ng-model="scope.orderStatus.color"
-                                   name="color" placeholder="Без цвета" data-ng-maxlength="7"
-                                   disabled>
-
                             <div class="color-container" data-ng-style="{ 'background-color': scope.orderStatus.noColor ? 'transparent' : scope.orderStatus.color }"></div>
-                        </div>
-                    </div>
-
-                    <div class="has-error">
-                        <div data-ng-messages="form.color.$error" data-ng-if="form.color.$dirty"
-                             class="help-block animated fadeInDown">
-                            <ng-messages-include
-                                    src="assets/views/partials/error-messages.html"></ng-messages-include>
                         </div>
                     </div>
                     <!--end COLOR-->
 
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-11">
 
                     <!--NO COLOR-->
-                    <div class="checkbox m-t-30">
+                    <div class="checkbox m-t-30 p-t-5">
                         <label>
                             <input type="checkbox" class="checker select-box"
                                    data-ng-model="scope.orderStatus.noColor">
@@ -98,24 +84,11 @@
             <!--ICON-->
             <div class="form-group fg-line">
                 <label>Иконка</label>
-
                 <div data-ng-click="scope.iconpicker.open()">
-                    <input type="text" class="form-control input-sm p-l-30" data-ng-model="scope.orderStatus.icon"
-                           name="icon" placeholder="Без иконки" data-ng-maxlength="255"
-                           disabled>
-
                     <div class="icon-container">
                         <i class="fa {{scope.orderStatus.icon}}"></i>
                         <i class="zmdi zmdi-close" data-ng-if="scope.orderStatus.icon == ''"></i>
                     </div>
-                </div>
-            </div>
-
-            <div class="has-error">
-                <div data-ng-messages="form.icon.$error" data-ng-if="form.icon.$dirty"
-                     class="help-block animated fadeInDown">
-                    <ng-messages-include
-                            src="assets/views/partials/error-messages.html"></ng-messages-include>
                 </div>
             </div>
             <!--end ICON-->

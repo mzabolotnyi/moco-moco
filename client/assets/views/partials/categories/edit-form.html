@@ -36,24 +36,9 @@
             <!--ICON-->
             <div class="form-group fg-line">
                 <label>Иконка</label>
-
-                <div data-ng-click="scope.iconpicker.open()">
-                    <input type="text" class="form-control input-sm p-l-30" data-ng-model="scope.category.icon"
-                           name="icon" placeholder="Без иконки" data-ng-maxlength="255"
-                           disabled>
-
-                    <div class="icon-container">
-                        <i class="fa {{scope.category.icon}}"></i>
-                        <i class="zmdi zmdi-close" data-ng-if="scope.category.icon == ''"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="has-error">
-                <div data-ng-messages="form.icon.$error" data-ng-if="form.icon.$dirty"
-                     class="help-block animated fadeInDown">
-                    <ng-messages-include
-                            src="assets/views/partials/error-messages.html"></ng-messages-include>
+                <div class="icon-container" data-ng-click="scope.iconpicker.open()">
+                    <i class="fa {{scope.category.icon}}"></i>
+                    <i class="zmdi zmdi-close" data-ng-if="scope.category.icon == ''"></i>
                 </div>
             </div>
             <!--end ICON-->
@@ -111,7 +96,7 @@
                 </div>
 
                 <div class="input-group" data-ng-if="scope.category.isTransfer">
-                    <select class="form-control input-sm p-l-30"  data-ng-model="scope.newCategory"
+                    <select class="form-control input-sm p-l-30" data-ng-model="scope.newCategory"
                             data-ng-options="category as category.name for category in scope.data">
                         <option value="">Не выбрана...</option>
                     </select>

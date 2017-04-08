@@ -35,16 +35,9 @@
                 <!--ICON-->
                 <div class="form-group fg-line">
                     <label>Иконка</label>
-
-                    <div data-ng-click="scope.iconpicker.open()">
-                        <input type="text" class="form-control input-sm p-l-30" data-ng-model="scope.category.icon"
-                               name="icon" placeholder="Без иконки" data-ng-maxlength="255"
-                               disabled>
-
-                        <div class="icon-container">
-                            <i class="fa {{scope.category.icon}}"></i>
-                            <i class="zmdi zmdi-close" data-ng-if="scope.category.icon == ''"></i>
-                        </div>
+                    <div class="icon-container" data-ng-click="scope.iconpicker.open()">
+                        <i class="fa {{scope.category.icon}}"></i>
+                        <i class="zmdi zmdi-close" data-ng-if="scope.category.icon == ''"></i>
                     </div>
                 </div>
 

@@ -35,22 +35,8 @@
             <!--COLOR-->
             <div class="form-group fg-line">
                 <label>Цвет</label>
-
-                <div data-ng-click="scope.colorpicker.open()">
-                    <input type="text" class="form-control input-sm p-l-30" data-ng-model="scope.account.color"
-                           name="color" placeholder="Без цвета" data-ng-maxlength="7"
-                           disabled>
-
-                    <div class="color-container" data-ng-style="{ 'background-color': scope.account.color }"></div>
-                </div>
-            </div>
-
-            <div class="has-error">
-                <div data-ng-messages="form.color.$error" data-ng-if="form.color.$dirty"
-                     class="help-block animated fadeInDown">
-                    <ng-messages-include
-                            src="assets/views/partials/error-messages.html"></ng-messages-include>
-                </div>
+                <div class="color-container" data-ng-click="scope.colorpicker.open()"
+                     data-ng-style="{ 'background-color': scope.account.color }"></div>
             </div>
             <!--end COLOR-->
 
@@ -107,7 +93,7 @@
                         <option value="">Не выбран...</option>
                     </select>
 
-                        <span class="input-group-addon last">
+                    <span class="input-group-addon last">
                             <button type="submit" class="btn btn-link">ок</button>
                         </span>
                 </div>

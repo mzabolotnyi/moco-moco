@@ -9018,6 +9018,17 @@ a.waves-effect .waves-ripple {
     width: auto;
 }
 
+.media-body .color-container {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    border-radius: 5px;
+    background: transparent;
+    border: 1px solid #cacaca;
+}
+
 .media-object {
     border-radius: 2px;
 }
@@ -13989,13 +14000,16 @@ html:not(.ismobile) .preloader-container {
 }
 
 .form-group .icon-container, .input-group .icon-container {
-    width: 25px;
-    height: 25px;
-    position: absolute;
-    top: 25px;
-    left: 0;
-    font-size: 18px;
+    width: 33px;
+    height: 33px;
+    margin-top: 5px;
+    font-size: 28px;
     background: transparent;
+    cursor: pointer;
+}
+
+.form-group .icon-container:hover, .input-group .icon-container {
+    color: #0a0a0a;
 }
 
 .form-group .icon-container.icon-container-no-label, .input-group .icon-container.icon-container-no-label {
@@ -14041,25 +14055,13 @@ html:not(.ismobile) .preloader-container {
 }
 
 .form-group .color-container {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    top: 28px;
-    left: 0;
+    width: 27px;
+    height: 27px;
+    margin-top: 8px;
     border-radius: 5px;
     background: transparent;
     border: 1px solid #cacaca;
-}
-
-.form-group .color-container {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    top: 28px;
-    left: 0;
-    border-radius: 5px;
-    background: transparent;
-    border: 1px solid #cacaca;
+    cursor: pointer;
 }
 
 /* Transaction form style */

@@ -16,10 +16,13 @@
                     </div>
                     <div class="lv-avatar pull-left" data-ng-if="!orderStatus.icon">{{orderStatus.name.charAt(0)}}</div>
                     <div class="media-body">
-                        <div class="lv-title">
+                        <div class="lv-title p-r-30">
                             {{orderStatus.name}}
                         </div>
-                        <small class="lv-small" data-ng-if="orderStatus.asClosed">Считать закрытым</small>
+                        <small class="lv-small" data-ng-if="orderStatus.asClosed">
+                            <span class="zmdi zmdi-check-all"></span> считать закрытым
+                        </small>
+                        <div class="color-container" data-ng-style="{ 'background-color': orderStatus.noColor ? 'transparent' : orderStatus.color }"></div>
                     </div>
                 </div>
             </a>
