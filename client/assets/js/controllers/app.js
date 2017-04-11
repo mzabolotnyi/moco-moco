@@ -97,6 +97,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 hasSrc: function (object) {
                     return !!this.getSrc(object);
                 }
+            },
+            goToUrl: function (url) {
+                window.open(url,'_blank');
             }
         };
 

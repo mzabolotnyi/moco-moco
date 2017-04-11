@@ -79,7 +79,7 @@ App.controller('OrderStatusesCtrl', ['$scope', 'orderStatus', 'orderStatuses', '
                     this.color = '#e6e6e6';
                     this.asClosed = false;
                     this.noColor = false;
-                    this.icon = 'fa-bookmark';
+                    this.icon = 'fa fa-flag';
                 },
                 //заполнение полей по переданному объекту
                 fillByObject: function (orderStatus) {

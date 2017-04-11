@@ -11,8 +11,22 @@ OrderModule
             getFullUrl: function () {
                 return [appConfig.apiUrlSales, config.baseUrl].join('/')
             },
+            getIndexUrl: function (filters, page, perPage) {
+
+                var fullUrl = this.getFullUrl();
+                var getParams = [];
+
+                getParams.push(this.getSortingParam());
+
+                var getParamStr = getParams.join('&');
+
+                return [fullUrl, getParamStr].join('?')
+            },
             getOneUrl: function (id) {
                 return [appConfig.apiUrlSales, config.baseUrl, id].join('/')
+            },
+            getSortingParam: function () {
+                return 'order_by[date]=DESC&order_by[id]=DESC';
             },
             prepareBodyParams: function (order) {
 
@@ -25,8 +39,8 @@ OrderModule
     }])
     .factory('order', ['$http', 'orderConfig', 'orderUtils', function ($http, config, utils) {
         return {
-            get: function () {
-                return $http.get(utils.getFullUrl());
+            get: function (filters) {
+                return $http.get(utils.getIndexUrl(filters ? filters : {}));
             },
             getOne: function (id) {
                 return $http.get(utils.getOneUrl(id));

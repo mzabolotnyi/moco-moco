@@ -1,0 +1,84 @@
+<div class="card">
+    <div class="card-header">
+        <label class="card-header-filter">
+            <select class="input-sm">
+                <option value="actual">Актуальные</option>
+                <option value="all">Все</option>
+                <option data-ng-repeat="status in scope.statuses" value="status.id">{{status.name}}</option>
+            </select>
+        </label>
+        <label class="card-header-filter search m-l-15">
+            <input type="search" class="input-sm" placeholder="Поиск">
+        </label>
+        <span class="m-l-15" data-ng-if="scope.hasSelected()">
+            <span>Отмечено: {{scope.getCountSelected()}}</span>
+        </span>
+        <ul class="actions">
+            <li data-ng-if="scope.hasSelected()">
+                <a href="" data-ng-click="" uib-tooltip="Удалить отмеченные">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li>
+            <li>
+                <a href="" data-ng-click="" uib-tooltip="Установить фильтр">
+                    <i class="zmdi zmdi-filter-list"></i>
+                </a>
+            </li>
+            <li>
+                <a href="" data-ng-click="" uib-tooltip="Обновить">
+                    <i class="zmdi zmdi-refresh"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-data">
+            <thead>
+            <tr>
+                <th width="20px">
+                    <input type="checkbox" data-ng-checked="scope.hasSelected()"
+                           data-ng-click="scope.toggleSelectedAll()">
+                </th>
+                <th width="50px" class="text-center f-17">
+                    <i class="fa fa-flag"></i>
+                </th>
+                <th>Номер</th>
+                <th>Дата</th>
+                <th>Источник</th>
+                <th>Товар</th>
+                <th>Сумма</th>
+                <th>Прибыль</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="order in scope.data track by $index" context-menu="scope.contextMenuOptions(order)"
+                data-ng-style="scope.getRowStyle(order)"
+                data-ng-click="scope.edit(order)">
+                <td>
+                    <input type="checkbox" data-ng-click="$event.stopPropagation()"
+                           data-ng-model="order.selected">
+                </td>
+                <td class="status-icon">
+                    <i class="{{order.status.icon}}" data-ng-if="order.status.icon"></i>
+                    <span data-ng-if="!order.status.icon">{{order.status.name.charAt(0)}}</span>
+                </td>
+                <td>{{order.number}}</td>
+                <td>{{scope.getDisplayDate(order)}}</td>
+                <td>
+                    <img class="column-icon m-r-5" data-ng-if="order.source && order.source.icon"
+                         data-ng-src="{{order.source.icon.path}}">
+                    {{scope.getDisplaySource(order)}}
+                </td>
+                <td>
+                    <img class="column-icon m-r-5" data-ng-if="scope.getShopIcon(order)"
+                         data-ng-src="{{scope.getShopIcon(order)}}">
+                    {{scope.getDisplayProduct(order)}}
+                </td>
+                <td>{{scope.getAmount(order)|number}} грн</td>
+                <td>{{scope.getProfitAmount(order)|number}} грн</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

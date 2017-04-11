@@ -94,7 +94,7 @@ App
                 abstract: true
             })
             .state('sales.orders', {
-                url: '',
+                url: '/orders',
                 templateUrl: 'assets/views/pages/sales/orders.html',
                 controller: 'OrdersCtrl',
                 pageTitle: 'Продажи - Заказы',
@@ -102,6 +102,9 @@ App
                 resolve: {
                     orders: function (order) {
                         return order.get();
+                    },
+                    statuses: function (orderStatus) {
+                        return orderStatus.get();
                     }
                 }
             })

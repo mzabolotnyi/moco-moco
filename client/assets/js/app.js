@@ -7,6 +7,7 @@ var App = angular.module('app', [
     'farbtastic',
     'angular-loading-bar',
     'infinite-scroll',
+    'ui.bootstrap.contextMenu',
     'mocoAuth',
     'mocoProfile',
     'mocoBalance',
