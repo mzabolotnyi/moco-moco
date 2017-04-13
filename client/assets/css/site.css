@@ -14327,7 +14327,6 @@ html:not(.ismobile) .preloader-container {
 .card-header-filter.search input {
     padding-right: 25px;
 }
-
 .card-header-filter.search:after {
     content: '\f1c3';
     font-family: Material-Design-Iconic-Font;
@@ -14344,11 +14343,15 @@ table .column-icon {
     height: 20px;
 }
 
-table.table-data tr {
+table.table-data > tbody > tr {
     cursor: pointer;
 }
 
 table .status-icon {
     text-align: center;
     font-size: 20px;
+}
+
+table > tbody > tr.selected {
+    background-color: #f9f9f9;
 }

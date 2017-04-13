@@ -92,7 +92,7 @@ App.controller('TransactionsListCtrl', ['$scope', 'transaction', 'transactions',
 
                                         notifyService.hideLoadBar();
 
-                                        if (failures == 0) {
+                                        if (failures === 0) {
                                             notifyService.notify("Операции удалены");
                                         } else {
                                             notifyService.notifyError("Не удалось удалить " + countSelected + " операции");

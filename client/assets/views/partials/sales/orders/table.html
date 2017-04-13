@@ -14,6 +14,18 @@
             <span>Отмечено: {{scope.getCountSelected()}}</span>
         </span>
         <ul class="actions">
+            <li class="dropdown" dropdown data-ng-if="scope.hasSelected()">
+                <a href="" dropdown-toggle class="dropdown-toggle">
+                    <i class="zmdi zmdi-flag"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li data-ng-repeat="status in scope.statuses">
+                        <a href="" data-ng-click="scope.setStatusForSelected(status)">
+                            <i class="{{status.icon}}"></i> {{status.name}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li data-ng-if="scope.hasSelected()">
                 <a href="" data-ng-click="" uib-tooltip="Удалить отмеченные">
                     <i class="zmdi zmdi-delete"></i>
@@ -41,7 +53,7 @@
                            data-ng-click="scope.toggleSelectedAll()">
                 </th>
                 <th width="50px" class="text-center f-17">
-                    <i class="fa fa-flag"></i>
+                    <i class="zmdi zmdi-flag"></i>
                 </th>
                 <th>Номер</th>
                 <th>Дата</th>
@@ -53,8 +65,8 @@
             </thead>
             <tbody>
             <tr data-ng-repeat="order in scope.data track by $index" context-menu="scope.contextMenuOptions(order)"
-                data-ng-style="scope.getRowStyle(order)"
-                data-ng-click="scope.edit(order)">
+                data-ng-style="scope.getRowStyle(order)" data-ng-click="scope.edit(order)"
+                data-ng-class="{'selected':order.selected}">
                 <td>
                     <input type="checkbox" data-ng-click="$event.stopPropagation()"
                            data-ng-model="order.selected">

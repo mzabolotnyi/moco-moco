@@ -160,6 +160,7 @@ App
 
     // httpProvider configuration
     .config(['$httpProvider', function ($httpProvider) {
+        delete $httpProvider.defaults.headers.common["X-Requested-With"];
         $httpProvider.interceptors.push(function ($q) {
             return {
                 // request: function (config) {
@@ -172,6 +173,7 @@ App
             };
         });
     }])
+
     // Run our App
     .run(['$rootScope', '$window', 'config', 'auth', 'cfpLoadingBar', function ($rootScope, $window, config, auth, cfpLoadingBar) {
 

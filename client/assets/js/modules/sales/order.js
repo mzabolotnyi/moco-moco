@@ -22,8 +22,8 @@ OrderModule
 
                 return [fullUrl, getParamStr].join('?')
             },
-            getOneUrl: function (id) {
-                return [appConfig.apiUrlSales, config.baseUrl, id].join('/')
+            getOneUrl: function (order) {
+                return [appConfig.apiUrlSales, config.baseUrl, order.id].join('/')
             },
             getSortingParam: function () {
                 return 'order_by[date]=DESC&order_by[id]=DESC';
@@ -42,8 +42,8 @@ OrderModule
             get: function (filters) {
                 return $http.get(utils.getIndexUrl(filters ? filters : {}));
             },
-            getOne: function (id) {
-                return $http.get(utils.getOneUrl(id));
+            getOne: function (order) {
+                return $http.get(utils.getOneUrl(order));
             },
             save: function (order) {
                 if (order.id === 0) {
@@ -56,10 +56,13 @@ OrderModule
                 return $http.post(utils.getFullUrl(order), utils.prepareBodyParams(order));
             },
             update: function (order) {
-                return $http.put(utils.getOneUrl(order.id), utils.prepareBodyParams(order));
+                return $http.put(utils.getOneUrl(order), utils.prepareBodyParams(order));
             },
             delete: function (order) {
-                return $http.delete(utils.getOneUrl(order.id));
+                return $http.delete(utils.getOneUrl(order));
+            },
+            updateStatus: function (order, status) {
+                return $http.put(utils.getOneUrl(order), {'status': status.id});
             }
         };
     }]);

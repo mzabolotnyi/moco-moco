@@ -1,5 +1,5 @@
 App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifyService',
-    function ($scope, order, orders, statuses, notifyService) {
+    function ($scope, orderProvider, orders, statuses, notifyService) {
 
         // Scope object
         $scope.scope = {
@@ -15,7 +15,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
 
                 _this.order.editing = false;
 
-                order.get()
+                orderProvider.get()
                     .success(function (response) {
                         _this.data = response;
                     })
@@ -26,9 +26,6 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                     .finally(function () {
                         _this.loading = false;
                     });
-            },
-            isActive: function (order) {
-                return order.id == this.order.id;
             },
             //инициализирует изменение объекта или создание нового
             edit: function (order) {
@@ -82,23 +79,23 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
             deleteSelected: function () {
 
                 var _this = this;
-                var selectedItems = this.data.filter(function (obj) {
-                    return obj.selected;
+                var selectedItems = this.data.filter(function (order) {
+                    return order.selected;
                 });
 
                 var countSelected = _this.getCountSelected();
 
-                notifyService.confirmDelete("Удалить операции (" + countSelected + ")?", function () {
+                notifyService.confirmDelete("Удалить заказы (" + countSelected + ")?", function () {
 
                     notifyService.showLoadBar();
 
                     var failures = 0;
 
-                    angular.forEach(selectedItems, function (obj, index, array) {
+                    angular.forEach(selectedItems, function (order, index, array) {
 
                         var lastIteration = (index === array.length - 1);
 
-                        _this.deleteItem(obj)
+                        _this.deleteItem(order)
                             .error(function () {
                                 failures++;
                             })
@@ -109,14 +106,11 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
 
                                     notifyService.hideLoadBar();
 
-                                    if (failures == 0) {
-                                        notifyService.notify("Операции удалены");
+                                    if (failures === 0) {
+                                        notifyService.notify("Заказы удалены");
                                     } else {
-                                        notifyService.notifyError("Не удалось удалить " + countSelected + " операции");
+                                        notifyService.notifyError("Не удалось удалить " + countSelected + " заказов");
                                     }
-
-                                    //обновим данные о балансе
-                                    $scope.balance.update();
                                 }
                             });
                     });
@@ -172,18 +166,6 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
 
                 return products.join(', ');
             },
-            getShopUrl: function (order) {
-
-                var urls = [];
-
-                angular.forEach(order.rows, function (row) {
-                    if (row.shop && row.shop.url) {
-                        this.push(row.shop.url);
-                    }
-                }, urls);
-
-                return urls.length > 0 ? urls[0] : null;
-            },
             getShopIcon: function (order) {
 
                 var icons = [];
@@ -232,7 +214,26 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 return style;
             },
             setStatus: function (order, status) {
-                order.status = status;
+                orderProvider.updateStatus(order, status)
+                    .then(function () {
+                        notifyService.notify('Статус изменен');
+                        order.status = status;
+                    }, function (error) {
+                        notifyService.notifyError('Не удалось изменить статус');
+                    });
+            },
+            setStatusForSelected: function (status) {
+
+                var _this = this;
+                var selectedItems = this.data.filter(function (order) {
+                    return order.selected;
+                });
+
+                angular.forEach(selectedItems, function (order) {
+                    if (order.status.id !== status.id){
+                        _this.setStatus(order, status);
+                    }
+                })
             },
             contextMenuOptions: function (order) {
 
@@ -328,7 +329,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                     _this.errors = [];
 
                     if (!_this.validate()) {
-                        if (_this.errors.length == 0) {
+                        if (_this.errors.length === 0) {
                             _this.errors.push({'message': 'При проверке данных были обнаружены ошибки'});
                         }
                         _this.submitting = false;
@@ -337,7 +338,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
 
                     notifyService.showLoadBar();
 
-                    order.save(_this)
+                    orderProvider.save(_this)
                         .then(function () {
                             notifyService.notify('Заказ сохранен');
                             $scope.scope.update();
@@ -367,7 +368,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
 
                         notifyService.showLoadBar();
 
-                        order.delete(_this)
+                        orderProvider.delete(_this)
                             .then(function () {
                                 notifyService.notify("Заказ #" + _this.number + " удален");
                                 _this.fillDefault();
