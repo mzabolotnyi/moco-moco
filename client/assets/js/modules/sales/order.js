@@ -11,12 +11,22 @@ OrderModule
             getFullUrl: function () {
                 return [appConfig.apiUrlSales, config.baseUrl].join('/')
             },
-            getIndexUrl: function (filters, page, perPage) {
+            getIndexUrl: function (filter, offset) {
 
                 var fullUrl = this.getFullUrl();
                 var getParams = [];
 
+                getParams.push(httpHelper.prepareGetParam('limit', 20));
+                getParams.push(httpHelper.prepareGetParam('offset', offset));
                 getParams.push(this.getSortingParam());
+
+                if (filter.status) {
+                    getParams.push(httpHelper.prepareGetParam('filters[status]', filter.status));
+                }
+
+                if (filter.q) {
+                    getParams.push(httpHelper.prepareGetParam('filters[q]', filter.q));
+                }
 
                 var getParamStr = getParams.join('&');
 
@@ -26,7 +36,7 @@ OrderModule
                 return [appConfig.apiUrlSales, config.baseUrl, order.id].join('/')
             },
             getSortingParam: function () {
-                return 'order_by[date]=DESC&order_by[id]=DESC';
+                return 'order_by[date]=DESC';
             },
             prepareBodyParams: function (order) {
 
@@ -39,8 +49,8 @@ OrderModule
     }])
     .factory('order', ['$http', 'orderConfig', 'orderUtils', function ($http, config, utils) {
         return {
-            get: function (filters) {
-                return $http.get(utils.getIndexUrl(filters ? filters : {}));
+            get: function (filter, offset) {
+                return $http.get(utils.getIndexUrl(filter ? filter : {}, offset));
             },
             getOne: function (order) {
                 return $http.get(utils.getOneUrl(order));

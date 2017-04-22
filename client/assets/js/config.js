@@ -1,5 +1,5 @@
 App
-    // Router configuration
+// Router configuration
     .config(function ($stateProvider, $urlRouterProvider) {
 
         $urlRouterProvider.otherwise('/dashboard');
@@ -101,10 +101,16 @@ App
                 viewLoad: true,
                 resolve: {
                     orders: function (order) {
-                        return order.get();
+                        return order.get({
+                            status: 'actual',
+                            limit: 20
+                        });
                     },
                     statuses: function (orderStatus) {
                         return orderStatus.get();
+                    },
+                    sources: function (source) {
+                        return source.get();
                     }
                 }
             })
@@ -160,7 +166,6 @@ App
 
     // httpProvider configuration
     .config(['$httpProvider', function ($httpProvider) {
-        delete $httpProvider.defaults.headers.common["X-Requested-With"];
         $httpProvider.interceptors.push(function ($q) {
             return {
                 // request: function (config) {

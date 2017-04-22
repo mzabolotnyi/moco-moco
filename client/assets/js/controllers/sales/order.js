@@ -5,19 +5,28 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
         $scope.scope = {
             data: orders.data,
             statuses: statuses.data,
-            update: function () {
+            update: function (reset) {
 
                 var _this = this;
 
                 _this.loading = true;
                 _this.error = false;
-                _this.data = [];
+
+                if (reset) {
+                    _this.data = [];
+                    _this.endOfTable = false;
+                }
 
                 _this.order.editing = false;
 
-                orderProvider.get()
+                orderProvider.get(_this.filter.items, _this.data.length)
                     .success(function (response) {
-                        _this.data = response;
+
+                        if (response.length < 20){
+                            _this.endOfTable = true;
+                        }
+
+                        Array.prototype.push.apply(_this.data, response);
                     })
                     .error(function (error) {
                         _this.error = true;
@@ -26,6 +35,12 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                     .finally(function () {
                         _this.loading = false;
                     });
+            },
+            onSearchChange: function () {
+                // когда 2 и более символов - приминяем фильтр, когда 0 - тоже применяем для сброса, когда 1 - не обрабатываем
+                if (this.filter.items.q.length !== 1) {
+                    this.update(true);
+                }
             },
             //инициализирует изменение объекта или создание нового
             edit: function (order) {
@@ -40,10 +55,6 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                     this.order.fillDefault();
                     this.selected = undefined;
                 }
-            },
-            delete: function (order) {
-
-                console.log('deleted order with ID ' + order.id);
             },
             toggleSelected: function (order) {
                 order.selected = !order.selected;
@@ -95,7 +106,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
 
                         var lastIteration = (index === array.length - 1);
 
-                        _this.deleteItem(order)
+                        orderProvider.delete(order)
                             .error(function () {
                                 failures++;
                             })
@@ -114,6 +125,23 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                                 }
                             });
                     });
+                }, false);
+            },
+            delete: function (order) {
+                notifyService.confirmDelete("Удалить заказ #" + order.number + "?", function () {
+
+                    notifyService.showLoadBar();
+
+                    orderProvider.delete(order)
+                        .then(function () {
+                            notifyService.notify("Заказ #" + order.number + " удален");
+                            $scope.scope.update(true);
+                        }, function (error) {
+                            notifyService.notifyError($scope.global.errorMessages.generatePost(error));
+                        })
+                        .finally(function () {
+                            notifyService.hideLoadBar();
+                        });
                 }, false);
             },
             cancelEditing: function () {
@@ -145,6 +173,16 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 }
 
                 return display;
+            },
+            getDaysPassed: function (order) {
+
+                var date = moment(order.date);
+                var now = moment().set({'hour': 0, 'minute': 0, 'second': 0, 'millisecond': 0});
+                var display = '';
+
+                var daysPassed = moment.duration(now.diff(date)).asDays();
+
+                return daysPassed > 0 ? daysPassed : '-';
             },
             getDisplaySource: function (order) {
 
@@ -230,7 +268,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 });
 
                 angular.forEach(selectedItems, function (order) {
-                    if (order.status.id !== status.id){
+                    if (order.status.id !== status.id) {
                         _this.setStatus(order, status);
                     }
                 })
@@ -317,8 +355,15 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 },
                 //заполнение полей по переданному объекту
                 fillByObject: function (order) {
-                    this.id = order.id;
-                    this.number = order.number;
+
+                    //заполним свойства примитивных типов
+                    angular.forEach(transaction, function (value, key) {
+                        this[key] = value;
+                    }, this);
+
+                    //заполним свойства-объекты
+                    this.date = moment().toDate();
+
                 },
                 //отправляет запрос на сохранение объекта
                 save: function () {
@@ -384,6 +429,12 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                             });
                     }, false);
                 }
+            },
+            filter: {
+                items: {
+                    status: 'actual'
+                },
+                opened: false
             }
         };
     }]);

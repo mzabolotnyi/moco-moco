@@ -100,6 +100,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             goToUrl: function (url) {
                 window.open(url,'_blank');
+            },
+            alertInDevelopment: function () {
+                notifyService.alert('На данный момент функционал находится в разработке', 'info');
             }
         };
 

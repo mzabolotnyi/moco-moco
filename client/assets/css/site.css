@@ -14326,6 +14326,7 @@ html:not(.ismobile) .preloader-container {
 
 .card-header-filter.search input {
     padding-right: 25px;
+    width: 300px;
 }
 .card-header-filter.search:after {
     content: '\f1c3';
