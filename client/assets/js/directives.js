@@ -814,8 +814,7 @@ App
             link: function (scope, element, attr) {
 
                 scope.$watch('data', function () {
-                    var colorSet = Highcharts.colorSets[attr.colorSet]
-                        ? Highcharts.colorSets[attr.colorSet] : Highcharts.getOptions().colors;
+                    var colorSet = Highcharts.colorSets[attr.colorSet] ? Highcharts.colorSets[attr.colorSet] : Highcharts.getOptions().colors;
 
                     Highcharts.chart(element[0], {
                         title: false,
@@ -823,7 +822,7 @@ App
                         series: [{
                             data: scope.data,
                             dataLabels: {
-                                enabled: scope.showLabels == undefined ? false : scope.showLabels,
+                                enabled: scope.showLabels === undefined ? false : scope.showLabels,
                                 format: '<b>{point.name}</b>: {point.y:.2f} ({point.percentage:.1f}%)'
                             }
                         }],
@@ -847,7 +846,7 @@ App
                             }
                         }
                     });
-                })
+                });
             }
         };
     })
@@ -856,174 +855,176 @@ App
     .directive('hcIncExpChart', function () {
         return {
             scope: {
-                //incomeData: '=',
-                //showLabels: '='
+                expenseData: '=',
+                incomeData: '=',
+                showLabels: '='
             },
             link: function (scope, element, attr) {
 
-                //scope.$watch('data', function () {
+                scope.$watch('data', function () {
 
-                Highcharts.chart(element[0], {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: false,
-                    xAxis: [{
-                        type: 'category',
-                        crosshair: true
-                    }],
-                    yAxis: { // Primary yAxis
-                        title: {
-                            text: 'Доход / Расход',
-                        }
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    tooltip: {
-                        headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
-                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-                        footerFormat: '</table>',
-                        shared: true,
-                        useHTML: true
-                    },
-                    series: [{
-                        name: 'Доходы',
-                        type: 'column',
-                        color: '#00a65a',
-                        yAxis: 0,
-                        data: [{
-                            name: "янв, 16",
-                            y: 12495,
-                            drilldown: "income_2016_01"
+                    Highcharts.chart(element[0], {
+                        chart: {
+                            type: 'column'
                         },
-                            {
-                                name: "фев, 16",
-                                y: 26073.35,
-                                drilldown: "income_2016_02"
-                            },
-                            {
-                                name: "март, 16",
-                                y: 25176,
-                                drilldown: "income_2016_03"
-                            },
-                            {
-                                name: "апр, 16",
-                                y: 35180,
-                                drilldown: "income_2016_04"
-                            },
-                            {
-                                name: "май, 16",
-                                y: 23394,
-                                drilldown: "income_2016_05"
-                            },
-                            {
-                                name: "июнь, 16",
-                                y: 27547.44,
-                                drilldown: "income_2016_06"
-                            },
-                            {
-                                name: "июль, 16",
-                                y: 37270.88,
-                                drilldown: "income_2016_07"
-                            },
-                            {
-                                name: "авг, 16",
-                                y: 34334,
-                                drilldown: "income_2016_08"
-                            },
-                            {
-                                name: "сен, 16",
-                                y: 15748,
-                                drilldown: "income_2016_09"
-                            },
-                            {
-                                name: "окт, 16",
-                                y: 34438,
-                                drilldown: "income_2016_10"
-                            },
-                            {
-                                name: "нояб, 16",
-                                y: 12168,
-                                drilldown: "income_2016_11"
-                            },
-                            {
-                                name: "дек, 16",
-                                y: 9032,
-                                drilldown: "income_2016_12"
-                            },
-                        ]
-                    }, {
-                        name: 'Расходы',
-                        type: 'column',
-                        yAxis: 0,
-                        color: '#c74b1f',
-                        data: [
-                            {
-                                name: "янв, 16",
-                                y: 14578,
-                                drilldown: "expense_2016_01"
-                            },
-                            {
-                                name: "фев, 16",
-                                y: 15714,
-                                drilldown: "expense_2016_02"
-                            },
-                            {
-                                name: "март, 16",
-                                y: 29774,
-                                drilldown: "expense_2016_03"
-                            },
-                            {
-                                name: "апр, 16",
-                                y: 29918,
-                                drilldown: "expense_2016_04"
-                            },
-                            {
-                                name: "май, 16",
-                                y: 32740,
-                                drilldown: "expense_2016_05"
-                            },
-                            {
-                                name: "июнь, 16",
-                                y: 20367,
-                                drilldown: "expense_2016_06"
-                            },
-                            {
-                                name: "июль, 16",
-                                y: 27730,
-                                drilldown: "expense_2016_07"
-                            },
-                            {
-                                name: "авг, 16",
-                                y: 23861,
-                                drilldown: "expense_2016_08"
-                            },
-                            {
-                                name: "сен, 16",
-                                y: 19781,
-                                drilldown: "expense_2016_09"
-                            },
-                            {
-                                name: "окт, 16",
-                                y: 29056,
-                                drilldown: "expense_2016_10"
-                            },
-                            {
-                                name: "нояб, 16",
-                                y: 19733,
-                                drilldown: "expense_2016_11"
-                            },
-                            {
-                                name: "дек, 16",
-                                y: 10331,
-                                drilldown: "expense_2016_12"
-                            },
-                        ]
-                    }],
+                        title: false,
+                        xAxis: [{
+                            type: 'category',
+                            crosshair: true
+                        }],
+                        yAxis: { // Primary yAxis
+                            title: {
+                                text: 'Доход / Расход',
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        series: [{
+                            name: 'Доходы',
+                            type: 'column',
+                            color: '#00a65a',
+                            yAxis: 0,
+                            data: [
+                                {
+                                    name: "янв, 16",
+                                    y: 12495,
+                                    drilldown: "income_2016_01"
+                                },
+                                {
+                                    name: "фев, 16",
+                                    y: 26073.35,
+                                    drilldown: "income_2016_02"
+                                },
+                                {
+                                    name: "март, 16",
+                                    y: 25176,
+                                    drilldown: "income_2016_03"
+                                },
+                                {
+                                    name: "апр, 16",
+                                    y: 35180,
+                                    drilldown: "income_2016_04"
+                                },
+                                {
+                                    name: "май, 16",
+                                    y: 23394,
+                                    drilldown: "income_2016_05"
+                                },
+                                {
+                                    name: "июнь, 16",
+                                    y: 27547.44,
+                                    drilldown: "income_2016_06"
+                                },
+                                {
+                                    name: "июль, 16",
+                                    y: 37270.88,
+                                    drilldown: "income_2016_07"
+                                },
+                                {
+                                    name: "авг, 16",
+                                    y: 34334,
+                                    drilldown: "income_2016_08"
+                                },
+                                {
+                                    name: "сен, 16",
+                                    y: 15748,
+                                    drilldown: "income_2016_09"
+                                },
+                                {
+                                    name: "окт, 16",
+                                    y: 34438,
+                                    drilldown: "income_2016_10"
+                                },
+                                {
+                                    name: "нояб, 16",
+                                    y: 12168,
+                                    drilldown: "income_2016_11"
+                                },
+                                {
+                                    name: "дек, 16",
+                                    y: 9032,
+                                    drilldown: "income_2016_12"
+                                },
+                            ]
+                        }, {
+                            name: 'Расходы',
+                            type: 'column',
+                            yAxis: 0,
+                            color: '#c74b1f',
+                            data: [
+                                {
+                                    name: "янв, 16",
+                                    y: 14578,
+                                    drilldown: "expense_2016_01"
+                                },
+                                {
+                                    name: "фев, 16",
+                                    y: 15714,
+                                    drilldown: "expense_2016_02"
+                                },
+                                {
+                                    name: "март, 16",
+                                    y: 29774,
+                                    drilldown: "expense_2016_03"
+                                },
+                                {
+                                    name: "апр, 16",
+                                    y: 29918,
+                                    drilldown: "expense_2016_04"
+                                },
+                                {
+                                    name: "май, 16",
+                                    y: 32740,
+                                    drilldown: "expense_2016_05"
+                                },
+                                {
+                                    name: "июнь, 16",
+                                    y: 20367,
+                                    drilldown: "expense_2016_06"
+                                },
+                                {
+                                    name: "июль, 16",
+                                    y: 27730,
+                                    drilldown: "expense_2016_07"
+                                },
+                                {
+                                    name: "авг, 16",
+                                    y: 23861,
+                                    drilldown: "expense_2016_08"
+                                },
+                                {
+                                    name: "сен, 16",
+                                    y: 19781,
+                                    drilldown: "expense_2016_09"
+                                },
+                                {
+                                    name: "окт, 16",
+                                    y: 29056,
+                                    drilldown: "expense_2016_10"
+                                },
+                                {
+                                    name: "нояб, 16",
+                                    y: 19733,
+                                    drilldown: "expense_2016_11"
+                                },
+                                {
+                                    name: "дек, 16",
+                                    y: 10331,
+                                    drilldown: "expense_2016_12"
+                                },
+                            ]
+                        }],
+                    });
                 });
-                //})
             }
         };
     })

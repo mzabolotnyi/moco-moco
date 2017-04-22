@@ -43,6 +43,16 @@ class AnalyticsController extends Controller
         return Analytics::create($_GET['startDate'], $_GET['endDate'])->getIncomeByCategoryData();
     }
 
+    public function actionTurnoverByMonth()
+    {
+        $analytics = Analytics::create($_GET['startDate'], $_GET['endDate']);
+
+        return [
+            'income' => $analytics->getIncomeByMonthData(),
+            'expense' => $analytics->getExpenseByMonthData(),
+        ];
+    }
+
     public function actionWidgetData($period)
     {
         $startMonth = Carbon::createFromFormat('Y-m-d', $period)->startOfMonth();

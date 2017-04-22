@@ -88,6 +88,7 @@ return [
                 'GET expense' => 'expense',
                 'GET income' => 'income',
                 'GET widgetData' => 'widget-data',
+                'GET turnoverByMonth' => 'turnover-by-month',
             ],
         ],
     ],

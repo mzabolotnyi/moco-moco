@@ -70,8 +70,31 @@ class Analytics extends Model
     }
 
     /**
-     * Returns data about expenses or income ['name' => 'Food', 'amount' => 125]
+     * Returns data about expenses ['month' => 'apr 2017', 'amount' => 125]
+     * Amount in main currency
      *
+     * @return array
+     */
+    public function getExpenseByMonthData()
+    {
+        return $this->getByMonthData('expense');
+    }
+
+    /**
+     * Returns data about expenses ['month' => 'apr 2017', 'amount' => 125]
+     * Amount in main currency
+     *
+     * @return array
+     */
+    public function getIncomeByMonthData()
+    {
+        return $this->getByMonthData('income');
+    }
+
+    /**
+     * Returns data about expenses or income by category ['name' => 'Food', 'amount' => 125]
+     *
+     * @param string $type
      * @return array
      */
     private function getByCategoryData($type)
@@ -104,15 +127,48 @@ class Analytics extends Model
     }
 
     /**
-     * Convert query result about expenses or income to array ['name' => 'Food', 'amount' => 125]
+     * Returns data about expenses or income by month ['month' => 'apr 2017', 'amount' => 125]
      *
+     * @param string $type
      * @return array
      */
-    private function prepareByCategoryData($queryResult)
+    private function getByMonthData($type)
+    {
+        $userId = Yii::$app->user->getId();
+
+        $query = new Query();
+        $query->select([
+            'transaction.date',
+            'transaction.currency_id',
+            'SUM(transaction.amount) as amount'])
+            ->from('transaction')
+            ->where(['transaction.user_id' => $userId])
+            ->andWhere(['transaction.' . $type => true]);
+
+        if ($this->startDate) {
+            $query->andWhere(['>=', 'transaction.date', $this->startDate->format('Y-m-d')]);
+        }
+
+        if ($this->endDate) {
+            $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d')]);
+        }
+
+        $query->groupBy(['date', 'currency_id']);
+
+        return $this->prepareByMonthData($query->all());
+    }
+
+    /**
+     * Convert query result about expenses or income to array ['name' => 'Food', 'amount' => 125]
+     *
+     * @param array $data
+     * @return array
+     */
+    private function prepareByCategoryData($data)
     {
         $result = [];
 
-        foreach ($queryResult as $row) {
+        foreach ($data as $row) {
 
             $categoryId = $row['category_id'];
             $categoryName = $row['category_name'];
@@ -142,6 +198,52 @@ class Analytics extends Model
             }
 
             return ($a['amount'] < $b['amount']) ? 1 : -1;
+        });
+
+        return $result;
+    }
+
+    /**
+     * Convert query result about expenses or income to array ['month' => 'apr 2017', 'amount' => 125]
+     *
+     * @param array $data
+     * @return array
+     */
+    private function prepareByMonthData($data)
+    {
+        $result = [];
+
+        foreach ($data as $row) {
+
+            $currency = $this->getCurrency($row['currency_id']);
+
+            $date = $row['date'];
+            $dateObj = Carbon::createFromFormat('Y-m-d', $date);
+            $month = $dateObj->format('M Y');
+
+            $amount = floatval($row['amount']);
+            $amountInMainCurrency = Currency::convertToMainCurrency($amount, $currency, $date);
+
+            if (!isset($result[$month])) {
+                $result[$month] = [
+                    'name' => $month,
+                    'date' => $dateObj->format('Y-m'),
+                    'amount' => $amountInMainCurrency,
+                ];
+            } else {
+                $result[$month]['amount'] += $amountInMainCurrency;
+            }
+        }
+
+        // sort result by date descending
+        $result = array_values($result);
+        usort($result, function ($a, $b) {
+
+            if ($a['date'] == $b['date']) {
+                return 0;
+            }
+
+            return ($a['date'] > $b['date']) ? 1 : -1;
         });
 
         return $result;
