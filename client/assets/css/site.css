@@ -13492,6 +13492,11 @@ body {
     margin: 0 auto;
 }
 
+.full-screen .chart-lg {
+    height: 500px;
+    margin: 0 auto;
+}
+
 /* Actions list */
 .actions-list {
     list-style: none;
@@ -14328,6 +14333,7 @@ html:not(.ismobile) .preloader-container {
     padding-right: 25px;
     width: 300px;
 }
+
 .card-header-filter.search:after {
     content: '\f1c3';
     font-family: Material-Design-Iconic-Font;

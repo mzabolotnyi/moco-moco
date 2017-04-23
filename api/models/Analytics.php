@@ -25,6 +25,21 @@ class Analytics extends Model
 
     private $_currencies = [];
 
+    private $months = [
+        '1' => 'янв',
+        '2' => 'фев',
+        '3' => 'мар',
+        '4' => 'апр',
+        '5' => 'май',
+        '6' => 'июн',
+        '7' => 'июл',
+        '8' => 'авг',
+        '9' => 'сен',
+        '10' => 'окт',
+        '11' => 'ноя',
+        '12' => 'дек',
+    ];
+
     /**
      * Factory method
      *
@@ -219,15 +234,15 @@ class Analytics extends Model
 
             $date = $row['date'];
             $dateObj = Carbon::createFromFormat('Y-m-d', $date);
-            $month = $dateObj->format('M Y');
+            $month = $dateObj->format('Y-m');
 
             $amount = floatval($row['amount']);
             $amountInMainCurrency = Currency::convertToMainCurrency($amount, $currency, $date);
 
             if (!isset($result[$month])) {
                 $result[$month] = [
-                    'name' => $month,
-                    'date' => $dateObj->format('Y-m'),
+                    'name' => $this->months[$dateObj->format('n')] . ' ' . $dateObj->format('Y'),
+                    'date' => $month,
                     'amount' => $amountInMainCurrency,
                 ];
             } else {

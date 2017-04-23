@@ -95,6 +95,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 update: function () {
                     this.expensePie.update();
                     this.incomePie.update();
+                    this.turnoverColumn.update();
                 },
                 expensePie: {
                     data: [],
@@ -112,7 +113,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
                         _this.error = false;
 
-                        if (!$scope.global.updateInBackground){
+                        if (!$scope.global.updateInBackground) {
                             _this.loading = true;
                             _this.data = [];
                         }
@@ -132,7 +133,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                             })
                             .error(function (error) {
 
-                                if ($scope.global.updateInBackground){
+                                if ($scope.global.updateInBackground) {
                                     _this.data = [];
                                 }
 
@@ -165,7 +166,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
                         _this.error = false;
 
-                        if (!$scope.global.updateInBackground){
+                        if (!$scope.global.updateInBackground) {
                             _this.loading = true;
                             _this.data = [];
                         }
@@ -185,7 +186,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                             })
                             .error(function (error) {
 
-                                if ($scope.global.updateInBackground){
+                                if ($scope.global.updateInBackground) {
                                     _this.data = [];
                                 }
 
@@ -202,11 +203,11 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                         this.update();
                     }
                 },
-                incExpColumn: {
+                turnoverColumn: {
                     data: [],
                     month: moment().startOf('month').toDate(),
-                    getDisplayMonth: function () {
-                        return moment(this.month).format('MMMM YYYY');
+                    getDisplayPeriod: function () {
+                        return moment(this.month).add(-11, 'months').format('MMMM YYYY') + ' - ' + moment(this.month).format('MMMM YYYY');
                     },
                     moveMonth: function (numberMonths) {
                         this.month = moment(this.month).add(numberMonths, 'months').toDate();
@@ -218,27 +219,30 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
                         _this.error = false;
 
-                        if (!$scope.global.updateInBackground){
+                        if (!$scope.global.updateInBackground) {
                             _this.loading = true;
                             _this.data = [];
                         }
 
-                        var startDate = moment(_this.month).startOf('month').toDate();
+                        var startDate = moment(_this.month).startOf('month').add(-11, 'months').toDate();
                         var endDate = moment(_this.month).endOf('month').toDate();
 
-                        analytics.getIncomeByCategory(startDate, endDate)
+                        analytics.getTurnoverByMonth(startDate, endDate)
                             .success(function (data) {
-                                _this.data = angular.forEach(data, function (value, key) {
+
+                                _this.data = data;
+
+                                angular.forEach(_this.data.income, function (value, key) {
                                     value.y = value.amount;
                                 });
 
-                                if (_this.data.length === 0) {
-                                    _this.data = [{name: 'Нет доходов', y: 0.001}]
-                                }
+                                angular.forEach(_this.data.expense, function (value, key) {
+                                    value.y = value.amount;
+                                });
                             })
                             .error(function (error) {
 
-                                if ($scope.global.updateInBackground){
+                                if ($scope.global.updateInBackground) {
                                     _this.data = [];
                                 }
 
@@ -263,7 +267,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
                     _this.error = false;
 
-                    if (!$scope.global.updateInBackground){
+                    if (!$scope.global.updateInBackground) {
                         _this.loading = true;
                     }
 
@@ -345,6 +349,10 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
             $scope.scope.transactions.update();
             $scope.scope.charts.update();
             $scope.scope.widget.update();
+
+            // if ($scope.transaction.date && $scope.scope.transactions.currentDate.toDateString() !== $scope.transaction.date.toDateString()) {
+            //     $scope.scope.transactions.currentDate = $scope.transaction.date;
+            // }
         };
 
         //установим коллбэк после корректировки баланса
@@ -353,7 +361,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
             $scope.scope.charts.update();
             $scope.scope.widget.update();
 
-            if ($scope.scope.transactions.currentDate.toDateString() == (new Date).toDateString()) {
+            if ($scope.scope.transactions.currentDate.toDateString() === (new Date).toDateString()) {
                 $scope.scope.transactions.update();
             }
         };

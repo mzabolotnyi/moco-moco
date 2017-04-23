@@ -18,7 +18,7 @@ AnalyticsModule
                 var url = this.getFullUrl() + '/' + path;
                 var paramsString = params.join('&');
 
-                return [url, paramsString].join('?')
+                return [url, paramsString].join('?');
             },
             getPeriodParams: function (startDate, endDate) {
 
@@ -32,7 +32,7 @@ AnalyticsModule
                     params.push(httpHelper.prepareGetParam(config.endPeriodParamName, endDate));
                 }
 
-                return params.join('&')
+                return params.join('&');
             }
         }
     }])
@@ -46,6 +46,12 @@ AnalyticsModule
             },
             getWidgetData: function (period) {
                 return $http.get(utils.getUrl('widget-data', [httpHelper.prepareGetParam('period', period)]));
+            },
+            getTurnoverByMonth: function (startDate, endDate) {
+                return $http.get(utils.getUrl('turnover-by-month', [
+                    httpHelper.prepareGetParam('startDate', startDate),
+                    httpHelper.prepareGetParam('endDate', endDate)
+                ]));
             }
         };
     }]);

@@ -1,0 +1,44 @@
+<div class="card card-chart" data-ng-class="{ 'full-screen': scope.charts.turnoverColumn.fullScreen }">
+
+    <div class="card-header card-header-two-rows">
+        <h2 class="text-center">Расходы и доходы ({{profile.data.currency.symbol}})</h2>
+
+        <div class="date-toolbar">
+                <span>
+                    <button class="dt-btn" data-ng-click="scope.charts.turnoverColumn.moveMonth(-1)">
+                        <i class="zmdi zmdi-chevron-left"></i>
+                    </button>
+                    <h2>{{scope.charts.turnoverColumn.getDisplayPeriod()}}</h2>
+                    <button class="dt-btn" data-ng-click="scope.charts.turnoverColumn.moveMonth(1)">
+                        <i class="zmdi zmdi-chevron-right"></i>
+                    </button>
+                </span>
+        </div>
+
+        <ul class="actions">
+            <li><a href="" data-ng-click="scope.charts.turnoverColumn.update()" uib-tooltip="Обновить"><i
+                    class="zmdi zmdi-refresh"></i></a></li>
+            <li>
+                <a href="" uib-tooltip="Во весь экран" data-ng-click="scope.charts.turnoverColumn.toggleFullScreen()">
+                    <i class="zmdi"
+                       data-ng-class="{ 'zmdi-fullscreen':!scope.charts.turnoverColumn.fullScreen,
+                                        'zmdi-fullscreen-exit':scope.charts.turnoverColumn.fullScreen }"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="chart-lg" hc-turnover-chart data="scope.charts.turnoverColumn.data"
+             data-ng-if="!scope.charts.turnoverColumn.loading && !scope.charts.turnoverColumn.error"></div>
+        <div class="text-center" data-ng-if="scope.charts.turnoverColumn.loading">
+            <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+        </div>
+        <div class="text-center p-b-10 has-error" data-ng-if="scope.charts.turnoverColumn.error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.charts.turnoverColumn.update()">Повторить
+            </button>
+        </div>
+    </div>
+
+</div>
