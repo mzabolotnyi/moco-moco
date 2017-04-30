@@ -44,7 +44,6 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
             },
             //инициализирует изменение объекта или создание нового
             edit: function (order) {
-                console.log('edit order with ID ' + order.id);
                 this.order.editing = true;
                 this.order.errors = {};
 
@@ -55,6 +54,10 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                     this.order.fillDefault();
                     this.selected = undefined;
                 }
+            },
+            cancelEditing: function () {
+                this.order.editing = false;
+                this.order.errors = {};
             },
             toggleSelected: function (order) {
                 order.selected = !order.selected;
@@ -143,16 +146,6 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                             notifyService.hideLoadBar();
                         });
                 }, false);
-            },
-            cancelEditing: function () {
-
-                this.order.editing = false;
-
-                if (this.selected) {
-                    this.order.fillByObject(this.selected);
-                } else {
-                    this.order.fillDefault();
-                }
             },
             getDisplayDate: function (order) {
 
@@ -334,6 +327,16 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 isNew: function () {
                     return this.id === 0;
                 },
+                isModified: function () {
+
+                    if (this.isNew()){
+                        return true;
+                    }
+
+                    a =1;
+
+                    return false;
+                },
                 hasUrl: function () {
                     return this.url;
                 },
@@ -357,7 +360,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 fillByObject: function (order) {
 
                     //заполним свойства примитивных типов
-                    angular.forEach(transaction, function (value, key) {
+                    angular.forEach(order, function (value, key) {
                         this[key] = value;
                     }, this);
 
@@ -404,30 +407,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 },
                 //отправляет запрос на удаление объекта
                 delete: function () {
-
-                    var _this = this;
-
-                    _this.errors = {};
-
-                    notifyService.confirmDelete("Удалить заказ #" + _this.number + "?", function () {
-
-                        notifyService.showLoadBar();
-
-                        orderProvider.delete(_this)
-                            .then(function () {
-                                notifyService.notify("Заказ #" + _this.number + " удален");
-                                _this.fillDefault();
-                                $scope.scope.update();
-                            }, function (error) {
-                                if (error.data) {
-                                    _this.errors = [error.data];
-                                    notifyService.notifyError($scope.global.errorMessages.generatePost(error));
-                                }
-                            })
-                            .finally(function () {
-                                notifyService.hideLoadBar();
-                            });
-                    }, false);
+                    $scope.scope.delete(order);
                 }
             },
             filter: {

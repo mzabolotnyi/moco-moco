@@ -1,8 +1,9 @@
 <ng-include src="'assets/views/partials/sales/orders/header.html'"></ng-include>
 
-<div class="col-sm-12">
+<div class="col-sm-12" data-ng-if="!scope.order.editing">
     <ng-include src="'assets/views/partials/sales/orders/table.html'"></ng-include>
 </div>
 
-
-<!--<ng-include src="'assets/views/partials/transactions/filters-form.html'"></ng-include>-->
+<div class="col-sm-12" data-ng-if="scope.order.editing">
+    <ng-include src="'assets/views/partials/sales/orders/single.html'"></ng-include>
+</div>

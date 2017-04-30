@@ -99,7 +99,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 }
             },
             goToUrl: function (url) {
-                window.open(url,'_blank');
+                window.open(url, '_blank');
             },
             alertInDevelopment: function () {
                 notifyService.alert('На данный момент функционал находится в разработке', 'info');
@@ -360,7 +360,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                         'dashboard'
                     ];
 
-                    if (stateNames.indexOf(currentStateName) != -1) {
+                    if (stateNames.indexOf(currentStateName) !== -1) {
                         if (angular.isFunction(this.callback)) {
                             this.callback.call();
                         }
@@ -753,6 +753,28 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                             notifyService.hideLoadBar();
                         });
                 }, false);
+            }
+        };
+
+        $scope.keyPressHandler = function ($event) {
+            switch ($event.keyCode) {
+                case 43:
+                    if (!$scope.transaction.editing) {
+                        $scope.transaction.edit('income');
+                    }
+                    break;
+                case 45:
+                    if (!$scope.transaction.editing) {
+                        $scope.transaction.edit('expense');
+                    }
+                    break;
+                case 47:
+                    if (!$scope.transaction.editing) {
+                        $scope.transaction.edit('transfer');
+                    }
+                    break;
+                default:
+                    break;
             }
         };
 
