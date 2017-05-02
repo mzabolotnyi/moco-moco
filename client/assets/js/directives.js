@@ -904,3 +904,59 @@ App
             }
         };
     })
+
+    // Directive for air datepicker
+    .directive('datePicker', function () {
+        return {
+            restrict: 'A',
+            scope: {
+                options: '&',
+                ngModel: '='
+            },
+            link: function (scope, element, attrs, ctrl) {
+                var defaults = {
+                    autoClose: true,
+                    dateFormat: "d MM, yyyy"
+                };
+
+                // view to model
+                defaults.onSelect = function (formattedDate, date, inst) {
+
+                    if (scope.ngModel instanceof Date && scope.ngModel.toISOString() === date.toISOString()) {
+                        return false;
+                    }
+
+                    scope.ngModel = date;
+                    scope.$applyAsync();
+                };
+
+                // model to view
+                scope.$watch('ngModel', function (newVal) {
+
+                    if (!newVal) {
+                        return false;
+                    }
+
+                    $(element).data('datepicker').selectDate(newVal);
+                });
+
+                // init
+                scope.$watch(function () {
+                    return scope.options();
+                }, function (newVal) {
+                    if (!newVal) return false;
+
+                    if (newVal.minDate) newVal.minDate = new Date(newVal.minDate);
+                    if (newVal.maxDate) newVal.maxDate = new Date(newVal.maxDate);
+
+                    $(element).data('datepicker').update(angular.extend(defaults, newVal));
+                }, true);
+
+                $(element).prop('readonly', true);
+                $(element).datepicker(angular.extend(defaults, scope.options()));
+            }
+        };
+    })
+
+
+

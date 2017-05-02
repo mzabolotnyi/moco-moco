@@ -3252,7 +3252,6 @@ output {
 .form-control[disabled],
 .form-control[readonly],
 fieldset[disabled] .form-control {
-    background-color: #eeeeee;
     opacity: 1;
 }
 
@@ -5172,7 +5171,19 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 
 .input-group-addon {
-    padding: 6px 12px;
+    padding: 6px 10px 6px 0;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555555;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+}
+
+.input-group-addon.last {
+    padding: 6px 0 6px 10px;
     font-size: 13px;
     font-weight: normal;
     line-height: 1;
@@ -11387,53 +11398,18 @@ html:not(.ie9) .select.fg-line:before {
  * Input Groups
  */
 
-.input-group .input-group-addon {
-    vertical-align: bottom;
-    padding: 0;
-}
-
-.input-group .input-group-addon .zmdi {
-    line-height: 100%;
-}
-
-.input-group:not(.input-group-lg):not(.input-group-sm) .input-group-addon:not(.last) {
-    padding-right: 10px;
-}
-
-.input-group:not(.input-group-lg):not(.input-group-sm) .input-group-addon.last {
-    padding-left: 10px;
-}
-
-.input-group:not(.input-group-lg):not(.input-group-sm) .input-group-addon .zmdi {
-    font-size: 23px;
-}
-
-.input-group.input-group-lg .input-group-addon:not(.last) {
-    padding-right: 15px;
-}
-
-.input-group.input-group-lg .input-group-addon.last {
-    padding-left: 15px;
-}
-
-.input-group.input-group-lg .input-group-addon .zmdi {
-    font-size: 30px;
-}
-
-.input-group.input-group-sm .input-group-addon:not(.last) {
-    padding-right: 5px;
-}
-
-.input-group.input-group-sm .input-group-addon.last {
-    padding-left: 5px;
-}
-
-.input-group.input-group-sm .input-group-addon .zmdi {
+.input-group:not(.input-group-lg):not(.input-group-sm) .input-group-addon {
     font-size: 18px;
 }
 
-.input-group > [class*="col-"] {
-    padding: 0;
+.input-group-addon {
+    border-width: 0px 0px 1px 0px;
+    min-width: 30px;
+}
+
+.input-group-addon > .zmdi {
+    position: relative;
+    top: 3px;
 }
 
 /*
@@ -14361,4 +14337,17 @@ table .status-icon {
 
 table > tbody > tr.selected {
     background-color: #f9f9f9;
+}
+
+/* AIR DATEPICKER STYLE*/
+.datepicker--day-name {
+    color: #009688;
+}
+
+.datepicker--cell.-current- {
+    color: #009688;
+}
+
+.datepicker--cell.-selected-, .datepicker--cell.-selected-.-current-, .datepicker--cell.-selected-:hover {
+    background: #009688;
 }

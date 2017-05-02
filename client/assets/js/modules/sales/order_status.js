@@ -9,7 +9,7 @@ OrderStatusModule
     .factory('orderStatusUtils', ['config', 'orderStatusConfig', function (appConfig, config) {
         return {
             getFullUrl: function () {
-                return [appConfig.apiUrlSales, config.baseUrl].join('/')
+                return [appConfig.apiUrlSales, config.baseUrl].join('/') + '?order_by[forNew]=DESC&order_by[createdAt]=ASC';
             },
             getOneUrl: function (id) {
                 return [appConfig.apiUrlSales, config.baseUrl, id].join('/')
@@ -19,6 +19,7 @@ OrderStatusModule
                     name: orderStatus.name,
                     color: orderStatus.color,
                     asClosed: orderStatus.asClosed,
+                    forNew: orderStatus.forNew,
                     noColor: orderStatus.noColor,
                     icon: orderStatus.icon
                 };

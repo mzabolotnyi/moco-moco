@@ -79,6 +79,7 @@ App.controller('OrderStatusesCtrl', ['$scope', 'orderStatus', 'orderStatuses', '
                     this.color = '#e6e6e6';
                     this.asClosed = false;
                     this.noColor = false;
+                    this.forNew = false;
                     this.icon = 'fa fa-flag';
                 },
                 //заполнение полей по переданному объекту
@@ -88,6 +89,7 @@ App.controller('OrderStatusesCtrl', ['$scope', 'orderStatus', 'orderStatuses', '
                     this.color = orderStatus.color;
                     this.asClosed = orderStatus.asClosed;
                     this.noColor = orderStatus.noColor;
+                    this.forNew = orderStatus.forNew;
                     this.icon = orderStatus.icon;
                 },
                 //отправляет запрос на сохранение объекта

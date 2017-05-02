@@ -18,6 +18,7 @@
                     <div class="media-body">
                         <div class="lv-title p-r-30">
                             {{orderStatus.name}}
+                            <i class="zmdi zmdi-star" data-ng-if="orderStatus.forNew"></i>
                         </div>
                         <small class="lv-small" data-ng-if="orderStatus.asClosed">
                             <span class="zmdi zmdi-check-all"></span> считать закрытым

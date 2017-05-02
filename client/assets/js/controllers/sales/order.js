@@ -365,7 +365,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                     }, this);
 
                     //заполним свойства-объекты
-                    this.date = moment().toDate();
+                    this.date = moment(order.date).toDate();
 
                 },
                 //отправляет запрос на сохранение объекта
@@ -407,7 +407,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 },
                 //отправляет запрос на удаление объекта
                 delete: function () {
-                    $scope.scope.delete(order);
+                    $scope.scope.delete(this);
                 }
             },
             filter: {

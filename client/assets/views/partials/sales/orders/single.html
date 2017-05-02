@@ -7,38 +7,46 @@
                 data-ng-click="scope.order.save()">Сохранить
         </button>
         <ul class="actions">
-            <li class="dropdown" dropdown data-ng-if="scope.hasSelected()" uib-tooltip="Изменить статус для отмеченных">
-                <a href="" dropdown-toggle class="dropdown-toggle">
-                    <i class="zmdi zmdi-flag"></i>
-                </a>
-                <ul class="dropdown-menu">
-                    <li data-ng-repeat="status in scope.statuses">
-                        <a href="" data-ng-click="scope.setStatusForSelected(status)">
-                            <i class="{{status.icon}}"></i> {{status.name}}
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li data-ng-if="scope.hasSelected()" uib-tooltip="Удалить отмеченные">
-                <a href="" data-ng-click="scope.deleteSelected()">
+            <li data-ng-if="!scope.order.isNew()" uib-tooltip="Удалить">
+                <a href="" data-ng-click="scope.order.delete()">
                     <i class="zmdi zmdi-delete"></i>
-                </a>
-            </li>
-            <li uib-tooltip="Дополнительные фильтры">
-                <a href="" data-ng-click="global.alertInDevelopment()">
-                    <i class="zmdi zmdi-filter-list"></i>
-                </a>
-            </li>
-            <li uib-tooltip="Обновить">
-                <a href="" data-ng-click="scope.update(true)">
-                    <i class="zmdi zmdi-refresh"></i>
                 </a>
             </li>
         </ul>
     </div>
 
-    <div class="card-body">
-        {{scope.order.id}}
+    <div class="card-body card-padding">
+
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Номер</label>
+                <div class="form-group fg-line">
+                    <input type="text" class="form-control input-sm" placeholder="Номер заказа" name="number"
+                           data-ng-model="scope.order.number" required>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label>Дата</label>
+                <div class="input-group">
+                    <div class="fg-line">
+                        <input type="text" date-picker class="form-control input-sm" placeholder="Дата заказа" name="date"
+                               data-ng-model="scope.order.date" required>
+                    </div>
+                    <span class="input-group-addon last"><i class="zmdi zmdi-calendar"></i></span>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <label>Статус</label>
+                <div class="form-group fg-line">
+                    <select class="form-control input-sm" name="status"
+                            data-ng-model="scope.order.status"
+                            data-ng-options="status as status.name for status in scope.statuses track by status.id">
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+
     </div>
 
 </div>

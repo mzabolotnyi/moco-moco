@@ -18,12 +18,14 @@
               data-autofocus="{{scope.orderStatus.isNew()}}">
 
             <div class="row">
-                <div class="col-xs-8">
+
+                <div class="col-xs-6">
 
                     <!--NAME-->
                     <div class="form-group fg-line">
                         <label>Название</label>
-                        <input type="text" class="form-control input-sm autofocus" data-ng-model="scope.orderStatus.name"
+                        <input type="text" class="form-control input-sm autofocus"
+                               data-ng-model="scope.orderStatus.name"
                                name="name" placeholder="Название" data-ng-maxlength="255" required>
                     </div>
 
@@ -36,7 +38,23 @@
                     <!--end NAME-->
 
                 </div>
-                <div class="col-xs-4">
+
+                <div class="col-xs-3">
+
+                    <!--FOR NEW-->
+                    <div class="checkbox m-t-30 p-t-5">
+                        <label>
+                            <input type="checkbox" class="checker select-box"
+                                   data-ng-model="scope.orderStatus.forNew">
+                            <i class="input-helper"></i>
+                            Устанавливать для новых
+                        </label>
+                    </div>
+                    <!--end FOR NEW-->
+
+                </div>
+
+                <div class="col-xs-3">
 
                     <!--AS CLOSED-->
                     <div class="checkbox m-t-30 p-t-5">
@@ -50,6 +68,7 @@
                     <!--end AS CLOSED-->
 
                 </div>
+
             </div>
 
             <div class="row">
@@ -59,7 +78,8 @@
                     <div class="form-group fg-line">
                         <label>Цвет</label>
                         <div data-ng-click="scope.colorpicker.open()">
-                            <div class="color-container" data-ng-style="{ 'background-color': scope.orderStatus.noColor ? 'transparent' : scope.orderStatus.color }"></div>
+                            <div class="color-container"
+                                 data-ng-style="{ 'background-color': scope.orderStatus.noColor ? 'transparent' : scope.orderStatus.color }"></div>
                         </div>
                     </div>
                     <!--end COLOR-->
