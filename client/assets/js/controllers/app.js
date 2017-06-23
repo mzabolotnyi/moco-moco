@@ -259,6 +259,8 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 setCategory: function (category) {
                     if (category) {
                         $localStorage[this.savedCategoryAlias] = category.id;
+                    }else {
+                        delete $localStorage[this.savedCategoryAlias];
                     }
                 },
                 getCategory: function () {
