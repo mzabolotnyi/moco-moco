@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3d5da83f-57e6-43eb-9a10-f33cde4526e5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/assets/css/air-datepicker.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/assets/js/plugins/air-datepicker/datepicker.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/css/site.css" afterPath="$PROJECT_DIR$/client/assets/css/site.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/js/controllers/sales/order.js" afterPath="$PROJECT_DIR$/client/assets/js/controllers/sales/order.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/js/controllers/sales/order_status.js" afterPath="$PROJECT_DIR$/client/assets/js/controllers/sales/order_status.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/js/directives.js" afterPath="$PROJECT_DIR$/client/assets/js/directives.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/js/modules/sales/order_status.js" afterPath="$PROJECT_DIR$/client/assets/js/modules/sales/order_status.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/views/partials/sales/orders/single.html" afterPath="$PROJECT_DIR$/client/assets/views/partials/sales/orders/single.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/views/partials/sales/statuses/edit-form.html" afterPath="$PROJECT_DIR$/client/assets/views/partials/sales/statuses/edit-form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/views/partials/sales/statuses/list.html" afterPath="$PROJECT_DIR$/client/assets/views/partials/sales/statuses/list.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/assets/views/partials/transactions/edit-form.html" afterPath="$PROJECT_DIR$/client/assets/views/partials/transactions/edit-form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/index.html" afterPath="$PROJECT_DIR$/client/index.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +20,8 @@
       <file leaf-file-name="order.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/assets/js/controllers/sales/order.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="6120">
+              <caret line="360" column="101" lean-forward="false" selection-start-line="360" selection-start-column="101" selection-end-line="360" selection-end-column="101" />
               <folding />
             </state>
           </provider>
@@ -39,13 +30,13 @@
       <file leaf-file-name="directives.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/assets/js/directives.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15555">
-              <caret line="917" column="36" lean-forward="false" selection-start-line="917" selection-start-column="36" selection-end-line="917" selection-end-column="36" />
+            <state relative-caret-position="7463">
+              <caret line="441" column="25" lean-forward="false" selection-start-line="441" selection-start-column="16" selection-end-line="441" selection-end-column="25" />
               <folding>
-                <marker date="1493664734085" expanded="true" signature="31159:31173" ph="..." />
-                <marker date="1493664734085" expanded="true" signature="33173:33187" ph="..." />
-                <marker date="1493664734085" expanded="true" signature="33274:33304" ph="..." />
-                <marker date="1493664734085" expanded="true" signature="33370:33379" ph="..." />
+                <marker date="1493737560315" expanded="true" signature="31160:31174" ph="..." />
+                <marker date="1493737560315" expanded="true" signature="33174:33188" ph="..." />
+                <marker date="1493737560315" expanded="true" signature="33275:33305" ph="..." />
+                <marker date="1493737560315" expanded="true" signature="33371:33380" ph="..." />
               </folding>
             </state>
           </provider>
@@ -54,7 +45,7 @@
       <file leaf-file-name="site.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/assets/css/site.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="88145">
               <caret line="5185" column="25" lean-forward="false" selection-start-line="5185" selection-start-column="25" selection-end-line="5185" selection-end-column="25" />
               <folding />
             </state>
@@ -64,8 +55,8 @@
       <file leaf-file-name="table.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/orders/table.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16">
-              <caret line="1" column="28" lean-forward="false" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
+            <state relative-caret-position="510">
+              <caret line="30" column="17" lean-forward="false" selection-start-line="19" selection-start-column="12" selection-end-line="30" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -74,8 +65,8 @@
       <file leaf-file-name="single.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/orders/single.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="42" column="114" lean-forward="false" selection-start-line="42" selection-start-column="114" selection-end-line="42" selection-end-column="114" />
+            <state relative-caret-position="306">
+              <caret line="30" column="41" lean-forward="true" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -84,7 +75,7 @@
       <file leaf-file-name="edit-form.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/assets/views/partials/transactions/edit-form.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
+            <state relative-caret-position="2720">
               <caret line="160" column="175" lean-forward="false" selection-start-line="160" selection-start-column="44" selection-end-line="160" selection-end-column="175" />
               <folding />
             </state>
@@ -106,6 +97,7 @@
       <find>input-grou</find>
       <find>asClos</find>
       <find>sele</find>
+      <find>autof</find>
     </findStrings>
     <replaceStrings>
       <replace>turnoverColumn</replace>
@@ -133,7 +125,6 @@
         <option value="$PROJECT_DIR$/api/web/index.php" />
         <option value="$PROJECT_DIR$/client/index.php" />
         <option value="$PROJECT_DIR$/client/assets/js/controllers/app.js" />
-        <option value="$PROJECT_DIR$/client/assets/js/directives.js" />
         <option value="$PROJECT_DIR$/client/assets/views/partials/transactions/edit-form.html" />
         <option value="$PROJECT_DIR$/client/assets/css/site.css" />
         <option value="$PROJECT_DIR$/client/assets/js/controllers/sales/order_status.js" />
@@ -143,6 +134,7 @@
         <option value="$PROJECT_DIR$/client/index.html" />
         <option value="$PROJECT_DIR$/client/assets/js/app.js" />
         <option value="$PROJECT_DIR$/client/assets/js/controllers/sales/order.js" />
+        <option value="$PROJECT_DIR$/client/assets/js/directives.js" />
         <option value="$PROJECT_DIR$/client/assets/views/partials/sales/orders/single.html" />
       </list>
     </option>
@@ -175,7 +167,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -343,6 +334,36 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="orders" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partials" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="currencies" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -551,11 +572,12 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../home-api" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../breakthrough" />
     <property name="node.js.path.for.package.jscs" value="project" />
     <property name="node.js.selected.package.jscs" value="" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -671,27 +693,28 @@
       <workItem from="1492837033543" duration="15794000" />
       <workItem from="1493528406007" duration="2389000" />
       <workItem from="1493543312670" duration="14243000" />
-      <workItem from="1493711140626" duration="4220000" />
+      <workItem from="1493711140626" duration="9503000" />
+      <workItem from="1494753859910" duration="760000" />
+      <workItem from="1495112269714" duration="1047000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36646000" />
+    <option name="totallyTimeSpent" value="43736000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18496802" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18869936" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2340195" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -715,13 +738,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/client/assets/js/controllers/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13022">
-          <caret line="766" column="26" lean-forward="false" selection-start-line="766" selection-start-column="26" selection-end-line="766" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/assets/js/controllers/sales/order.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6154">
@@ -742,7 +758,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="35" lean-forward="false" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -935,7 +950,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -943,20 +957,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="371">
           <caret line="88" column="51" lean-forward="false" selection-start-line="88" selection-start-column="51" selection-end-line="88" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/assets/js/directives.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15555">
-          <caret line="917" column="36" lean-forward="false" selection-start-line="917" selection-start-column="36" selection-end-line="917" selection-end-column="36" />
-          <folding>
-            <marker date="1493664734085" expanded="true" signature="31159:31173" ph="..." />
-            <marker date="1493664734085" expanded="true" signature="33173:33187" ph="..." />
-            <marker date="1493664734085" expanded="true" signature="33274:33304" ph="..." />
-            <marker date="1493664734085" expanded="true" signature="33370:33379" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -964,31 +964,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="116" lean-forward="false" selection-start-line="11" selection-start-column="116" selection-end-line="11" selection-end-column="116" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/assets/js/plugins/select2.full.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/assets/js/core/select2.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/client/assets/js/plugins/select2.full.min.js" />
+    <entry file="file://$PROJECT_DIR$/client/assets/js/core/select2.js" />
     <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/statuses/list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="14" column="68" lean-forward="false" selection-start-line="14" selection-start-column="68" selection-end-line="14" selection-end-column="68" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -996,7 +980,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1004,7 +987,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="14" column="18" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1012,15 +994,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="92" column="17" lean-forward="false" selection-start-line="92" selection-start-column="17" selection-end-line="92" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/assets/js/controllers/sales/order.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1028,39 +1001,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/assets/css/site.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="88145">
           <caret line="5185" column="25" lean-forward="false" selection-start-line="5185" selection-start-column="25" selection-end-line="5185" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/orders/table.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="28" lean-forward="false" selection-start-line="1" selection-start-column="28" selection-end-line="1" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/assets/css/select2.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/client/assets/css/select2.css" />
     <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/statuses/edit-form.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="537">
           <caret line="47" column="71" lean-forward="false" selection-start-line="47" selection-start-column="71" selection-end-line="47" selection-end-column="71" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1068,22 +1024,57 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/assets/views/partials/transactions/edit-form.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
+        <state relative-caret-position="2720">
           <caret line="160" column="175" lean-forward="false" selection-start-line="160" selection-start-column="44" selection-end-line="160" selection-end-column="175" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/assets/js/directives.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7463">
+          <caret line="441" column="25" lean-forward="false" selection-start-line="441" selection-start-column="16" selection-end-line="441" selection-end-column="25" />
+          <folding>
+            <marker date="1493737560315" expanded="true" signature="31160:31174" ph="..." />
+            <marker date="1493737560315" expanded="true" signature="33174:33188" ph="..." />
+            <marker date="1493737560315" expanded="true" signature="33275:33305" ph="..." />
+            <marker date="1493737560315" expanded="true" signature="33371:33380" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/assets/js/controllers/sales/order.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6120">
+          <caret line="360" column="101" lean-forward="false" selection-start-line="360" selection-start-column="101" selection-end-line="360" selection-end-column="101" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/assets/views/partials/currencies/edit-form.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="56" lean-forward="false" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/orders/table.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" column="17" lean-forward="false" selection-start-line="19" selection-start-column="12" selection-end-line="30" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/assets/views/partials/sales/orders/single.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="42" column="114" lean-forward="false" selection-start-line="42" selection-start-column="114" selection-end-line="42" selection-end-column="114" />
+        <state relative-caret-position="306">
+          <caret line="30" column="41" lean-forward="true" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
           <folding />
         </state>
       </provider>

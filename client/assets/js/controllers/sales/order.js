@@ -22,7 +22,7 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 orderProvider.get(_this.filter.items, _this.data.length)
                     .success(function (response) {
 
-                        if (response.length < 20){
+                        if (response.length < 20) {
                             _this.endOfTable = true;
                         }
 
@@ -329,13 +329,15 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 },
                 isModified: function () {
 
-                    if (this.isNew()){
+                    if (this.isNew()) {
                         return true;
                     }
 
-                    a =1;
+                    var selected = $scope.scope.selected;
 
-                    return false;
+                    return this.number !== selected.number
+                        || moment(this.date).format('YYYY-MM-DD') !== selected.date
+                        || this.status.id !== selected.status.id;
                 },
                 hasUrl: function () {
                     return this.url;
@@ -355,6 +357,8 @@ App.controller('OrdersCtrl', ['$scope', 'order', 'orders', 'statuses', 'notifySe
                 fillDefault: function () {
                     this.id = 0;
                     this.number = '';
+                    this.date = moment().startOf('day').toDate();
+                    this.status = $scope.scope.statuses.length > 0 ? $scope.scope.statuses[0] : null;
                 },
                 //заполнение полей по переданному объекту
                 fillByObject: function (order) {

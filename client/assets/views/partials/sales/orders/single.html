@@ -15,14 +15,14 @@
         </ul>
     </div>
 
-    <div class="card-body card-padding">
+    <div class="card-body card-padding" autofocus="{{scope.order.isNew()}}">
 
         <div class="row">
             <div class="col-sm-3">
                 <label>Номер</label>
                 <div class="form-group fg-line">
-                    <input type="text" class="form-control input-sm" placeholder="Номер заказа" name="number"
-                           data-ng-model="scope.order.number" required>
+                    <input type="text" class="form-control input-sm autofocus" placeholder="Номер заказа" name="number"
+                           data-ng-model="scope.order.number" required="required">
                 </div>
             </div>
             <div class="col-sm-3">
@@ -30,7 +30,7 @@
                 <div class="input-group">
                     <div class="fg-line">
                         <input type="text" date-picker class="form-control input-sm" placeholder="Дата заказа" name="date"
-                               data-ng-model="scope.order.date" required>
+                               data-ng-model="scope.order.date" required="required">
                     </div>
                     <span class="input-group-addon last"><i class="zmdi zmdi-calendar"></i></span>
                 </div>
@@ -44,7 +44,20 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                <label>Статус</label>
+                <div class="dropdown dropdown-toggle" dropdown dropdown-toggle>
+
+                        <i class="{{scope.order.status.icon}}">{{scope.order.status.name}}</i>
+                    <ul class="dropdown-menu">
+                        <li data-ng-repeat="status in scope.statuses">
+                            <a href="" data-ng-click="">
+                                <i class="{{status.icon}}"></i> {{status.name}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
     </div>

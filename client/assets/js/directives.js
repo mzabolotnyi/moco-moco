@@ -443,7 +443,7 @@ App
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
-                if (attr.autofocus == 'true') {
+                if (attr.autofocus === 'true') {
                     $timeout(function () {
                         $(element).find('input.autofocus').focus().select();
                     }, 100);
