@@ -13745,7 +13745,7 @@ html:not(.ismobile) .preloader-container {
     border-radius: 2px;
     top: 50%;
     left: 50%;
-    width: 310px;
+    width: 420px;
     max-height: calc(100% - 40px);
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
