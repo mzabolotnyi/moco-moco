@@ -684,9 +684,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                     'dashboard'
                 ];
 
-                if (stateNames.indexOf(currentStateName) != -1) {
+                if (stateNames.indexOf(currentStateName) !== -1) {
                     if (angular.isFunction(this.callback)) {
-                        this.callback.call();
+                        this.callback.call(this);
                     }
                 }
 
@@ -711,9 +711,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 transaction.save(_this)
                     .then(function (response) {
                         notifyService.notify('Операция сохранена');
-                        _this.fillDefault();
                         _this.editing = false;
                         _this.afterEdit();
+                        _this.fillDefault();
                     }, function (error) {
                         if (error.data) {
                             if (error.status === 422) {
@@ -742,9 +742,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                     transaction.delete(_this)
                         .then(function () {
                             notifyService.notify("Операция удалена");
-                            _this.fillDefault();
                             _this.editing = false;
                             _this.afterEdit();
+                            _this.fillDefault();
                         }, function (error) {
                             if (error.data) {
                                 _this.errors = [error.data];

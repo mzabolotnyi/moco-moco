@@ -346,6 +346,11 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
         //установим коллбэк после записи операции
         $scope.transaction.callback = function () {
+
+            if (this.date){
+                $scope.scope.transactions.currentDate = this.date;
+            }
+
             $scope.scope.transactions.update();
             $scope.scope.charts.update();
             $scope.scope.widget.update();
