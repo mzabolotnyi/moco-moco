@@ -12,6 +12,11 @@
                         <i class="zmdi zmdi-chevron-right"></i>
                     </button>
                 </span>
+                <span class="m-l-30 f-14">
+                    <span class="c-deeporange">₴ {{scope.getExpensePerDay() | number:0}}</span>
+                    <span class="m-r-10 m-l-10">|</span>
+                    <span class="c-green">₴ {{scope.getIncomePerDay() | number:0}}</span>
+                </span>
             </div>
 
             <ul class="lv-actions actions">
@@ -19,7 +24,8 @@
                         class="zmdi zmdi-plus"></i></a></li>
                 <li class="income"><a href="" data-ng-click="transaction.edit('income')" uib-tooltip="Новый доход"><i
                         class="zmdi zmdi-plus"></i></a></li>
-                <li class="transfer"><a href="" data-ng-click="transaction.edit('transfer')" uib-tooltip="Новый перевод"><i
+                <li class="transfer"><a href="" data-ng-click="transaction.edit('transfer')"
+                                        uib-tooltip="Новый перевод"><i
                         class="zmdi zmdi-plus"></i></a></li>
                 <li><a href="" data-ng-click="scope.transactions.setCurrentDateAsToday()" uib-tooltip="Сегодня"><i
                         class="zmdi zmdi-calendar-check"></i></a></li>

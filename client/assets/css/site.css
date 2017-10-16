@@ -9729,6 +9729,7 @@ body #content {
 
 .main-menu .balance-menu-item .balance-menu-item-account {
     float: left;
+    width: 65%;
 }
 
 .main-menu .balance-menu-item .balance-amount, td .balance-amount {

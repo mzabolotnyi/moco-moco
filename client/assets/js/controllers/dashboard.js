@@ -25,6 +25,30 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 this.widget.update();
                 $scope.balance.update();
             },
+            getExpensePerDay: function () {
+
+                var amount = 0;
+
+                angular.forEach(this.transactions.data, function (value, key) {
+                    if (value.expense) {
+                        amount += value.amount;
+                    }
+                });
+
+                return amount;
+            },
+            getIncomePerDay: function () {
+
+                var amount = 0;
+
+                angular.forEach(this.transactions.data, function (value, key) {
+                    if (value.income) {
+                        amount += value.amount;
+                    }
+                });
+
+                return amount;
+            },
             transactions: {
                 data: transactions.data,
                 currentDate: moment().toDate(),
@@ -347,7 +371,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
         //установим коллбэк после записи операции
         $scope.transaction.callback = function () {
 
-            if (this.date){
+            if (this.date) {
                 $scope.scope.transactions.currentDate = this.date;
             }
 
