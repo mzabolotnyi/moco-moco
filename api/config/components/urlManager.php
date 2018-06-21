@@ -89,6 +89,7 @@ return [
                 'GET income' => 'income',
                 'GET widgetData' => 'widget-data',
                 'GET turnoverByMonth' => 'turnover-by-month',
+                'GET mostPopularTransactions' => 'most-popular-transactions',
             ],
         ],
     ],

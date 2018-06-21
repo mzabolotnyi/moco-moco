@@ -7,7 +7,7 @@ return [
         'class' => 'Swift_SmtpTransport',
         'host' => 'smtp.gmail.com',
         'username' => 'mocomoco.online@gmail.com',
-        'password' => 'max070690',
+        'password' => 'Foj5QwUC5z',
         'port' => '587',
         'encryption' => 'tls',
     ],

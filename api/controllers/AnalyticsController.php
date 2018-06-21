@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Analytics;
 use app\models\User;
 use Carbon\Carbon;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\Controller;
@@ -89,5 +90,33 @@ class AnalyticsController extends Controller
                 'dynamics' => $dynamicsProfit,
             ]
         ];
+    }
+
+    public function actionMostPopularTransactions()
+    {
+        $query = new Query();
+        $query->select([
+            'transaction.category_id as categoryId',
+            'category.name as categoryName',
+            'category.icon as categoryIcon',
+            'transaction.account_id as accountId',
+            'account.name as accountName',
+            'account.color as accountColor',
+            'transaction.currency_id as currencyId',
+            'currency.symbol as currencySymbol',
+            'transaction.expense',
+            'transaction.income',
+            'transaction.transfer',
+            'COUNT(transaction.id) as count'])
+            ->from('transaction')
+            ->leftJoin('category', 'transaction.category_id = category.id')
+            ->leftJoin('account', 'transaction.account_id = account.id')
+            ->leftJoin('currency', 'transaction.currency_id = currency.id')
+            ->andWhere('transaction.category_id IS NOT NULL')
+            ->groupBy(['category_id', 'account_id', 'currency_id'])
+            ->orderBy('count DESC')
+            ->limit(10);
+
+        return $query->all();
     }
 }
