@@ -41,14 +41,6 @@ class OActiveRecord extends ActiveRecord implements ISearchable
             'query' => $query,
         ]);
 
-//        $tableName = self::tableName();
-//        $dependency = new DbDependency();
-//        $dependency->sql = "SELECT max(updated_at), count(updated_at) FROM $tableName";
-//
-//        self::getDb()->cache(function ($db) use ($dataProvider) {
-//            $dataProvider->prepare();
-//        }, null, $dependency);
-
         return $dataProvider;
     }
 }

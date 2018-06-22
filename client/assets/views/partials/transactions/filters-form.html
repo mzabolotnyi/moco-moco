@@ -90,6 +90,31 @@
             </div>
             <!--end ACOOUNT-->
 
+            <!--CURRENCY-->
+            <label>Валюта</label>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.currency"></i>
+                    <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.currency"></i>
+                </span>
+
+                <div class="fg-line">
+                    <select class="form-control input-sm" name="currency" data-ng-model="scope.filter.items.currency"
+                            data-ng-options="currency as currency.fullname for currency in global.currencies"
+                            data-ng-change="scope.update(true)">
+                        <option value="">Не выбран...</option>
+                    </select>
+                </div>
+
+                <span class="input-group-addon last" data-ng-if="scope.filter.items.currency">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearCurrency()"></i>
+                </span>
+
+            </div>
+            <!--end CURRENCY-->
+
             <!--COMMENT-->
             <label>Примечание</label>
 

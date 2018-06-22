@@ -113,6 +113,7 @@ class AnalyticsController extends Controller
             ->leftJoin('currency', 'transaction.currency_id = currency.id')
             ->andWhere('transaction.category_id IS NOT NULL')
             ->andWhere('transaction.transfer = 0')
+            ->andWhere('transaction.date BETWEEN NOW() - INTERVAL 30 DAY AND NOW()')
             ->groupBy(['category_id', 'account_id', 'currency_id'])
             ->orderBy('count DESC')
             ->limit(10);

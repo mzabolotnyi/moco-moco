@@ -81,6 +81,9 @@ class Currency extends OActiveRecord
             'userId' => 'user_id',
             'rate' => function () {
                 return $this->getRate();
+            },
+            'fullname' => function () {
+                return "$this->name ($this->symbol)";
             }
         ];
     }

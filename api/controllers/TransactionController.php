@@ -71,6 +71,16 @@ class TransactionController extends OActiveController
             }
         }
 
+        if (isset($queryParams['account_id'])) {
+            $value = $queryParams['account_id'];
+            $dataProvider->query->andWhere("account_id=$value OR recipient_account_id=$value");
+        }
+
+        if (isset($queryParams['currency_id'])) {
+            $value = $queryParams['currency_id'];
+            $dataProvider->query->andWhere("currency_id=$value OR recipient_currency_id=$value");
+        }
+
         return $dataProvider;
     }
 }

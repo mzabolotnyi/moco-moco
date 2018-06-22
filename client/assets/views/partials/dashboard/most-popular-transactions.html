@@ -5,7 +5,8 @@
     </div>
 
     <div class="card-body" data-ng-if="!scope.mostPopularTransactions.loading && !scope.mostPopularTransactions.error">
-        <div class="button-icon animated scale" data-ng-repeat="item in scope.mostPopularTransactions.data track by $index" data-ng-style="{ 'background':item.accountColor }" uib-tooltip="{{item.accountName}} > {{item.categoryName}} ({{item.count}}&nbspшт)" data-ng-click="transaction.edit(item)">
+        <span class="m-l-10"></span>
+        <div class="button-icon" data-ng-repeat="item in scope.mostPopularTransactions.data track by $index" data-ng-style="{ 'background':item.accountColor }" uib-tooltip="{{item.accountName}} > {{item.categoryName}}" data-ng-click="transaction.edit(item)">
             <i class="{{'fa ' + item.categoryIcon}}"></i>
         </div>
     </div>

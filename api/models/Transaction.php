@@ -347,4 +347,12 @@ class Transaction extends OActiveRecord
         ]);
     }
 
+    public static function search($params = [])
+    {
+        //для счета и валюты кастомная логика фильтров в TransactionController
+        unset($params['account_id']);
+        unset($params['currency_id']);
+
+        return parent::search($params);
+    }
 }

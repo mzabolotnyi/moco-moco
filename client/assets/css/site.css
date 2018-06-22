@@ -14162,6 +14162,14 @@ html:not(.ismobile) .preloader-container {
     display: none;
 }
 
+select {
+    padding: 0 5px !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    outline: none !important;
+}
+
 /* FULL SCREEN */
 .full-screen {
     position: fixed !important;

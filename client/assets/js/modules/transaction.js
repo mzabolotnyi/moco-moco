@@ -54,6 +54,10 @@ TransactionModule
                     getParams.push(httpHelper.prepareGetParam('account_id', filters.account.id));
                 }
 
+                if (filters.currency) {
+                    getParams.push(httpHelper.prepareGetParam('currency_id', filters.currency.id));
+                }
+
                 if (filters.date) {
                     getParams.push(httpHelper.prepareGetParam('date', filters.date));
                 }
@@ -98,7 +102,7 @@ TransactionModule
             },
             prepareBodyParams: function (transaction) {
 
-                var bodyParams = {
+                return {
                     date: moment(transaction.date).format('YYYY-MM-DD'),
                     amount: transaction.amount,
                     account_id: transaction.account ? transaction.account.id : '',
@@ -109,8 +113,6 @@ TransactionModule
                     recipient_currency_id: transaction.recipientCurrency ? transaction.recipientCurrency.id : '',
                     comment: transaction.comment
                 };
-
-                return bodyParams;
             }
         }
     }])

@@ -1,5 +1,5 @@
-App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService',
-    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService) {
+App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService', 'currency',
+    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService, currency) {
 
         // Global values
         $scope.global = {
@@ -35,6 +35,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             accounts: [],
             categories: [],
+            currencies: [],
             //загружает необходимые данные для ввода операций (например: счета, категории)
             loadData: function (callback) {
 
@@ -47,6 +48,10 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                     })
                     .then(function (response) {
                         _this.categories = _this.sortDataByField(response.data, 'countTrans');
+                        return currency.get();
+                    })
+                    .then(function (response) {
+                        _this.currencies = response.data;
                         _this.dataLoaded = true;
                     })
                     .catch(function (error) {
