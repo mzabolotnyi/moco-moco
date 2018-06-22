@@ -23,6 +23,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 this.transactions.update();
                 this.charts.update();
                 this.widget.update();
+                this.mostPopularTransactions.update();
                 $scope.balance.update();
             },
             getExpensePerDay: function () {
@@ -365,6 +366,32 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                         return Math.abs(this.dynamics);
                     }
                 }
+            },
+            mostPopularTransactions: {
+                data: [],
+                update: function () {
+
+                    var _this = this;
+
+                    _this.error = false;
+
+                    if (!$scope.global.updateInBackground) {
+                        _this.loading = true;
+                        _this.data = [];
+                    }
+
+                    analytics.getMostPopularTransactions()
+                        .success(function (data) {
+                            _this.data = data;
+                        })
+                        .error(function (error) {
+                            _this.error = true;
+                            notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                        })
+                        .finally(function () {
+                            _this.loading = false;
+                        });
+                }
             }
         };
 
@@ -378,10 +405,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
             $scope.scope.transactions.update();
             $scope.scope.charts.update();
             $scope.scope.widget.update();
-
-            // if ($scope.transaction.date && $scope.scope.transactions.currentDate.toDateString() !== $scope.transaction.date.toDateString()) {
-            //     $scope.scope.transactions.currentDate = $scope.transaction.date;
-            // }
+            $scope.scope.mostPopularTransactions.update();
         };
 
         //установим коллбэк после корректировки баланса
@@ -400,4 +424,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
         //инициализируем обновление виджетов
         $scope.scope.widget.update();
-    }])
+
+        //инициализируем обновление блока популярных транзакций
+        $scope.scope.mostPopularTransactions.update();
+    }]);

@@ -14142,6 +14142,21 @@ html:not(.ismobile) .preloader-container {
     vertical-align: -15%;
 }
 
+/* BUTTON ICON */
+.button-icon {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #009688;
+    color: #fff;
+    text-align: center;
+    line-height: 34px;
+    font-size: 20px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
 /* FIXES */
 .highcharts-credits {
     display: none;

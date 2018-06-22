@@ -259,7 +259,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 setCategory: function (category) {
                     if (category) {
                         $localStorage[this.savedCategoryAlias] = category.id;
-                    }else {
+                    } else {
                         delete $localStorage[this.savedCategoryAlias];
                     }
                 },
@@ -540,7 +540,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 _this.editing = true;
                 _this.errors = {};
 
-                if (typeof(transaction) === 'object') {
+                if (typeof(transaction) === 'object' && !transaction.id) {
+                    _this.fillByTemplate(transaction);
+                } else if (typeof(transaction) === 'object') {
                     _this.fillByObject(transaction);
                 } else {
                     _this.fillDefault(transaction, alreadyEditing);
@@ -607,6 +609,15 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 } else {
                     this.category = transaction.category ? this.findCategory(transaction.category.id) : null;
                 }
+            },
+            fillByTemplate: function (template) {
+
+                var type = template.expense ? 'expense' : 'income';
+
+                this.fillDefault(type);
+                this.account = this.findAccount(template.accountId);
+                this.currency = this.findCurrency(this.account, template.currencyId);
+                this.category = this.findCategory(template.categoryId);
             },
             checkFilling: function () {
 
