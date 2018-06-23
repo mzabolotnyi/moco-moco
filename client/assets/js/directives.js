@@ -588,8 +588,7 @@ App
                         if (attrs.onChange) {
                             if (scope.onChange && typeof scope.onChange() === "function") {
                                 scope.onChange()(e, rawFiles);
-                            }
-                            else {
+                            } else {
                                 scope.onChange(e, rawFiles);
                             }
                         }
@@ -911,7 +910,8 @@ App
             restrict: 'A',
             scope: {
                 options: '&',
-                ngModel: '='
+                ngModel: '=',
+                onChange: '&'
             },
             link: function (scope, element, attrs, ctrl) {
                 var defaults = {
@@ -927,7 +927,8 @@ App
                     }
 
                     scope.ngModel = date;
-                    scope.$applyAsync();
+                    scope.$apply();
+                    scope.$eval(scope.onChange);
                 };
 
                 // model to view
