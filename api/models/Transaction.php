@@ -57,13 +57,13 @@ class Transaction extends OActiveRecord
         $scenarios = parent::scenarios();
 
         $attributes = [
-            'currency_id', 'account_id', 'category_id', 'amount', 'date', 'comment',
+            'currency_id', 'account_id', 'category_id', 'amount', 'date', 'comment', 'external_id',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
         $attributesTransfer = [
             'currency_id', 'recipient_currency_id', 'recipient_account_id', 'account_id',
-            'category_id', 'amount', 'recipient_amount', 'date', 'comment',
+            'category_id', 'amount', 'recipient_amount', 'date', 'comment', 'external_id',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
@@ -129,6 +129,7 @@ class Transaction extends OActiveRecord
             'transfer' => 'Перевод',
             'expense' => 'Расход',
             'income' => 'Доход',
+            'external_id' => 'Внешний ID',
         ];
     }
 
@@ -165,6 +166,7 @@ class Transaction extends OActiveRecord
             'income',
             'transfer',
             'userId' => 'user_id',
+            'externalId' => 'external_id',
         ];
     }
 

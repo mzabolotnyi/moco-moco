@@ -9,7 +9,6 @@ use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\Controller;
-use Yii;
 
 class AnalyticsController extends Controller
 {

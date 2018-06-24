@@ -1,35 +1,29 @@
 <?php
 
-namespace app\models;
+namespace app\services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
-class PrivatBankApi
+class PrivatBankDataProvider
 {
     private $uri = 'https://api.privatbank.ua/p24api';
 
     public static function create()
     {
-        return new PrivatBankApi();
+        return new PrivatBankDataProvider();
     }
 
-    public function getPayments($startDate, $entDate, Account $account)
+    public function getPayments(\DateTime $startDate, \DateTime $entDate, $cardNumber, $merchantId, $merchantPassword)
     {
-        $startDate = \DateTime::createFromFormat('Y-m-d', $startDate)->format('d.m.Y');
-        $entDate = \DateTime::createFromFormat('Y-m-d', $entDate)->format('d.m.Y');
-        $card = '5167985560041378';
-        $merchantId = 136851;
-        $merchantPassword = 'Z6TxHWwY99DBgBy3Yjgo6kwqG98q05s5';
-
         $data = '<oper>cmt</oper>';
         $data .= '<wait>0</wait>';
         $data .= '<test>0</test>';
         $data .= '<payment id="">';
-        $data .= '<prop name="sd" value="' . $startDate . '" />';
-        $data .= '<prop name="ed" value="' . $entDate . '" />';
-        $data .= '<prop name="card" value="' . $card . '" />';
+        $data .= '<prop name="sd" value="' . $startDate->format('d.m.Y') . '" />';
+        $data .= '<prop name="ed" value="' . $entDate->format('d.m.Y') . '" />';
+        $data .= '<prop name="card" value="' . $cardNumber . '" />';
         $data .= '</payment>';
 
         $sign = sha1(md5($data . $merchantPassword));
@@ -57,19 +51,29 @@ class PrivatBankApi
         $assocArray = json_decode(json_encode($xml), true);
         $statements = $assocArray['data']['info']['statements']['statement'];
         $payments = [];
-        foreach ($statements as $statement) {
-            $paymentData = $statement['@attributes'];
-            $amountData = $this->parseAmount($paymentData['cardamount']);
-            $payments[] = [
-                'id' => $paymentData['appcode'],
-                'date' => $paymentData['trandate'],
-                'amount' => $amountData['amount'],
-                'type' => $amountData['type'],
-                'currency' => $amountData['currency'],
-                'description' => $paymentData['description'],
-            ];
+        if (isset($statements['@attributes'])) {
+            $payments[] = $this->parsePayment($statements);
+        } else {
+            foreach ($statements as $statement) {
+                $payments[] = $this->parsePayment($statement);
+            }
         }
         return $payments;
+    }
+
+    private function parsePayment($statement)
+    {
+        $paymentData = $statement['@attributes'];
+        $amountData = $this->parseAmount($paymentData['cardamount']);
+
+        return [
+            'externalId' => $paymentData['appcode'],
+            'date' => $paymentData['trandate'],
+            'amount' => $amountData['amount'],
+            'type' => $amountData['type'],
+            'currency' => $amountData['currency'],
+            'comment' => $paymentData['description'],
+        ];
     }
 
     private function parseAmount($data)

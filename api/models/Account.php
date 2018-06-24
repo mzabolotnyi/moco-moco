@@ -111,6 +111,38 @@ class Account extends OActiveRecord
     }
 
     /**
+     * @return string
+     */
+    public function getMerchantId()
+    {
+        return $this->merchant_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantPassword()
+    {
+        return $this->merchant_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardNumber()
+    {
+        return $this->card_number;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImportType()
+    {
+        return $this->import_type;
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
