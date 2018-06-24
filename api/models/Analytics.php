@@ -4,14 +4,12 @@ namespace app\models;
 
 use Yii;
 use Carbon\Carbon;
-use yii\base\Model;
-use yii\db\Expression;
 use yii\db\Query;
 
 /**
  * Class Analytics using for getting analytical data
  */
-class Analytics extends Model
+class Analytics
 {
     /**
      * @var Carbon

@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\Transaction;
 use Yii;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;

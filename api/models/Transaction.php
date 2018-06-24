@@ -26,6 +26,7 @@ use yii\web\BadRequestHttpException;
  * @property integer $transfer
  * @property string $created_at
  * @property string $updated_at
+ * @property string $external_id
  *
  * @property Currency $currency
  * @property Account $account

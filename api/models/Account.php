@@ -12,6 +12,11 @@ use app\models\Balance;
  * @property integer $user_id
  * @property string $name
  * @property string $color
+ * @property string $merchant_id
+ * @property string $merchant_password
+ * @property string $card_number
+ * @property string $import_type
+ * @property integer $import
  * @property integer $active
  * @property string $created_at
  * @property string $updated_at
@@ -34,7 +39,7 @@ class Account extends OActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'color', 'active', '!user_id'];
+        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'color', 'active', 'merchant_id', 'merchant_password', 'card_number', 'import_type', 'import', '!user_id'];
 
         return $scenarios;
     }
@@ -51,6 +56,8 @@ class Account extends OActiveRecord
             ['active', 'boolean'],
             ['color', 'default', 'value' => '#009688'],
             ['active', 'default', 'value' => 1],
+            ['active', 'default', 'value' => 1],
+            ['import', 'default', 'value' => 0],
         ];
     }
 
@@ -63,6 +70,11 @@ class Account extends OActiveRecord
             'name' => 'Название',
             'color' => 'Цвет',
             'active' => 'Активный',
+            'merchant_id' => 'ID мерчанта',
+            'merchant_password' => 'Пароль мерчанта',
+            'card_number' => 'Номер счета',
+            'import_type' => 'Формат импорта',
+            'import' => 'Импортировать операции',
         ];
     }
 
@@ -80,6 +92,11 @@ class Account extends OActiveRecord
             'color',
             'active',
             'userId' => 'user_id',
+            'merchantId' => 'merchant_id',
+            'merchantPassword' => 'merchant_password',
+            'cardNumber' => 'card_number',
+            'importType' => 'import_type',
+            'import' => 'import',
             'countTrans' => function () {
                 return (int)$this->hasMany(Transaction::className(), ['account_id' => 'id'])->count()
                 + (int)$this->hasMany(Transaction::className(), ['recipient_account_id' => 'id'])->count();
