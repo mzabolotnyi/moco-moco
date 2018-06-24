@@ -68,6 +68,14 @@ App.controller('AccountsCtrl', ['$scope', 'currencies', 'accounts', 'account', '
             isActive: function (account) {
                 return account.id == this.account.id;
             },
+            getImportTypes: function () {
+                return [
+                    {
+                        value: 'privatbank',
+                        name: 'Приват Банк'
+                    }
+                ]
+            },
             //инициализирует изменение объекта или создание нового
             edit: function (account) {
 
@@ -113,6 +121,7 @@ App.controller('AccountsCtrl', ['$scope', 'currencies', 'accounts', 'account', '
                     this.active = true;
                     this.countTrans = 0;
                     this.isTransfer = false;
+                    this.import = false;
                     this.fillCurrency();
                 },
                 //заполнение полей по переданному объекту
@@ -121,8 +130,10 @@ App.controller('AccountsCtrl', ['$scope', 'currencies', 'accounts', 'account', '
                     angular.forEach(account, function (value, key) {
                         this[key] = value;
                     }, this);
-                    this.active = account.active ? true : false;
+                    this.active = !!account.active;
+                    this.import = !!account.import;
                     this.fillCurrency(account);
+                    this.importType = this.findImportType(account.importType)
                 },
                 //заполняет массив валют, которые используются в счете
                 fillCurrency: function (account) {
@@ -140,6 +151,20 @@ App.controller('AccountsCtrl', ['$scope', 'currencies', 'accounts', 'account', '
                             this.push(obj);
                         }, this.currencies);
                     }
+                },
+                findImportType: function (value) {
+
+                    var objects = $scope.scope.getImportTypes();
+                    var filteredObjects = objects.filter(function (obj) {
+                        return obj.value === value;
+                    });
+
+                    if (filteredObjects.length > 0) {
+                        return filteredObjects[0];
+                    }
+
+                    //если не удалось найти вернем пустой объект
+                    return {};
                 },
                 //отправляет запрос на сохранение объекта
                 save: function () {

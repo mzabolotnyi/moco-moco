@@ -10,7 +10,7 @@ class m180624_072924_update_tables extends Migration
         $this->addColumn('account', 'merchant_password', $this->string(255));
         $this->addColumn('account', 'card_number', $this->string(255));
         $this->addColumn('account', 'import_type', $this->string(255));
-        $this->addColumn('account', 'import', $this->string(255));
+        $this->addColumn('account', 'import', $this->smallInteger(1)->defaultValue(0));
 
         $this->addColumn('transaction', 'external_id', $this->string(255));
     }

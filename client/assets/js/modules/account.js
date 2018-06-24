@@ -22,13 +22,16 @@ AccountModule
             },
             prepareBodyParams: function (account) {
 
-                var bodyParams = {
+                return {
                     name: account.name,
                     color: account.color,
+                    merchant_id: account.merchantId,
+                    merchant_password: account.merchantPassword,
+                    card_number: account.cardNumber,
+                    import_type: account.importType ? account.importType.value : null,
+                    import: account.import,
                     active: account.active
                 };
-
-                return bodyParams
             },
             prepareCurrenciesBodyParams: function (currencies) {
 

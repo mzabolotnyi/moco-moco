@@ -54,6 +54,7 @@ class Account extends OActiveRecord
             ['name', 'string', 'max' => 255],
             ['color', 'string', 'max' => 7],
             ['active', 'boolean'],
+            ['import', 'boolean'],
             ['color', 'default', 'value' => '#009688'],
             ['active', 'default', 'value' => 1],
             ['active', 'default', 'value' => 1],
@@ -96,7 +97,9 @@ class Account extends OActiveRecord
             'merchantPassword' => 'merchant_password',
             'cardNumber' => 'card_number',
             'importType' => 'import_type',
-            'import' => 'import',
+            'import' => function () {
+                return $this->isImport();
+            },
             'countTrans' => function () {
                 return (int)$this->hasMany(Transaction::className(), ['account_id' => 'id'])->count()
                 + (int)$this->hasMany(Transaction::className(), ['recipient_account_id' => 'id'])->count();
@@ -122,8 +125,17 @@ class Account extends OActiveRecord
      */
     public function isActive()
     {
-        return $this->active;
+        return (int)$this->active;
     }
+
+    /**
+     * @return bool
+     */
+    public function isImport()
+    {
+        return (int)$this->import;
+    }
+
 
     /**
      * Binds currency with account by creating and saving AccountCurrency model
