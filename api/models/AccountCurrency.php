@@ -76,7 +76,7 @@ class AccountCurrency extends OActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|Currency
      */
     public function getCurrency()
     {
@@ -84,7 +84,7 @@ class AccountCurrency extends OActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|Account
      */
     public function getAccount()
     {

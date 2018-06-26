@@ -105,7 +105,7 @@ class Account extends OActiveRecord
                 + (int)$this->hasMany(Transaction::className(), ['recipient_account_id' => 'id'])->count();
             },
             'currencies' => function () {
-                return AccountCurrency::findAll(['account_id' => $this->id]);
+                return $this->getCurrencies();
             }
         ];
     }
@@ -203,5 +203,23 @@ class Account extends OActiveRecord
         }
 
         return true;
+    }
+
+    public function getCurrencies()
+    {
+        return AccountCurrency::findAll(['account_id' => $this->id]);
+    }
+
+    public function getCurrency($ISO)
+    {
+        foreach ($this->getCurrencies() as $accountCurrency) {
+            /** @var Currency $currency */
+            $currency = $accountCurrency->currency;
+            if ($currency && $currency->getIso() === $ISO) {
+                return $currency;
+            }
+        }
+
+        return null;
     }
 }

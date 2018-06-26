@@ -44,8 +44,9 @@ class ImportService
         }
 
         foreach ($payments as $payment) {
-            $transactions[] = array_merge($payments, [
-
+            $transactions[] = array_merge($payment, [
+                'account' => $account,
+                'currency' => $account->getCurrency($payment['currency'])
             ]);
         }
     }
