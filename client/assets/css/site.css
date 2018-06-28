@@ -14127,7 +14127,7 @@ html:not(.ismobile) .preloader-container {
     position: relative;
 }
 
-.date-toolbar h2 {
+.date-toolbar h2, .date-toolbar .date-picker-wrapper {
     font-size: 16px;
     font-weight: 700;
     text-transform: uppercase;
@@ -14166,6 +14166,21 @@ html:not(.ismobile) .preloader-container {
 .date-toolbar .dt-btn .zmdi {
     font-size: 24px;
     vertical-align: -15%;
+}
+
+.date-toolbar .date-picker {
+    width: 0;
+    border: none;
+}
+
+.date-toolbar .date-picker-wrapper {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 2px 5px 3px 0;
+}
+
+.date-toolbar .date-picker-wrapper:hover {
+    background: rgba(0, 150, 136, 0.2);
 }
 
 /* BUTTON ICON */

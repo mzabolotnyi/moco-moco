@@ -783,7 +783,21 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
         $scope.importTransactions = {
             data: [],
             init: function (date, runImport) {
+
+                var _this = this;
+
                 $scope.sidebar.opened = false;
+
+                //данные для ввода операций еще не подгружены - выполним загрузку
+                if (!$scope.global.dataLoaded) {
+
+                    notifyService.showLoadBar();
+                    $scope.global.loadData(function () {
+                        _this.init(date, runImport);
+                    });
+
+                    return;
+                }
 
                 this.date = date ? date : moment().toDate();
                 this.opened = true;
@@ -802,17 +816,6 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             import: function () {
 
                 var _this = this;
-
-                //данные для ввода операций еще не подгружены - выполним загрузку
-                if (!$scope.global.dataLoaded) {
-
-                    notifyService.showLoadBar();
-                    $scope.global.loadData(function () {
-                        _this.import();
-                    });
-
-                    return;
-                }
 
                 _this.loading = true;
                 _this.error = false;
