@@ -13755,6 +13755,10 @@ html:not(.ismobile) .preloader-container {
     transform: translate(-50%, -50%);
 }
 
+.modal.modal-wide {
+    width: 85%;
+}
+
 @media all and (max-width: 767px) {
     .modal {
         width: calc(100% - 40px);
@@ -13774,6 +13778,28 @@ html:not(.ismobile) .preloader-container {
     font-weight: 700;
     font-size: 15px;
     color: #009688;
+}
+
+.modal .modal-header .date-picker {
+    width: 0;
+    border: none;
+}
+
+.modal .modal-header .date-picker-wrapper {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 3px 5px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
+    font-weight: 700;
+    font-size: 15px;
+    color: #009688;
+}
+
+.modal .modal-header .date-picker-wrapper:hover {
+    background: rgba(0, 150, 136, 0.2);
 }
 
 .modal .modal-header .actions {

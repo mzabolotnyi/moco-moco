@@ -1,5 +1,5 @@
-App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService', 'currency',
-    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService, currency) {
+App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService', 'currency', 'importService',
+    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService, currency, importService) {
 
         // Global values
         $scope.global = {
@@ -108,7 +108,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             alertInDevelopment: function () {
                 notifyService.alert('На данный момент функционал находится в разработке', 'info');
-            }
+            },
         };
 
         // Sidebar
@@ -771,6 +771,82 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                             notifyService.hideLoadBar();
                         });
                 }, false);
+            },
+            types: {
+                income: 'Доход',
+                expense: 'Расход',
+                transfer: 'Перевод'
+            }
+        };
+
+        // Import Transactions
+        $scope.importTransactions = {
+            data: [],
+            init: function (date, runImport) {
+                $scope.sidebar.opened = false;
+
+                this.date = date ? date : moment().toDate();
+                this.opened = true;
+
+                if (runImport) {
+                    this.import();
+                }
+            },
+            close: function () {
+                this.opened = false;
+            },
+            getDisplayDate: function () {
+                var date = moment(this.date).startOf('day');
+                return date.format('D MMMM YYYY');
+            },
+            import: function () {
+
+                var _this = this;
+
+                //данные для ввода операций еще не подгружены - выполним загрузку
+                if (!$scope.global.dataLoaded) {
+
+                    notifyService.showLoadBar();
+                    $scope.global.loadData(function () {
+                        _this.import();
+                    });
+
+                    return;
+                }
+
+                _this.loading = true;
+                _this.error = false;
+                _this.data = [];
+
+                importService.getTransactionForImport({'startDate': _this.date, 'endDate': _this.date})
+                    .success(function (response) {
+                        _this.data = response;
+                    })
+                    .error(function (error) {
+                        _this.error = true;
+                        notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                    })
+                    .finally(function () {
+                        _this.loading = false;
+                    });
+            },
+            submit: function () {
+
+                var _this = this;
+                _this.submitting = true;
+
+                notifyService.showLoadBar();
+
+                var j = 1;
+                for (var i = 1; i < 100000; i++) {
+                    j++;
+                }
+
+                notifyService.notify('Импорт операций завершен');
+                notifyService.hideLoadBar();
+                _this.opened = false;
+                _this.submitting = false;
+                $scope.transaction.afterEdit();
             }
         };
 

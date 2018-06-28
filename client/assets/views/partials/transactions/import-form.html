@@ -1,0 +1,65 @@
+<div class="modal-backdrop" data-ng-if="importTransactions.opened">
+    <div class="modal modal-wide">
+        <div class="modal-header">
+            <h2>Импорт операций</h2>
+            <div class="date-picker-wrapper">
+                <span>{{importTransactions.getDisplayDate()}}</span>
+                <span class="zmdi zmdi-chevron-down"></span>
+                <input id="import-transactions-date-picker" class="date-picker" type="text" date-picker name="date"
+                       data-options="{position: 'bottom right'}"
+                       data-ng-model="importTransactions.date"
+                       data-on-change="importTransactions.import()">
+            </div>
+        </div>
+        <div class="modal-body c-overflow">
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Тип</th>
+                    <th width="15%">Сумма</th>
+                    <th>Счет</th>
+                    <th>Комментарий</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-ng-repeat="importTransaction in importTransactions.data">
+                    <td>
+                        <select class="form-control input-sm"
+                                data-ng-model="importTransaction.type"
+                                data-ng-options="k as v for (k, v) in transaction.types">
+                        </select>
+                    </td>
+                    <td>{{transaction.amount}} {{transaction.currency.symbol}}</td>
+                    <td>{{transaction.account.name}}</td>
+                    <td>{{transaction.comment}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center p-t-10 p-b-10" data-ng-if="importTransactions.loading">
+                <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+            </div>
+            <div class="text-center p-t-10 p-b-10 has-error" data-ng-if="importTransactions.error">
+                <div>Произошла ошибка...</div>
+                <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.transactions.import()">Повторить
+                </button>
+            </div>
+            <div class="text-center p-t-10 p-b-10"
+                 data-ng-if="importTransactions.data.length === 0 && !(importTransactions.loading || importTransactions.error)">
+                <div>Нет данных</div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn bgm-teal btn-sm" data-ng-click="importTransactions.submit()"
+                    data-ng-disabled="importTransactions.submitting || importTransactions.loading">
+                <span>Импортировать</span>
+                <span data-ng-if="importTransactions.submitting">
+                    <i class="fa fa-sun-o icon-spin animated fadeIn"></i>
+                </span>
+            </button>
+            <button class="btn btn-link btn-sm" data-ng-click="importTransactions.close()">Отмена</button>
+        </div>
+    </div>
+</div>

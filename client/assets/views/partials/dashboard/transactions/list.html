@@ -27,6 +27,8 @@
                 <li class="transfer"><a href="" data-ng-click="transaction.edit('transfer')"
                                         uib-tooltip="Новый перевод"><i
                         class="zmdi zmdi-plus"></i></a></li>
+                <li><a href="" data-ng-click="importTransactions.init(scope.transactions.currentDate, true)" uib-tooltip="Импорт операций"><i
+                        class="zmdi zmdi-download"></i></a></li>
                 <li><a href="" data-ng-click="scope.transactions.setCurrentDateAsToday()" uib-tooltip="Сегодня"><i
                         class="zmdi zmdi-calendar-check"></i></a></li>
                 <li><a href="" data-ng-click="scope.transactions.update()" uib-tooltip="Обновить"><i

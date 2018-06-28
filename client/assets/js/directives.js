@@ -922,13 +922,16 @@ App
                 // view to model
                 defaults.onSelect = function (formattedDate, date, inst) {
 
-                    if (scope.ngModel instanceof Date && scope.ngModel.toISOString() === date.toISOString()) {
+                    if (scope.ngModel instanceof Date && moment(scope.ngModel).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD')) {
                         return false;
                     }
 
                     scope.ngModel = date;
                     scope.$apply();
-                    scope.$eval(scope.onChange);
+
+                    if (scope.onChange) {
+                        scope.$eval(scope.onChange);
+                    }
                 };
 
                 // model to view
@@ -957,6 +960,22 @@ App
                 $(element).datepicker(angular.extend(defaults, scope.options()));
             }
         };
+    })
+
+    // =========================================================================
+    // WRAP BUTTON FOR DATEPICKER
+    // =========================================================================
+
+    .directive('datePickerWrapper', function(){
+        return {
+            restrict: 'C',
+            link: function(scope, element){
+                element.click(function () {
+                    var inputId = element.find('.date-picker').attr('id');
+                    $('#' + inputId).data('datepicker').show();
+                });
+            }
+        }
     })
 
     // =========================================================================
