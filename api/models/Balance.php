@@ -176,10 +176,11 @@ class Balance extends Model
             $currencyId = $row['currency_id'];
             $currency = $this->getCurrency($currencyId);
             $balanceDataByRow = $this->prepareBalanceDataByRow($row);
+            $account = $this->getAccount($accountId);
 
             if (!isset($balanceData[$accountId])) {
                 $balanceData[$accountId] = [];
-                $balanceData[$accountId]['account'] = $this->getAccount($accountId);
+                $balanceData[$accountId]['account'] = $account;
                 $balanceData[$accountId]['currencies'] = [];
 
                 //сумма общего баланса, включая валютные счете в основной валюте по курсу
@@ -191,10 +192,12 @@ class Balance extends Model
 
             $balanceData[$accountId]['currencies'][] = $balanceDataByRow;
 
-            $balanceData[$accountId]['amount'] += Currency::convertToMainCurrency($balanceDataByRow['amount'], $currency, $this->date);
+            if (!$account->isReserve()) {
+                $balanceData[$accountId]['amount'] += Currency::convertToMainCurrency($balanceDataByRow['amount'], $currency, $this->date);
 
-            if ($currencyId == $mainCurrency->id) {
-                $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];
+                if ($currencyId == $mainCurrency->id) {
+                    $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];
+                }
             }
         }
 

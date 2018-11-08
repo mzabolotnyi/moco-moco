@@ -979,6 +979,26 @@ App
     })
 
     // =========================================================================
+    // Fix for dropdown with overflow hidden in container
+    // =========================================================================
+
+    .directive('dropdownOverflow', function(){
+        return {
+            restrict: 'C',
+            link: function(scope, element){
+                element.click(function (){
+                    var dropdownToggle = element.find('.dropdown-toggle');
+                    var dropdownMenu =  element.find('.dropdown-menu');
+                    var dropDownTop = dropdownToggle.offset().top + dropdownToggle.outerHeight();
+                    dropdownMenu.css('position', 'fixed');
+                    dropdownMenu.css('top', dropDownTop + 'px');
+                    dropdownMenu.css('left', dropdownToggle.offset().left + 'px');
+                });
+            }
+        }
+    })
+
+    // =========================================================================
     // INPUT MASK
     // =========================================================================
 

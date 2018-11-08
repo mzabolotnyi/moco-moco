@@ -4587,8 +4587,10 @@ fieldset[disabled] .btn-danger:active {
 
 .btn-link {
     color: #797979;
-    text-decoration: none;
     border-radius: 2px;
+    text-transform: none;
+    padding: 6px 0;
+    border: 1px dashed #000;
 }
 
 .btn-link,
