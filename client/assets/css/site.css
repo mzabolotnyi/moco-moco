@@ -14418,3 +14418,8 @@ table > tbody > tr.selected {
 .datepicker--cell.-selected-, .datepicker--cell.-selected-.-current-, .datepicker--cell.-selected-:hover {
     background: #009688;
 }
+
+/* DASHBOARD BALANCE */
+.card-balance .table tbody tr td.text-right {
+    width: 33%;
+}
