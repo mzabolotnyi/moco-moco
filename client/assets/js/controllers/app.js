@@ -813,6 +813,21 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 var date = moment(this.date).startOf('day');
                 return date.format('D MMMM YYYY');
             },
+            toggleSelected: function (value) {
+                value.isSelected = !value.isSelected;
+            },
+            calculateSelectedAmount: function () {
+
+                var amount = 0;
+
+                angular.forEach(this.data, function (value, key) {
+                    if (value.isSelected === true) {
+                        amount += value.amount;
+                    }
+                });
+
+                return Math.round(amount * 100) / 100;
+            },
             import: function () {
 
                 var _this = this;

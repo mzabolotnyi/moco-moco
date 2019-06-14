@@ -23,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="importTransaction in importTransactions.data">
+                <tr data-ng-repeat="importTransaction in importTransactions.data" data-ng-click="importTransactions.toggleSelected(importTransaction)" data-ng-class="{ 'selected':importTransaction.isSelected }">
                     <td>
                         <div class="dropdown dropdown-overflow" uib-dropdown="" style="">
                             <button class="dropdown-toggle btn btn-link" uib-dropdown-toggle>{{transaction.types[importTransaction.type]}}</button>
@@ -60,6 +60,7 @@
 
         </div>
         <div class="modal-footer">
+            <span class="pull-left p-l-15 f-700">Выделено: {{importTransactions.calculateSelectedAmount()}} {{profile.data.currency.symbol}}</span>
             <button class="btn bgm-teal btn-sm" data-ng-click="importTransactions.submit()"
                     data-ng-disabled="importTransactions.submitting || importTransactions.loading">
                 <span>Импортировать</span>
