@@ -588,8 +588,7 @@ App
                         if (attrs.onChange) {
                             if (scope.onChange && typeof scope.onChange() === "function") {
                                 scope.onChange()(e, rawFiles);
-                            }
-                            else {
+                            } else {
                                 scope.onChange(e, rawFiles);
                             }
                         }
@@ -911,7 +910,8 @@ App
             restrict: 'A',
             scope: {
                 options: '&',
-                ngModel: '='
+                ngModel: '=',
+                onChange: '&'
             },
             link: function (scope, element, attrs, ctrl) {
                 var defaults = {
@@ -922,12 +922,16 @@ App
                 // view to model
                 defaults.onSelect = function (formattedDate, date, inst) {
 
-                    if (scope.ngModel instanceof Date && scope.ngModel.toISOString() === date.toISOString()) {
+                    if (scope.ngModel instanceof Date && moment(scope.ngModel).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD')) {
                         return false;
                     }
 
                     scope.ngModel = date;
-                    scope.$applyAsync();
+                    scope.$apply();
+
+                    if (scope.onChange) {
+                        scope.$eval(scope.onChange);
+                    }
                 };
 
                 // model to view
@@ -956,6 +960,58 @@ App
                 $(element).datepicker(angular.extend(defaults, scope.options()));
             }
         };
+    })
+
+    // =========================================================================
+    // WRAP BUTTON FOR DATEPICKER
+    // =========================================================================
+
+    .directive('datePickerWrapper', function(){
+        return {
+            restrict: 'C',
+            link: function(scope, element){
+                element.click(function () {
+                    var inputId = element.find('.date-picker').attr('id');
+                    $('#' + inputId).data('datepicker').show();
+                });
+            }
+        }
+    })
+
+    // =========================================================================
+    // Fix for dropdown with overflow hidden in container
+    // =========================================================================
+
+    .directive('dropdownOverflow', function(){
+        return {
+            restrict: 'C',
+            link: function(scope, element){
+                element.click(function (){
+                    var dropdownToggle = element.find('.dropdown-toggle');
+                    var dropdownMenu =  element.find('.dropdown-menu');
+                    var dropDownTop = dropdownToggle.offset().top + dropdownToggle.outerHeight();
+                    dropdownMenu.css('position', 'fixed');
+                    dropdownMenu.css('top', dropDownTop + 'px');
+                    dropdownMenu.css('left', dropdownToggle.offset().left + 'px');
+                });
+            }
+        }
+    })
+
+    // =========================================================================
+    // INPUT MASK
+    // =========================================================================
+
+    .directive('inputMask', function(){
+        return {
+            restrict: 'A',
+            scope: {
+                inputMask: '='
+            },
+            link: function(scope, element){
+                element.mask(scope.inputMask.mask);
+            }
+        }
     })
 
 

@@ -1,0 +1,27 @@
+<div class="card card-widget">
+
+    <div class="card-header">
+        <h2 class="f-700 c-teal">Быстрый ввод</h2>
+    </div>
+
+    <div class="card-body" data-ng-if="!scope.mostPopularTransactions.loading && !scope.mostPopularTransactions.error">
+        <span class="m-l-10"></span>
+        <div class="button-icon" data-ng-repeat="item in scope.mostPopularTransactions.data track by $index" data-ng-style="{ 'background':item.accountColor }" uib-tooltip="{{item.accountName}} > {{item.categoryName}}" data-ng-click="transaction.edit(item)">
+            <i class="{{'fa ' + item.categoryIcon}}"></i>
+        </div>
+    </div>
+
+    <div class="card-body" data-ng-if="scope.mostPopularTransactions.loading">
+        <div class="text-center">
+            <ng-include src="'assets/views/partials/loaders/loading-only-preloader.html'"></ng-include>
+        </div>
+    </div>
+
+    <div class="card-body" data-ng-if="scope.mostPopularTransactions.error">
+        <div class="text-center has-error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.mostPopularTransactions.update()">Повторить
+            </button>
+        </div>
+    </div>
+</div>

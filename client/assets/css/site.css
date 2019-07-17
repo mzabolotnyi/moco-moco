@@ -4587,8 +4587,10 @@ fieldset[disabled] .btn-danger:active {
 
 .btn-link {
     color: #797979;
-    text-decoration: none;
     border-radius: 2px;
+    text-transform: none;
+    padding: 6px 0;
+    border: 1px dashed #000;
 }
 
 .btn-link,
@@ -13755,6 +13757,10 @@ html:not(.ismobile) .preloader-container {
     transform: translate(-50%, -50%);
 }
 
+.modal.modal-wide {
+    width: 85%;
+}
+
 @media all and (max-width: 767px) {
     .modal {
         width: calc(100% - 40px);
@@ -13774,6 +13780,28 @@ html:not(.ismobile) .preloader-container {
     font-weight: 700;
     font-size: 15px;
     color: #009688;
+}
+
+.modal .modal-header .date-picker {
+    width: 0;
+    border: none;
+}
+
+.modal .modal-header .date-picker-wrapper {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 3px 5px;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
+    font-weight: 700;
+    font-size: 15px;
+    color: #009688;
+}
+
+.modal .modal-header .date-picker-wrapper:hover {
+    background: rgba(0, 150, 136, 0.2);
 }
 
 .modal .modal-header .actions {
@@ -14101,7 +14129,7 @@ html:not(.ismobile) .preloader-container {
     position: relative;
 }
 
-.date-toolbar h2 {
+.date-toolbar h2, .date-toolbar .date-picker-wrapper {
     font-size: 16px;
     font-weight: 700;
     text-transform: uppercase;
@@ -14142,9 +14170,47 @@ html:not(.ismobile) .preloader-container {
     vertical-align: -15%;
 }
 
+.date-toolbar .date-picker {
+    width: 0;
+    border: none;
+}
+
+.date-toolbar .date-picker-wrapper {
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 2px 5px 3px 0;
+}
+
+.date-toolbar .date-picker-wrapper:hover {
+    background: rgba(0, 150, 136, 0.2);
+}
+
+/* BUTTON ICON */
+.button-icon {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #009688;
+    color: #fff;
+    text-align: center;
+    line-height: 34px;
+    font-size: 20px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
 /* FIXES */
 .highcharts-credits {
     display: none;
+}
+
+select {
+    padding: 0 5px !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    outline: none !important;
 }
 
 /* FULL SCREEN */
@@ -14351,4 +14417,9 @@ table > tbody > tr.selected {
 
 .datepicker--cell.-selected-, .datepicker--cell.-selected-.-current-, .datepicker--cell.-selected-:hover {
     background: #009688;
+}
+
+/* DASHBOARD BALANCE */
+.card-balance .table tbody tr td.text-right {
+    width: 33%;
 }

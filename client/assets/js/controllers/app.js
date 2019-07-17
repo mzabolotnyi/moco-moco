@@ -1,5 +1,5 @@
-App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService',
-    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService) {
+App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService', 'currency', 'importService',
+    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService, currency, importService) {
 
         // Global values
         $scope.global = {
@@ -35,6 +35,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             accounts: [],
             categories: [],
+            currencies: [],
             //загружает необходимые данные для ввода операций (например: счета, категории)
             loadData: function (callback) {
 
@@ -47,6 +48,10 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                     })
                     .then(function (response) {
                         _this.categories = _this.sortDataByField(response.data, 'countTrans');
+                        return currency.get();
+                    })
+                    .then(function (response) {
+                        _this.currencies = response.data;
                         _this.dataLoaded = true;
                     })
                     .catch(function (error) {
@@ -103,7 +108,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
             },
             alertInDevelopment: function () {
                 notifyService.alert('На данный момент функционал находится в разработке', 'info');
-            }
+            },
         };
 
         // Sidebar
@@ -259,7 +264,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 setCategory: function (category) {
                     if (category) {
                         $localStorage[this.savedCategoryAlias] = category.id;
-                    }else {
+                    } else {
                         delete $localStorage[this.savedCategoryAlias];
                     }
                 },
@@ -540,7 +545,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 _this.editing = true;
                 _this.errors = {};
 
-                if (typeof(transaction) === 'object') {
+                if (typeof(transaction) === 'object' && !transaction.id) {
+                    _this.fillByTemplate(transaction);
+                } else if (typeof(transaction) === 'object') {
                     _this.fillByObject(transaction);
                 } else {
                     _this.fillDefault(transaction, alreadyEditing);
@@ -607,6 +614,15 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 } else {
                     this.category = transaction.category ? this.findCategory(transaction.category.id) : null;
                 }
+            },
+            fillByTemplate: function (template) {
+
+                var type = template.expense ? 'expense' : 'income';
+
+                this.fillDefault(type);
+                this.account = this.findAccount(template.accountId);
+                this.currency = this.findCurrency(this.account, template.currencyId);
+                this.category = this.findCategory(template.categoryId);
             },
             checkFilling: function () {
 
@@ -755,6 +771,100 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                             notifyService.hideLoadBar();
                         });
                 }, false);
+            },
+            types: {
+                income: 'Доход',
+                expense: 'Расход',
+                transfer: 'Перевод'
+            }
+        };
+
+        // Import Transactions
+        $scope.importTransactions = {
+            data: [],
+            init: function (date, runImport) {
+
+                var _this = this;
+
+                $scope.sidebar.opened = false;
+
+                //данные для ввода операций еще не подгружены - выполним загрузку
+                if (!$scope.global.dataLoaded) {
+
+                    notifyService.showLoadBar();
+                    $scope.global.loadData(function () {
+                        _this.init(date, runImport);
+                    });
+
+                    return;
+                }
+
+                this.date = date ? date : moment().toDate();
+                this.opened = true;
+
+                if (runImport) {
+                    this.import();
+                }
+            },
+            close: function () {
+                this.opened = false;
+            },
+            getDisplayDate: function () {
+                var date = moment(this.date).startOf('day');
+                return date.format('D MMMM YYYY');
+            },
+            toggleSelected: function (value) {
+                value.isSelected = !value.isSelected;
+            },
+            calculateSelectedAmount: function () {
+
+                var amount = 0;
+
+                angular.forEach(this.data, function (value, key) {
+                    if (value.isSelected === true) {
+                        amount += value.amount;
+                    }
+                });
+
+                return Math.round(amount * 100) / 100;
+            },
+            import: function () {
+
+                var _this = this;
+
+                _this.loading = true;
+                _this.error = false;
+                _this.data = [];
+
+                importService.getTransactionForImport({'startDate': _this.date, 'endDate': _this.date})
+                    .success(function (response) {
+                        _this.data = response;
+                    })
+                    .error(function (error) {
+                        _this.error = true;
+                        notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                    })
+                    .finally(function () {
+                        _this.loading = false;
+                    });
+            },
+            submit: function () {
+
+                var _this = this;
+                _this.submitting = true;
+
+                notifyService.showLoadBar();
+
+                var j = 1;
+                for (var i = 1; i < 100000; i++) {
+                    j++;
+                }
+
+                notifyService.notify('Импорт операций завершен');
+                notifyService.hideLoadBar();
+                _this.opened = false;
+                _this.submitting = false;
+                $scope.transaction.afterEdit();
             }
         };
 

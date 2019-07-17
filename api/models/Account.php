@@ -12,6 +12,12 @@ use app\models\Balance;
  * @property integer $user_id
  * @property string $name
  * @property string $color
+ * @property boolean $reserve
+ * @property string $merchant_id
+ * @property string $merchant_password
+ * @property string $card_number
+ * @property string $import_type
+ * @property integer $import
  * @property integer $active
  * @property string $created_at
  * @property string $updated_at
@@ -34,7 +40,7 @@ class Account extends OActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'color', 'active', '!user_id'];
+        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'color', 'active', 'merchant_id', 'merchant_password', 'card_number', 'import_type', 'import', '!user_id'];
 
         return $scenarios;
     }
@@ -49,8 +55,11 @@ class Account extends OActiveRecord
             ['name', 'string', 'max' => 255],
             ['color', 'string', 'max' => 7],
             ['active', 'boolean'],
+            ['import', 'boolean'],
             ['color', 'default', 'value' => '#009688'],
             ['active', 'default', 'value' => 1],
+            ['active', 'default', 'value' => 1],
+            ['import', 'default', 'value' => 0],
         ];
     }
 
@@ -63,6 +72,11 @@ class Account extends OActiveRecord
             'name' => 'Название',
             'color' => 'Цвет',
             'active' => 'Активный',
+            'merchant_id' => 'ID мерчанта',
+            'merchant_password' => 'Пароль мерчанта',
+            'card_number' => 'Номер счета',
+            'import_type' => 'Формат импорта',
+            'import' => 'Импортировать операции',
         ];
     }
 
@@ -80,14 +94,61 @@ class Account extends OActiveRecord
             'color',
             'active',
             'userId' => 'user_id',
+            'merchantId' => 'merchant_id',
+            'merchantPassword' => 'merchant_password',
+            'cardNumber' => 'card_number',
+            'importType' => 'import_type',
+            'import' => function () {
+                return $this->isImport();
+            },
             'countTrans' => function () {
                 return (int)$this->hasMany(Transaction::className(), ['account_id' => 'id'])->count()
                 + (int)$this->hasMany(Transaction::className(), ['recipient_account_id' => 'id'])->count();
             },
             'currencies' => function () {
-                return AccountCurrency::findAll(['account_id' => $this->id]);
+                return $this->getCurrencies();
             }
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantId()
+    {
+        return $this->merchant_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMerchantPassword()
+    {
+        return $this->merchant_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardNumber()
+    {
+        return $this->card_number;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImportType()
+    {
+        return $this->import_type;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isReserve()
+    {
+        return $this->reserve;
     }
 
     /**
@@ -105,8 +166,17 @@ class Account extends OActiveRecord
      */
     public function isActive()
     {
-        return $this->active;
+        return (int)$this->active;
     }
+
+    /**
+     * @return bool
+     */
+    public function isImport()
+    {
+        return (int)$this->import;
+    }
+
 
     /**
      * Binds currency with account by creating and saving AccountCurrency model
@@ -142,5 +212,23 @@ class Account extends OActiveRecord
         }
 
         return true;
+    }
+
+    public function getCurrencies()
+    {
+        return AccountCurrency::findAll(['account_id' => $this->id]);
+    }
+
+    public function getCurrency($ISO)
+    {
+        foreach ($this->getCurrencies() as $accountCurrency) {
+            /** @var Currency $currency */
+            $currency = $accountCurrency->currency;
+            if ($currency && $currency->getIso() === $ISO) {
+                return $currency;
+            }
+        }
+
+        return null;
     }
 }

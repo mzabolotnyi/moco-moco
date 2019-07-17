@@ -90,6 +90,31 @@
             </div>
             <!--end ACOOUNT-->
 
+            <!--CURRENCY-->
+            <label>Валюта</label>
+
+            <div class="input-group input-filter">
+
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-circle-o" data-ng-if="!scope.filter.items.currency"></i>
+                    <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.currency"></i>
+                </span>
+
+                <div class="fg-line">
+                    <select class="form-control input-sm" name="currency" data-ng-model="scope.filter.items.currency"
+                            data-ng-options="currency as currency.fullname for currency in global.currencies"
+                            data-ng-change="scope.update(true)">
+                        <option value="">Не выбран...</option>
+                    </select>
+                </div>
+
+                <span class="input-group-addon last" data-ng-if="scope.filter.items.currency">
+                    <i class="zmdi zmdi-close" data-ng-click="scope.filter.clearCurrency()"></i>
+                </span>
+
+            </div>
+            <!--end CURRENCY-->
+
             <!--COMMENT-->
             <label>Примечание</label>
 
@@ -125,11 +150,9 @@
                     <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.startDate"></i>
                 </span>
 
-                <span class="input-group-addon c-black">c</span>
-
                 <div class="fg-line">
-                    <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="startDate"
-                           data-ng-model="scope.filter.items.startDate" data-ng-change="scope.update(true)">
+                    <input type="text" date-picker data-options="{position: 'top left'}" class="form-control input-sm" placeholder="с" name="startDate"
+                           data-ng-model="scope.filter.items.startDate" data-on-change="scope.update(true)">
                 </div>
 
                 <span class="input-group-addon last" data-ng-if="scope.filter.items.startDate">
@@ -145,11 +168,9 @@
                     <i class="zmdi zmdi-check-circle c-teal" data-ng-if="scope.filter.items.endDate"></i>
                 </span>
 
-                <span class="input-group-addon c-black">по</span>
-
                 <div class="fg-line">
-                    <input type="date" class="form-control input-sm" placeholder="yyyy-MM-dd" name="endDate"
-                           data-ng-model="scope.filter.items.endDate" data-ng-change="scope.update(true)">
+                    <input type="text" date-picker data-options="{position: 'top left'}" class="form-control input-sm" placeholder="по" name="endDate"
+                           data-ng-model="scope.filter.items.endDate" data-on-change="scope.update(true)">
                 </div>
 
                 <span class="input-group-addon last" data-ng-if="scope.filter.items.endDate">

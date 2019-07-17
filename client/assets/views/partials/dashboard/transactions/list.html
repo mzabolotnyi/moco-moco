@@ -7,7 +7,14 @@
                     <button class="dt-btn" data-ng-click="scope.transactions.moveCurrentDate(-1)">
                         <i class="zmdi zmdi-chevron-left"></i>
                     </button>
-                    <h2>{{scope.transactions.getDisplayDate()}}</h2>
+                    <div class="date-picker-wrapper">
+                        <input id="transactions-date-picker" class="date-picker" type="text" date-picker
+                               name="date"
+                               data-options="{position: 'bottom left'}"
+                               data-ng-model="scope.transactions.currentDate"
+                               data-on-change="scope.transactions.update()">
+                        <h2>{{scope.transactions.getDisplayDate()}}</h2>
+                    </div>
                     <button class="dt-btn" data-ng-click="scope.transactions.moveCurrentDate(1)">
                         <i class="zmdi zmdi-chevron-right"></i>
                     </button>
@@ -27,6 +34,9 @@
                 <li class="transfer"><a href="" data-ng-click="transaction.edit('transfer')"
                                         uib-tooltip="Новый перевод"><i
                         class="zmdi zmdi-plus"></i></a></li>
+                <li><a href="" data-ng-click="importTransactions.init(scope.transactions.currentDate, true)"
+                       uib-tooltip="Импорт операций"><i
+                        class="zmdi zmdi-download"></i></a></li>
                 <li><a href="" data-ng-click="scope.transactions.setCurrentDateAsToday()" uib-tooltip="Сегодня"><i
                         class="zmdi zmdi-calendar-check"></i></a></li>
                 <li><a href="" data-ng-click="scope.transactions.update()" uib-tooltip="Обновить"><i

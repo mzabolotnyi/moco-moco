@@ -9,7 +9,6 @@ use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\Controller;
-use Yii;
 
 class AnalyticsController extends Controller
 {
@@ -106,17 +105,29 @@ class AnalyticsController extends Controller
             'currency.symbol as currencySymbol',
             'transaction.expense',
             'transaction.income',
-            'transaction.transfer',
             'COUNT(transaction.id) as count'])
             ->from('transaction')
             ->leftJoin('category', 'transaction.category_id = category.id')
             ->leftJoin('account', 'transaction.account_id = account.id')
             ->leftJoin('currency', 'transaction.currency_id = currency.id')
             ->andWhere('transaction.category_id IS NOT NULL')
+            ->andWhere('transaction.transfer = 0')
+            ->andWhere('transaction.date BETWEEN NOW() - INTERVAL 100 DAY AND NOW()')
             ->groupBy(['category_id', 'account_id', 'currency_id'])
             ->orderBy('count DESC')
-            ->limit(10);
+            ->limit(12);
 
-        return $query->all();
+        $result = $query->all();
+
+        foreach ($result as &$item) {
+            $item['categoryId'] = (int)$item['categoryId'];
+            $item['accountId'] = (int)$item['accountId'];
+            $item['currencyId'] = (int)$item['currencyId'];
+            $item['expense'] = (int)$item['expense'];
+            $item['income'] = (int)$item['income'];
+            $item['count'] = (int)$item['count'];
+        }
+
+        return $result;
     }
 }

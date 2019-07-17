@@ -92,5 +92,16 @@ return [
                 'GET mostPopularTransactions' => 'most-popular-transactions',
             ],
         ],
+        // import
+        [
+            'class' => 'yii\rest\UrlRule',
+            'pluralize' => false,
+            'controller' => [
+                'import',
+            ],
+            'patterns' => [
+                'GET getTransactionsForImport' => 'get-transactions-for-import',
+            ],
+        ],
     ],
 ];

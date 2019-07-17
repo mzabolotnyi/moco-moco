@@ -52,6 +52,9 @@ AnalyticsModule
                     httpHelper.prepareGetParam('startDate', startDate),
                     httpHelper.prepareGetParam('endDate', endDate)
                 ]));
+            },
+            getMostPopularTransactions: function () {
+                return $http.get(utils.getUrl('most-popular-transactions', []));
             }
         };
     }]);

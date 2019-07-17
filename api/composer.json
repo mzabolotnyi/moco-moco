@@ -24,7 +24,8 @@
     "yiisoft/yii2-bootstrap": "*",
     "yiisoft/yii2-swiftmailer": "*",
     "nesbot/carbon": "^1.21",
-    "deesoft/yii2-gii": "~1.0"
+    "deesoft/yii2-gii": "~1.0",
+    "guzzlehttp/guzzle": "^6.3"
   },
   "require-dev": {
     "yiisoft/yii2-codeception": "*",

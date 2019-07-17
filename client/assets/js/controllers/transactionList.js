@@ -205,6 +205,14 @@ App.controller('TransactionsListCtrl', ['$scope', 'transaction', 'transactions',
                             this.submit();
                         }
                     },
+                    clearCurrency: function () {
+
+                        this.items.currency = undefined;
+
+                        if (!$scope.global.isMobile()) {
+                            this.submit();
+                        }
+                    },
                     clearComment: function () {
 
                         this.items.comment = '';

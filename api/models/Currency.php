@@ -22,6 +22,13 @@ use yii\web\NotFoundHttpException;
 class Currency extends OActiveRecord
 {
     /**
+     * @return string
+     */
+    public function getIso()
+    {
+        return $this->iso;
+    }
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -81,6 +88,9 @@ class Currency extends OActiveRecord
             'userId' => 'user_id',
             'rate' => function () {
                 return $this->getRate();
+            },
+            'fullname' => function () {
+                return "$this->name ($this->symbol)";
             }
         ];
     }

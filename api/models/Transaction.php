@@ -26,6 +26,7 @@ use yii\web\BadRequestHttpException;
  * @property integer $transfer
  * @property string $created_at
  * @property string $updated_at
+ * @property string $external_id
  *
  * @property Currency $currency
  * @property Account $account
@@ -56,13 +57,13 @@ class Transaction extends OActiveRecord
         $scenarios = parent::scenarios();
 
         $attributes = [
-            'currency_id', 'account_id', 'category_id', 'amount', 'date', 'comment',
+            'currency_id', 'account_id', 'category_id', 'amount', 'date', 'comment', 'external_id',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
         $attributesTransfer = [
             'currency_id', 'recipient_currency_id', 'recipient_account_id', 'account_id',
-            'category_id', 'amount', 'recipient_amount', 'date', 'comment',
+            'category_id', 'amount', 'recipient_amount', 'date', 'comment', 'external_id',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
@@ -128,6 +129,7 @@ class Transaction extends OActiveRecord
             'transfer' => 'Перевод',
             'expense' => 'Расход',
             'income' => 'Доход',
+            'external_id' => 'Внешний ID',
         ];
     }
 
@@ -164,6 +166,7 @@ class Transaction extends OActiveRecord
             'income',
             'transfer',
             'userId' => 'user_id',
+            'externalId' => 'external_id',
         ];
     }
 
@@ -347,4 +350,12 @@ class Transaction extends OActiveRecord
         ]);
     }
 
+    public static function search($params = [])
+    {
+        //для счета и валюты кастомная логика фильтров в TransactionController
+        unset($params['account_id']);
+        unset($params['currency_id']);
+
+        return parent::search($params);
+    }
 }
