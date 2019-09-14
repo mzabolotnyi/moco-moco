@@ -378,6 +378,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
 
         // Transaction
         $scope.transaction = {
+            currentDate: moment().toDate(),
             //проверяет является ли объект новым или же это редактирование существующего
             isNew: function () {
                 return this.id === 0;
@@ -579,7 +580,13 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 var defaultCurrency = this.getDefaultCurrency(defaultAccount);
 
                 this.id = 0;
-                this.date = changeType && this.date ? this.date : moment().toDate();
+
+                if (!changeType && $scope.transaction.currentDate) {
+                    this.date = $scope.transaction.currentDate;
+                } else if (!this.date) {
+                    this.date = moment().toDate();
+                }
+
                 this.amount = changeType && this.amount ? this.amount : "";
                 this.account = defaultAccount;
                 this.category = defaultCategory;

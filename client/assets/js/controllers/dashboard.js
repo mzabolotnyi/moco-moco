@@ -109,10 +109,12 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 },
                 moveCurrentDate: function (numberDays) {
                     this.currentDate = moment(this.currentDate).add(numberDays, 'days').toDate();
+                    $scope.transaction.currentDate = this.currentDate;
                     this.update();
                 },
                 setCurrentDateAsToday: function () {
                     this.currentDate = moment().toDate();
+                    $scope.transaction.currentDate = this.currentDate;
                     this.update();
                 }
             },
@@ -400,6 +402,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
             if (this.date) {
                 $scope.scope.transactions.currentDate = this.date;
+                $scope.transaction.currentDate = this.date;
             }
 
             $scope.scope.transactions.update();
