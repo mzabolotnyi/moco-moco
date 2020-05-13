@@ -15,6 +15,15 @@
                 </span>
         </div>
 
+        <div class="form-inline">
+            <label>Категория</label>
+            <select class="form-control input-sm" name="category" data-ng-model="scope.charts.turnoverColumn.category"
+                    data-ng-options="category as category.name for category in global.categories"
+                    data-ng-change="scope.charts.turnoverColumn.update()">
+                <option value="">Все</option>
+            </select>
+        </div>
+
         <ul class="actions">
             <li>
                 <a href="" uib-tooltip="Во весь экран" data-ng-click="scope.charts.turnoverColumn.toggleFullScreen()">

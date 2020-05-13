@@ -166,6 +166,10 @@ class Analytics
             $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d')]);
         }
 
+        if ($categoryId = $_GET['category']) {
+            $query->andWhere(['transaction.category_id' => $categoryId]);
+        }
+
         $query->groupBy(['date', 'currency_id']);
 
         return $this->prepareByMonthData($query->all());

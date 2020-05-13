@@ -47,11 +47,18 @@ AnalyticsModule
             getWidgetData: function (period) {
                 return $http.get(utils.getUrl('widget-data', [httpHelper.prepareGetParam('period', period)]));
             },
-            getTurnoverByMonth: function (startDate, endDate) {
-                return $http.get(utils.getUrl('turnover-by-month', [
+            getTurnoverByMonth: function (startDate, endDate, category) {
+
+                var params = [
                     httpHelper.prepareGetParam('startDate', startDate),
                     httpHelper.prepareGetParam('endDate', endDate)
-                ]));
+                ];
+
+                if (category) {
+                    params.push(httpHelper.prepareGetParam('category', category.id));
+                }
+
+                return $http.get(utils.getUrl('turnover-by-month', params));
             },
             getMostPopularTransactions: function () {
                 return $http.get(utils.getUrl('most-popular-transactions', []));

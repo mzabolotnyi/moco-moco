@@ -233,6 +233,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 turnoverColumn: {
                     data: [],
                     month: moment().startOf('month').toDate(),
+                    category: null,
                     getDisplayPeriod: function () {
                         return moment(this.month).add(-11, 'months').format('MMMM YYYY') + ' - ' + moment(this.month).format('MMMM YYYY');
                     },
@@ -254,7 +255,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                         var startDate = moment(_this.month).startOf('month').add(-11, 'months').toDate();
                         var endDate = moment(_this.month).endOf('month').toDate();
 
-                        analytics.getTurnoverByMonth(startDate, endDate)
+                        analytics.getTurnoverByMonth(startDate, endDate, _this.category)
                             .success(function (data) {
 
                                 _this.data = data;
@@ -430,4 +431,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
         //инициализируем обновление блока популярных транзакций
         $scope.scope.mostPopularTransactions.update();
+
+        //загрузим необходимые для фильтров данные
+        $scope.global.loadData();
     }]);
