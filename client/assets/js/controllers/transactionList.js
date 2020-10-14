@@ -75,34 +75,26 @@ App.controller('TransactionsListCtrl', ['$scope', 'transaction', 'transactions',
 
                         notifyService.showLoadBar();
 
-                        var failures = 0;
+                        var promises = [];
 
                         angular.forEach(selectedItems, function (obj, index, array) {
 
-                            var lastIteration = (index === array.length - 1);
+                            var promise = _this.deleteItem(obj);
+                            promise.error(function (error) {
+                                notifyService.notifyError($scope.global.errorMessages.generatePost(error));
+                            });
 
-                            _this.deleteItem(obj)
-                                .error(function () {
-                                    failures++;
-                                })
-                                .finally(function () {
-                                    if (lastIteration) {
-
-                                        _this.update(true);
-
-                                        notifyService.hideLoadBar();
-
-                                        if (failures === 0) {
-                                            notifyService.notify("Операции удалены");
-                                        } else {
-                                            notifyService.notifyError("Не удалось удалить " + countSelected + " операции");
-                                        }
-
-                                        //обновим данные о балансе
-                                        $scope.balance.update();
-                                    }
-                                });
+                            promises.push(promise);
                         });
+
+                        Promise.all(promises)
+                            .finally(function () {
+                                _this.update(true);
+                                notifyService.hideLoadBar();
+                                notifyService.notify("Операции удалены");
+                                $scope.balance.update();
+                            });
+
                     }, false);
                 },
                 deleteItem: function (item, callback) {

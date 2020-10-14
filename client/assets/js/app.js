@@ -16,19 +16,13 @@ var App = angular.module('app', [
     'mocoAccount',
     'mocoTransaction',
     'mocoAnalytics',
-    'mocoImport',
-    'salesSize',
-    'salesShop',
-    'salesSource',
-    'salesOrderStatus',
-    'salesOrder'
+    'mocoImport'
 ]);
 
 App
     // Constants definition
     .constant('config', {
         apiUrl: 'http://api.moco-moco',
-        apiUrlSales: 'http://api.home',
         siteUrl: 'http://moco-moco',
         authHref: '/auth',
         appName: 'Money Control',

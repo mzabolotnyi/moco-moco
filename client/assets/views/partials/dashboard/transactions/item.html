@@ -1,12 +1,12 @@
 <!--icon for income/expense-->
-<div class="lv-trans-icon animated flipInY" data-ng-if="!transaction.transfer"
+<div class="lv-trans-icon" data-ng-if="!transaction.transfer"
      data-ng-style="{ 'background':transaction.account.color }">
     <i class="{{'fa ' + transaction.category.icon}}" data-ng-if="transaction.category"></i>
     <i class="zmdi zmdi-edit" data-ng-if="!transaction.category"></i>
 </div>
 
 <!--icon for transfer-->
-<div class="lv-trans-icon animated flipInY" data-ng-if="transaction.transfer"
+<div class="lv-trans-icon" data-ng-if="transaction.transfer"
      data-ng-style="{ 'background':'linear-gradient(to right,'.concat(transaction.account.color, ' 50%', ',', transaction.recipientAccount.color, ' 50%)') }">
     <i class="zmdi zmdi-swap"></i>
 </div>

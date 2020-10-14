@@ -546,9 +546,9 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 _this.editing = true;
                 _this.errors = {};
 
-                if (typeof(transaction) === 'object' && !transaction.id) {
+                if (typeof (transaction) === 'object' && !transaction.id) {
                     _this.fillByTemplate(transaction);
-                } else if (typeof(transaction) === 'object') {
+                } else if (typeof (transaction) === 'object') {
                     _this.fillByObject(transaction);
                 } else {
                     _this.fillDefault(transaction, alreadyEditing);
@@ -820,21 +820,6 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 var date = moment(this.date).startOf('day');
                 return date.format('D MMMM YYYY');
             },
-            toggleSelected: function (value) {
-                value.isSelected = !value.isSelected;
-            },
-            calculateSelectedAmount: function () {
-
-                var amount = 0;
-
-                angular.forEach(this.data, function (value, key) {
-                    if (value.isSelected === true) {
-                        amount += value.amount;
-                    }
-                });
-
-                return Math.round(amount * 100) / 100;
-            },
             import: function () {
 
                 var _this = this;
@@ -862,38 +847,36 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
 
                 notifyService.showLoadBar();
 
-                var j = 1;
-                for (var i = 1; i < 100000; i++) {
-                    j++;
-                }
+                var promises = [];
 
-                notifyService.notify('Импорт операций завершен');
-                notifyService.hideLoadBar();
-                _this.opened = false;
-                _this.submitting = false;
-                $scope.transaction.afterEdit();
-            }
-        };
+                angular.forEach(_this.data, function (importTransaction) {
 
-        $scope.keyPressHandler = function ($event) {
-            switch ($event.keyCode) {
-                case 43:
-                    if (!$scope.transaction.editing) {
-                        $scope.transaction.edit('income');
+                    if (!importTransaction.category) {
+                        return;
                     }
-                    break;
-                case 45:
-                    if (!$scope.transaction.editing) {
-                        $scope.transaction.edit('expense');
-                    }
-                    break;
-                case 47:
-                    if (!$scope.transaction.editing) {
-                        $scope.transaction.edit('transfer');
-                    }
-                    break;
-                default:
-                    break;
+
+                    importTransaction.id = 0;
+                    importTransaction.income = importTransaction.type === 'income';
+                    importTransaction.expense = importTransaction.type === 'expense';
+                    importTransaction.transfer = false;
+
+                    var promise = transaction.save(importTransaction);
+
+                    promise.error(function (error) {
+                        notifyService.notifyError($scope.global.errorMessages.generatePost(error));
+                    });
+
+                    promises.push(promise);
+                });
+
+                Promise.all(promises)
+                    .finally(function () {
+                        notifyService.notify('Импорт операций завершен');
+                        notifyService.hideLoadBar();
+                        _this.opened = false;
+                        _this.submitting = false;
+                        $scope.transaction.afterEdit();
+                    });
             }
         };
 

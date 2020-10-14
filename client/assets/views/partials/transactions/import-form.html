@@ -16,31 +16,34 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Тип</th>
-                    <th width="15%">Сумма</th>
+                    <th width="10%">Сумма</th>
                     <th>Счет</th>
+                    <th>Категория</th>
                     <th>Комментарий</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-ng-repeat="importTransaction in importTransactions.data" data-ng-click="importTransactions.toggleSelected(importTransaction)" data-ng-class="{ 'selected':importTransaction.isSelected }">
-                    <td>
-                        <div class="dropdown dropdown-overflow" uib-dropdown="" style="">
-                            <button class="dropdown-toggle btn btn-link" uib-dropdown-toggle>{{transaction.types[importTransaction.type]}}</button>
-                            <ul class="dropdown-menu">
-                                <li data-ng-repeat="(k, v) in transaction.types" class="ng-scope">
-                                    <a href="" data-ng-click="importTransaction.type = k">{{v}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!--<select class="form-control input-sm"-->
-                                <!--data-ng-model="importTransaction.type"-->
-                                <!--data-ng-options="k as v for (k, v) in transaction.types">-->
-                        <!--</select>-->
+                <tr data-ng-repeat="importTransaction in importTransactions.data">
+                    <td class="p-r-0">
+                        <i class="fa fa-check c-teal" data-ng-if="importTransaction.category"></i>
                     </td>
+                    <td>{{transaction.types[importTransaction.type]}}</td>
                     <td>{{importTransaction.amount}} {{importTransaction.currency.symbol}}</td>
                     <td>{{importTransaction.account.name}}</td>
-                    <td>{{importTransaction.comment}}</td>
+                    <td>
+                        <select class="form-control input-sm" name="category"
+                                data-ng-model="importTransaction.category"
+                                data-ng-options="category as category.name for category in (global.categories | filterActive)">
+                            <option value=""></option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control input-sm"
+                               data-ng-model="importTransaction.comment"
+                               name="comment" placeholder="Примечание">
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -60,7 +63,6 @@
 
         </div>
         <div class="modal-footer">
-            <span class="pull-left p-l-15 f-700">Выделено: {{importTransactions.calculateSelectedAmount()}} {{profile.data.currency.symbol}}</span>
             <button class="btn bgm-teal btn-sm" data-ng-click="importTransactions.submit()"
                     data-ng-disabled="importTransactions.submitting || importTransactions.loading">
                 <span>Импортировать</span>
