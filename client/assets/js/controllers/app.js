@@ -789,7 +789,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
         // Import Transactions
         $scope.importTransactions = {
             data: [],
-            init: function (date, runImport) {
+            init: function (date, fetch) {
 
                 var _this = this;
 
@@ -809,8 +809,8 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 this.date = date ? date : moment().toDate();
                 this.opened = true;
 
-                if (runImport) {
-                    this.import();
+                if (fetch) {
+                    this.fetch();
                 }
             },
             close: function () {
@@ -820,7 +820,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 var date = moment(this.date).startOf('day');
                 return date.format('D MMMM YYYY');
             },
-            import: function () {
+            fetch: function () {
 
                 var _this = this;
 
@@ -840,6 +840,18 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                         _this.loading = false;
                     });
             },
+            canSubmit: function () {
+
+                var result = false;
+
+                angular.forEach(this.data, function (importTransaction) {
+                    if (importTransaction.category) {
+                        result = true;
+                    }
+                });
+
+                return result;
+            },
             submit: function () {
 
                 var _this = this;
@@ -855,7 +867,6 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                         return;
                     }
 
-                    importTransaction.id = 0;
                     importTransaction.income = importTransaction.type === 'income';
                     importTransaction.expense = importTransaction.type === 'expense';
                     importTransaction.transfer = false;

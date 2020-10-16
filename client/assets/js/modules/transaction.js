@@ -111,10 +111,11 @@ TransactionModule
                     recipient_amount: transaction.recipientAmount,
                     recipient_account_id: transaction.recipientAccount ? transaction.recipientAccount.id : '',
                     recipient_currency_id: transaction.recipientCurrency ? transaction.recipientCurrency.id : '',
+                    external_id: transaction.externalId,
                     comment: transaction.comment
                 };
             }
-        }
+        };
     }])
     .factory('transaction', ['$http', 'transactionConfig', 'transactionUtils', function ($http, config, utils) {
         return {
@@ -125,7 +126,7 @@ TransactionModule
                 return $http.get(utils.getOneUrl(id));
             },
             save: function (transaction) {
-                if (transaction.id === 0) {
+                if (!transaction.id || transaction.id === 0) {
                     return this.create(transaction);
                 } else {
                     return this.update(transaction);

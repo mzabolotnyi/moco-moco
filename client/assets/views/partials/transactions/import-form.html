@@ -8,7 +8,7 @@
                 <input id="import-transactions-date-picker" class="date-picker" type="text" date-picker name="date"
                        data-options="{position: 'bottom right'}"
                        data-ng-model="importTransactions.date"
-                       data-on-change="importTransactions.import()">
+                       data-on-change="importTransactions.fetch()">
             </div>
         </div>
         <div class="modal-body c-overflow">
@@ -16,11 +16,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th>Тип</th>
-                    <th width="10%">Сумма</th>
-                    <th>Счет</th>
-                    <th>Категория</th>
+                    <th width="3%"></th>
+                    <th width="7%">Сумма</th>
+                    <th width="25%">Счет</th>
+                    <th width="25%">Категория</th>
                     <th>Комментарий</th>
                 </tr>
                 </thead>
@@ -29,8 +28,14 @@
                     <td class="p-r-0">
                         <i class="fa fa-check c-teal" data-ng-if="importTransaction.category"></i>
                     </td>
-                    <td>{{transaction.types[importTransaction.type]}}</td>
-                    <td>{{importTransaction.amount}} {{importTransaction.currency.symbol}}</td>
+                    <td>
+                        <span class="c-green" data-ng-if="importTransaction.type === 'income'">
+                            +{{importTransaction.amount}} {{importTransaction.currency.symbol}}
+                        </span>
+                        <span class="c-deeporange" data-ng-if="importTransaction.type === 'expense'">
+                            -{{importTransaction.amount}} {{importTransaction.currency.symbol}}
+                        </span>
+                    </td>
                     <td>{{importTransaction.account.name}}</td>
                     <td>
                         <select class="form-control input-sm" name="category"
@@ -53,7 +58,7 @@
             </div>
             <div class="text-center p-t-10 p-b-10 has-error" data-ng-if="importTransactions.error">
                 <div>Произошла ошибка...</div>
-                <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="importTransactions.import()">Повторить
+                <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="importTransactions.fetch()">Повторить
                 </button>
             </div>
             <div class="text-center p-t-10 p-b-10"
@@ -64,7 +69,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn bgm-teal btn-sm" data-ng-click="importTransactions.submit()"
-                    data-ng-disabled="importTransactions.submitting || importTransactions.loading">
+                    data-ng-disabled="importTransactions.submitting || importTransactions.loading || !importTransactions.canSubmit()">
                 <span>Импортировать</span>
                 <span data-ng-if="importTransactions.submitting">
                     <i class="fa fa-sun-o icon-spin animated fadeIn"></i>

@@ -96,7 +96,7 @@ class Transaction extends OActiveRecord
             ['account_id', 'validateRelations'],
             [['amount', 'recipient_amount'], 'default', 'value' => 0],
             ['date', 'default', 'value' => Carbon::today()->format('Y-m-d')],
-            ['comment', 'default', 'value' => ""],
+            ['comment', 'default', 'value' => ''],
             // SCENARIO_EXPANSE
             ['expense', 'default', 'value' => 1, 'on' => self::SCENARIO_EXPANSE],
             ['income', 'default', 'value' => 0, 'on' => self::SCENARIO_EXPANSE],

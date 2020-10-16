@@ -3,6 +3,7 @@
 namespace app\services;
 
 use app\models\Account;
+use app\models\Transaction;
 
 class ImportService
 {
@@ -44,10 +45,17 @@ class ImportService
         }
 
         foreach ($payments as $payment) {
-            $transactions[] = array_merge($payment, [
+
+            if (Transaction::findOne(['external_id' => $payment['externalId']])) {
+                continue;
+            }
+
+            $transaction = array_merge($payment, [
                 'account' => $account,
                 'currency' => $account->getCurrency($payment['currency'])
             ]);
+
+            $transactions[] = $transaction;
         }
     }
 }
