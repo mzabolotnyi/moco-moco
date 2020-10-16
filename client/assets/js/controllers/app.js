@@ -580,6 +580,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 var defaultCurrency = this.getDefaultCurrency(defaultAccount);
 
                 this.id = 0;
+                this.externalId = null;
 
                 if (!changeType && $scope.transaction.currentDate) {
                     this.date = $scope.transaction.currentDate;
@@ -621,6 +622,8 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 } else {
                     this.category = transaction.category ? this.findCategory(transaction.category.id) : null;
                 }
+
+                this.externalId = null;
             },
             fillByTemplate: function (template) {
 

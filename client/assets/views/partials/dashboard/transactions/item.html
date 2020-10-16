@@ -26,6 +26,7 @@
                 <span class="zmdi zmdi-long-arrow-left" data-ng-if="transaction.income"></span>
                 {{transaction.category.name}}
             </span>
+            <span class="fa fa-link" data-ng-if="transaction.externalId > 0"></span>
         </span>
 
         <!--details for transafer-->
@@ -59,7 +60,6 @@
 
     <!--comment-->
     <small class="lv-small" data-ng-if="transaction.comment != ''">
-        <span class="fa fa-pencil-square-o"></span>
         {{transaction.comment}}
     </small>
 
