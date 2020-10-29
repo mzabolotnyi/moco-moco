@@ -12,7 +12,6 @@ use app\models\Balance;
  * @property integer $user_id
  * @property string $name
  * @property string $color
- * @property boolean $reserve
  * @property string $merchant_id
  * @property string $merchant_password
  * @property string $card_number
@@ -93,7 +92,6 @@ class Account extends OActiveRecord
             'name',
             'color',
             'active',
-            'reserve',
             'userId' => 'user_id',
             'merchantId' => 'merchant_id',
             'merchantPassword' => 'merchant_password',
@@ -142,14 +140,6 @@ class Account extends OActiveRecord
     public function getImportType()
     {
         return $this->import_type;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isReserve()
-    {
-        return $this->reserve;
     }
 
     /**
