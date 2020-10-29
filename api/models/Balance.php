@@ -191,13 +191,10 @@ class Balance extends Model
             }
 
             $balanceData[$accountId]['currencies'][] = $balanceDataByRow;
+            $balanceData[$accountId]['amount'] += Currency::convertToMainCurrency($balanceDataByRow['amount'], $currency, $this->date);
 
-            if (!$account->isReserve()) {
-                $balanceData[$accountId]['amount'] += Currency::convertToMainCurrency($balanceDataByRow['amount'], $currency, $this->date);
-
-                if ($currencyId == $mainCurrency->id) {
-                    $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];
-                }
+            if ($currencyId == $mainCurrency->id) {
+                $balanceData[$accountId]['amountInMainCurrency'] += $balanceDataByRow['amountInMainCurrency'];
             }
         }
 

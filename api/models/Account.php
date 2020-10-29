@@ -93,6 +93,7 @@ class Account extends OActiveRecord
             'name',
             'color',
             'active',
+            'reserve',
             'userId' => 'user_id',
             'merchantId' => 'merchant_id',
             'merchantPassword' => 'merchant_password',
