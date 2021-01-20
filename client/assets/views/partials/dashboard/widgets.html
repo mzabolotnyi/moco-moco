@@ -17,13 +17,6 @@
                     {{scope.widget.income.amount | number:0}}
                     {{profile.data.currency.symbol}}
                 </h4>
-                <span>Общий доход</span>
-                <span class="f-700 pull-right"
-                      data-ng-class="{ 'c-green':scope.widget.income.isOk(), 'c-red':scope.widget.income.isBad() }">
-                    <i class="fa"
-                       data-ng-class="{ 'fa-caret-up':scope.widget.income.isOk(), 'fa-caret-down':scope.widget.income.isBad() }"> </i>
-                       {{scope.widget.income.getDisplayDynamics() | number:0}}%
-                </span>
             </div>
 
             <div class="card-body" data-ng-if="scope.widget.loading">
@@ -59,13 +52,6 @@
                     {{scope.widget.expense.amount | number:0}}
                     {{profile.data.currency.symbol}}
                 </h4>
-                <span>Общий расход</span>
-                <span class="f-700 pull-right"
-                      data-ng-class="{ 'c-green':scope.widget.expense.isOk(), 'c-red':scope.widget.expense.isBad() }">
-                    <i class="fa"
-                       data-ng-class="{ 'fa-caret-down':scope.widget.expense.isOk(), 'fa-caret-up':scope.widget.expense.isBad() }"> </i>
-                       {{scope.widget.expense.getDisplayDynamics() | number:0}}%
-                </span>
             </div>
 
             <div class="card-body" data-ng-if="scope.widget.loading">
@@ -95,14 +81,6 @@
                     {{scope.widget.profit.amount | number:0}}
                     {{profile.data.currency.symbol}}
                 </h4>
-                <span>{{scope.widget.profit.getTitle()}}</span>
-                <span class="f-700 pull-right"
-                      data-ng-class="{ 'c-green':scope.widget.profit.isOk(), 'c-red':scope.widget.profit.isBad() }">
-                    <i class="fa"
-                       data-ng-class="{ 'fa-caret-up':scope.widget.profit.isOk(), 'fa-caret-down':scope.widget.profit.isBad() }"> </i>
-                    {{scope.widget.profit.dynamics | number:0}}
-                    {{profile.data.currency.symbol}}
-                </span>
             </div>
 
             <div class="card-body" data-ng-if="scope.widget.loading">

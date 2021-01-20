@@ -306,17 +306,14 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
                             if (data.expense) {
                                 _this.expense.amount = data.expense.amount;
-                                _this.expense.dynamics = data.expense.dynamics;
                             }
 
                             if (data.income) {
                                 _this.income.amount = data.income.amount;
-                                _this.income.dynamics = data.income.dynamics;
                             }
 
                             if (data.profit) {
                                 _this.profit.amount = data.profit.amount;
-                                _this.profit.dynamics = data.profit.dynamics;
                             }
                         })
                         .error(function (error) {
@@ -329,45 +326,15 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 },
                 expense: {
                     amount: 0,
-                    dynamics: 0,
-                    isOk: function () {
-                        return this.dynamics < 0;
-                    },
-                    isBad: function () {
-                        return this.dynamics > 0;
-                    },
-                    getDisplayDynamics: function () {
-                        return Math.abs(this.dynamics);
-                    }
+                    dynamics: 0
                 },
                 income: {
                     amount: 0,
-                    dynamics: 0,
-                    isOk: function () {
-                        return this.dynamics > 0;
-                    },
-                    isBad: function () {
-                        return this.dynamics < 0;
-                    },
-                    getDisplayDynamics: function () {
-                        return Math.abs(this.dynamics);
-                    }
+                    dynamics: 0
                 },
                 profit: {
                     amount: 0,
-                    dynamics: 0,
-                    isOk: function () {
-                        return this.dynamics > 0;
-                    },
-                    isBad: function () {
-                        return this.dynamics < 0;
-                    },
-                    getTitle: function () {
-                        return this.amount >= 0 ? 'Экономия' : 'Перерасход'
-                    },
-                    getDisplayDynamics: function () {
-                        return Math.abs(this.dynamics);
-                    }
+                    dynamics: 0
                 }
             },
             mostPopularTransactions: {
