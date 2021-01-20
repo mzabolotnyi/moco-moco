@@ -24,10 +24,11 @@ CategoryModule
                     icon: category.icon,
                     income: category.income,
                     expense: category.expense,
-                    active: category.active
+                    active: category.active,
+                    watch: category.watch
                 };
 
-                return bodyParams
+                return bodyParams;
             }
         }
     }])

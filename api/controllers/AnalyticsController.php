@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Analytics;
 use app\models\User;
 use Carbon\Carbon;
+use Yii;
 use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -78,6 +79,8 @@ class AnalyticsController extends Controller
 
     public function actionMostPopularTransactions()
     {
+        $userId = Yii::$app->user->getId();
+
         $query = new Query();
         $query->select([
             'transaction.category_id as categoryId',
@@ -95,6 +98,7 @@ class AnalyticsController extends Controller
             ->leftJoin('category', 'transaction.category_id = category.id')
             ->leftJoin('account', 'transaction.account_id = account.id')
             ->leftJoin('currency', 'transaction.currency_id = currency.id')
+            ->where(['transaction.user_id' => $userId])
             ->andWhere('transaction.category_id IS NOT NULL')
             ->andWhere('transaction.transfer = 0')
             ->andWhere('transaction.date BETWEEN NOW() - INTERVAL 100 DAY AND NOW()')
@@ -114,5 +118,10 @@ class AnalyticsController extends Controller
         }
 
         return $result;
+    }
+
+    public function actionCategoryWatchlist()
+    {
+        return Analytics::create($_GET['startDate'], $_GET['endDate'])->getCategoryWatchlist();
     }
 }

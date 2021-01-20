@@ -62,6 +62,9 @@ AnalyticsModule
             },
             getMostPopularTransactions: function () {
                 return $http.get(utils.getUrl('most-popular-transactions', []));
+            },
+            getCategoryWatchlist: function (startDate, endDate) {
+                return $http.get(utils.getUrl('category-watchlist', [utils.getPeriodParams(startDate, endDate)]));
             }
         };
     }]);

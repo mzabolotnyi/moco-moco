@@ -90,6 +90,7 @@ return [
                 'GET widgetData' => 'widget-data',
                 'GET turnoverByMonth' => 'turnover-by-month',
                 'GET mostPopularTransactions' => 'most-popular-transactions',
+                'GET categoryWatchlist' => 'category-watchlist',
             ],
         ],
         // import

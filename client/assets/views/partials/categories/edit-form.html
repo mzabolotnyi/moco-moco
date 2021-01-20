@@ -66,12 +66,22 @@
             <!--ACTIVE-->
             <div class="form-group">
                 <div class="toggle-switch">
-                    <label for="active" class="ts-label">Отображать</label>
+                    <label for="active" class="ts-label">Отображать в операциях</label>
                     <input id="active" type="checkbox" hidden="hidden" data-ng-model="scope.category.active">
                     <label for="active" class="ts-helper pull-right"></label>
                 </div>
             </div>
             <!--end ACTIVE-->
+
+            <!--WATCHLIST-->
+            <div class="form-group">
+                <div class="toggle-switch">
+                    <label for="watch" class="ts-label">Отображать в Watchlist</label>
+                    <input id="watch" type="checkbox" hidden="hidden" data-ng-model="scope.category.watch">
+                    <label for="watch" class="ts-helper pull-right"></label>
+                </div>
+            </div>
+            <!--end WATCHLIST-->
 
             <div class="has-error">
                 <div data-ng-repeat="error in scope.category.errors">

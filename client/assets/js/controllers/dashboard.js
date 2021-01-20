@@ -24,6 +24,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                 this.charts.update();
                 this.widget.update();
                 this.mostPopularTransactions.update();
+                this.categoryWatchlist.update();
                 $scope.balance.update();
             },
             getExpensePerDay: function () {
@@ -351,6 +352,43 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                     }
 
                     analytics.getMostPopularTransactions()
+                        .success(function (data) {
+                            _this.data = data;
+                        })
+                        .error(function (error) {
+                            _this.error = true;
+                            notifyService.notifyError($scope.global.errorMessages.generateGet(error));
+                        })
+                        .finally(function () {
+                            _this.loading = false;
+                        });
+                }
+            },
+            categoryWatchlist: {
+                data: [],
+                month: moment().startOf('month').toDate(),
+                getDisplayMonth: function () {
+                    return moment(this.month).format('MMMM YYYY');
+                },
+                moveMonth: function (numberMonths) {
+                    this.month = moment(this.month).add(numberMonths, 'months').toDate();
+                    this.update();
+                },
+                update: function () {
+
+                    var _this = this;
+
+                    _this.error = false;
+
+                    if (!$scope.global.updateInBackground) {
+                        _this.loading = true;
+                        _this.data = [];
+                    }
+
+                    var startDate = moment(_this.month).startOf('month').toDate();
+                    var endDate = moment(_this.month).endOf('month').toDate();
+
+                    analytics.getCategoryWatchlist(startDate, endDate)
                         .success(function (data) {
                             _this.data = data;
                         })

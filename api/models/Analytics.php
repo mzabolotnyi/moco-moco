@@ -105,6 +105,62 @@ class Analytics
     }
 
     /**
+     * @return array
+     */
+    public function getCategoryWatchlist()
+    {
+        $userId = Yii::$app->user->getId();
+
+        $query = new Query();
+        $query->select([
+                'transaction.date',
+                'transaction.currency_id',
+                'category.id as category_id',
+                'category.name as category_name',
+                'SUM(IF(transaction.income,transaction.amount,0)) as income',
+                'SUM(IF(transaction.expense,transaction.amount,0)) as expense'
+            ])
+            ->from('transaction')
+            ->innerJoin('category', 'transaction.category_id = category.id')
+            ->where(['transaction.user_id' => $userId])
+            ->andWhere(['category.watch' => true]);
+
+        if ($this->startDate) {
+            $query->andWhere(['>=', 'transaction.date', $this->startDate->format('Y-m-d')]);
+        }
+
+        if ($this->endDate) {
+            $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d')]);
+        }
+
+        $query->groupBy(['date', 'currency_id', 'category_id', 'category_name']);
+
+        $result = [];
+
+        foreach ($query->all() as $row) {
+
+            $categoryId = $row['category_id'];
+            $categoryName = $row['category_name'];
+
+            $currency = $this->getCurrency($row['currency_id']);
+            $date = $row['date'];
+
+            if (!isset($result[$categoryId])) {
+                $result[$categoryId] = [
+                    'name' => $categoryName,
+                    'income' => 0,
+                    'expense' => 0,
+                ];
+            }
+
+            $result[$categoryId]['income'] += Currency::convertToMainCurrency($row['income'], $currency, $date);
+            $result[$categoryId]['expense'] += Currency::convertToMainCurrency($row['expense'], $currency, $date);
+        }
+
+        return $result;
+    }
+
+    /**
      * Returns data about expenses or income by category ['name' => 'Food', 'amount' => 125]
      *
      * @param string $type

@@ -59,6 +59,7 @@ class m170225_170101_init_database extends \yii\db\Migration
             'income' => $this->smallInteger(1)->defaultValue(1),
             'expense' => $this->smallInteger(1)->defaultValue(1),
             'active' => $this->smallInteger(1)->defaultValue(0),
+            'watch' => $this->smallInteger(1)->defaultValue(0),
             'created_at' => $this->integer(11),
             'updated_at' => $this->integer(11),
         ], $tableOptions);

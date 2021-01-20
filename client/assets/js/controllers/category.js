@@ -18,7 +18,6 @@ App.controller('CategoriesCtrl', ['$scope', 'categories', 'category', 'notifySer
                         .success(function (data) {
 
                             _this.data = $scope.global.sortDataByField(data, 'countTrans');
-                            ;
 
                             // обновим глобальный массив категорий
                             $scope.global.categories = _this.data;
@@ -71,8 +70,8 @@ App.controller('CategoriesCtrl', ['$scope', 'categories', 'category', 'notifySer
                         this.income = false;
                         this.expense = true;
                         this.active = true;
+                        this.watch = false;
                         this.countTrans = 0;
-                        this.isTransfer = false;
                     },
                     //заполнение полей по переданному объекту
                     fillByObject: function (category) {
@@ -83,6 +82,7 @@ App.controller('CategoriesCtrl', ['$scope', 'categories', 'category', 'notifySer
                         this.income = category.income ? true : false;
                         this.expense = category.expense ? true : false;
                         this.active = category.active ? true : false;
+                        this.watch = category.watch ? true : false;
                     },
                     //отправляет запрос на сохранение объекта
                     save: function () {

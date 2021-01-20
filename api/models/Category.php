@@ -15,6 +15,7 @@ use yii\helpers\Url;
  * @property boolean $income
  * @property boolean $expense
  * @property boolean $active
+ * @property boolean $watch
  * @property string $created_at
  * @property string $updated_at
  *
@@ -36,7 +37,7 @@ class Category extends OActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'icon', 'income', 'expense', 'active', '!user_id'];
+        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'icon', 'income', 'expense', 'active', 'watch', '!user_id'];
 
         return $scenarios;
     }
@@ -51,7 +52,7 @@ class Category extends OActiveRecord
             [['name'], 'string', 'max' => 255],
             [['icon'], 'string', 'max' => 255],
             [['income', 'expense', 'active'], 'boolean'],
-            [['income', 'expense'], 'default', 'value' => 0],
+            [['income', 'expense', 'watch'], 'default', 'value' => 0],
             ['active', 'default', 'value' => 1],
             ['income', function ($attribute, $params) {
                 if (!$this->isIncome() && !$this->isExpense()) {
@@ -76,6 +77,7 @@ class Category extends OActiveRecord
             'income' => 'Использовать в доходах',
             'expense' => 'Использовать в расходах',
             'active' => 'Активный',
+            'watch' => 'Отображать в дашборде',
         ];
     }
 
@@ -94,6 +96,7 @@ class Category extends OActiveRecord
             'income',
             'expense',
             'active',
+            'watch',
             'userId' => 'user_id',
             'countTrans' => function () {
                 return (int)$this->hasMany(Transaction::className(), ['category_id' => 'id'])->count();
@@ -135,5 +138,14 @@ class Category extends OActiveRecord
     public function isIncome()
     {
         return $this->income;
+    }
+
+    /**
+     * Returns a value indicating whether the category watched in dashboard
+     * @return bool
+     */
+    public function isWatch()
+    {
+        return $this->watch;
     }
 }
