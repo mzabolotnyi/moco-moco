@@ -374,6 +374,11 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                     this.month = moment(this.month).add(numberMonths, 'months').toDate();
                     this.update();
                 },
+                fullScreen: false,
+                toggleFullScreen: function () {
+                    this.fullScreen = !this.fullScreen;
+                    this.update();
+                },
                 update: function () {
 
                     var _this = this;
@@ -415,6 +420,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
             $scope.scope.charts.update();
             $scope.scope.widget.update();
             $scope.scope.mostPopularTransactions.update();
+            $scope.scope.categoryWatchlist.update();
         };
 
         //установим коллбэк после корректировки баланса
@@ -422,6 +428,7 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
             $scope.scope.charts.update();
             $scope.scope.widget.update();
+            $scope.scope.categoryWatchlist.update();
 
             if ($scope.scope.transactions.currentDate.toDateString() === (new Date).toDateString()) {
                 $scope.scope.transactions.update();
@@ -436,6 +443,9 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
 
         //инициализируем обновление блока популярных транзакций
         $scope.scope.mostPopularTransactions.update();
+
+        //инициализируем обновление watchlist
+        $scope.scope.categoryWatchlist.update();
 
         //загрузим необходимые для фильтров данные
         $scope.global.loadData();

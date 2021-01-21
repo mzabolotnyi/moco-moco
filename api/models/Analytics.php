@@ -134,30 +134,36 @@ class Analytics
         }
 
         $query->groupBy(['date', 'currency_id', 'category_id', 'category_name']);
+        $turnoverData = $query->all();
+        $categories = Category::findAll(['watch' => true]);
 
         $result = [];
 
-        foreach ($query->all() as $row) {
+        foreach ($categories as $category) {
 
-            $categoryId = $row['category_id'];
-            $categoryName = $row['category_name'];
-
-            $currency = $this->getCurrency($row['currency_id']);
-            $date = $row['date'];
-
-            if (!isset($result[$categoryId])) {
-                $result[$categoryId] = [
-                    'name' => $categoryName,
+            if (!isset($result[$category->id])) {
+                $result[$category->id] = [
+                    'name' => $category->name,
                     'income' => 0,
                     'expense' => 0,
                 ];
             }
 
-            $result[$categoryId]['income'] += Currency::convertToMainCurrency($row['income'], $currency, $date);
-            $result[$categoryId]['expense'] += Currency::convertToMainCurrency($row['expense'], $currency, $date);
+            foreach ($turnoverData as $row) {
+
+                if ($category->id != $row['category_id']) {
+                    continue;
+                }
+
+                $currency = $this->getCurrency($row['currency_id']);
+                $date = $row['date'];
+
+                $result[$category->id]['income'] += Currency::convertToMainCurrency($row['income'], $currency, $date);
+                $result[$category->id]['expense'] += Currency::convertToMainCurrency($row['expense'], $currency, $date);
+            }
         }
 
-        return $result;
+        return array_values($result);
     }
 
     /**

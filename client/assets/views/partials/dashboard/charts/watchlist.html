@@ -1,0 +1,42 @@
+<div class="card card-chart" data-ng-class="{ 'full-screen': scope.categoryWatchlist.fullScreen }">
+
+    <div class="card-header card-header-two-rows">
+        <h2 class="text-center">Watchlist</h2>
+
+        <div class="date-toolbar">
+                <span>
+                    <button class="dt-btn" data-ng-click="scope.categoryWatchlist.moveMonth(-1)">
+                        <i class="zmdi zmdi-chevron-left"></i>
+                    </button>
+                    <h2>{{scope.categoryWatchlist.getDisplayMonth()}}</h2>
+                    <button class="dt-btn" data-ng-click="scope.categoryWatchlist.moveMonth(1)">
+                        <i class="zmdi zmdi-chevron-right"></i>
+                    </button>
+                </span>
+        </div>
+
+        <ul class="actions">
+            <li>
+                <a href="" uib-tooltip="Во весь экран" data-ng-click="scope.categoryWatchlist.toggleFullScreen()">
+                    <i class="zmdi"
+                       data-ng-class="{ 'zmdi-fullscreen':!scope.categoryWatchlist.fullScreen,
+                                        'zmdi-fullscreen-exit':scope.categoryWatchlist.fullScreen }"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="chart" hc-watchlist-chart data="scope.categoryWatchlist.data"
+             data-ng-if="!scope.categoryWatchlist.loading && !scope.categoryWatchlist.error"></div>
+        <div class="text-center" data-ng-if="scope.categoryWatchlist.loading">
+            <ng-include src="'assets/views/partials/loaders/loading.html'"></ng-include>
+        </div>
+        <div class="text-center p-b-10 has-error" data-ng-if="scope.categoryWatchlist.error">
+            <div>Произошла ошибка...</div>
+            <button class="btn bgm-teal btn-sm m-t-10" data-ng-click="scope.categoryWatchlist.update()">Повторить
+            </button>
+        </div>
+    </div>
+
+</div>

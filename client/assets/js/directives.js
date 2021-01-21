@@ -904,6 +904,65 @@ App
         };
     })
 
+    // Directive for watchlist chart
+    .directive('hcWatchlistChart', function () {
+        return {
+            scope: {
+                data: '='
+            },
+            link: function (scope, element, attr) {
+
+                scope.$watch('data', function () {
+
+                    Highcharts.chart(element[0], {
+                        chart: {
+                            type: 'bar'
+                        },
+                        title: false,
+                        xAxis: {
+                            categories: scope.data.map(function(a) {return a.name;}),
+                            title: {
+                                text: null
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: null
+                            }
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        series: [{
+                            name: 'Доходы',
+                            color: '#4CAf50',
+                            yAxis: 0,
+                            data: scope.data.map(function(a) {return a.income;})
+                        }, {
+                            name: 'Расходы',
+                            yAxis: 0,
+                            color: '#FF5722',
+                            data: scope.data.map(function(a) {return a.expense;})
+                        }, {
+                            name: 'Прибыль',
+                            yAxis: 0,
+                            color: '#2196f3',
+                            data: scope.data.map(function(a) {return a.income - a.expense;})
+                        }]
+                    });
+                });
+            }
+        };
+    })
+
     // Directive for air datepicker
     .directive('datePicker', function () {
         return {
