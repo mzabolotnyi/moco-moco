@@ -115,22 +115,7 @@ class CurrencyRate extends OActiveRecord
      */
     public static function findRate($currencyID, $date)
     {
-//        $cache = \Yii::$app->cache;
-//        $key = 'currency_rate_' . $currency->id . '_' . $date;
-//
-//        if ($cache) {
-//            if ($rate = $cache->get($key)) {
-//                return $rate;
-//            }
-//        }
-
-        $rate = self::findOne(['currency_id' => $currencyID, 'date' => $date]);
-
-//        if ($cache) {
-//            $cache->set($key, $rate);
-//        }
-
-        return $rate;
+        return self::findOne(['currency_id' => $currencyID, 'date' => $date]);
     }
 
     /**
