@@ -109,11 +109,11 @@ class CurrencyRate extends OActiveRecord
 
     /**
      * Finds rate for currency on date
-     * @param Currency $currency
+     * @param int $currencyID
      * @param string $date date which need to check, format 'yyyy-MM-dd'
      * @return null|static
      */
-    public static function findRate($currency, $date)
+    public static function findRate($currencyID, $date)
     {
 //        $cache = \Yii::$app->cache;
 //        $key = 'currency_rate_' . $currency->id . '_' . $date;
@@ -124,7 +124,7 @@ class CurrencyRate extends OActiveRecord
 //            }
 //        }
 
-        $rate = self::findOne(['currency_id' => $currency->id, 'date' => $date]);
+        $rate = self::findOne(['currency_id' => $currencyID, 'date' => $date]);
 
 //        if ($cache) {
 //            $cache->set($key, $rate);
@@ -145,7 +145,7 @@ class CurrencyRate extends OActiveRecord
             $date = Carbon::today()->format('Y-m-d');
         }
 
-        $rate = self::findRate($currency, $date);
+        $rate = self::findRate($currency->id, $date);
 
         if (!$rate) {
             $rate = self::createDefaultRate($currency, $date);
