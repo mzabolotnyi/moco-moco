@@ -94,7 +94,7 @@ AuthModule
                 if (response.status === 401) {
                     utils.removeToken();
                     // redirect to auth page
-                    $window.location.href = '/auth';
+                    $window.location.href = appConfig.authHref;
                 } else {
                     return $q.reject(response);
                 }
