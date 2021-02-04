@@ -49,7 +49,8 @@ class PrivatBankDataProvider
     {
         $xml = $this->parseResponse($response);
         $assocArray = json_decode(json_encode($xml), true);
-        $statements = $assocArray['data']['info']['statements']['statement'];
+        $statementsData = $assocArray['data']['info']['statements'];
+        $statements = isset($statementsData['statement']) ? $statementsData['statement'] : [];
         $payments = [];
         if (!empty($statements)) {
             if (isset($statements['@attributes'])) {

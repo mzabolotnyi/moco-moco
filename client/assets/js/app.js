@@ -22,8 +22,8 @@ var App = angular.module('app', [
 App
     // Constants definition
     .constant('config', {
-        apiUrl: 'http://api.moco-moco',
-        siteUrl: 'http://moco-moco',
+        apiUrl: ApiHost,
+        siteUrl: ClientHost,
         authHref: '/auth',
         appName: 'Money Control',
         appFullName: 'MOCO - Money Control',
