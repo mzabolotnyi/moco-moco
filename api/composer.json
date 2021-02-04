@@ -26,7 +26,8 @@
     "nesbot/carbon": "^1.21",
     "deesoft/yii2-gii": "~1.0",
     "guzzlehttp/guzzle": "^6.3",
-    "yidas/yii2-composer-bower-skip": "^2.0"
+    "yidas/yii2-composer-bower-skip": "^2.0",
+    "vlucas/phpdotenv": "~3.3.2"
   },
   "require-dev": {
     "yiisoft/yii2-codeception": "*",
