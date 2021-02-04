@@ -1,5 +1,9 @@
 <?php
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    die;
+}
+
 require(__DIR__ . '/../vendor/autoload.php');
 
 $dotenv = Dotenv\Dotenv::create(__DIR__ . '/../');
