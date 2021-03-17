@@ -102,7 +102,7 @@ class AnalyticsController extends Controller
             ->andWhere('transaction.category_id IS NOT NULL')
             ->andWhere('transaction.transfer = 0')
             ->andWhere('transaction.date BETWEEN NOW() - INTERVAL 100 DAY AND NOW()')
-            ->groupBy(['category_id', 'account_id', 'currency_id'])
+            ->groupBy(['categoryId', 'categoryName', 'categoryIcon', 'accountId', 'accountName', 'accountColor', 'currencyId', 'currencySymbol', 'expense', 'income'])
             ->orderBy('count DESC')
             ->limit(12);
 
