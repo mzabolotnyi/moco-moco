@@ -3,7 +3,9 @@
 namespace app\services;
 
 use app\models\Account;
+use app\models\Category;
 use app\models\Transaction;
+use yii\db\Query;
 
 class ImportService
 {
@@ -55,7 +57,24 @@ class ImportService
                 'currency' => $account->getCurrency($payment['currency'])
             ]);
 
+            $transaction['category'] = $this->getCategory($transaction);
+
             $transactions[] = $transaction;
         }
+    }
+
+    private function getCategory($data)
+    {
+        $query = new Query();
+        $query->select(['category_id'])
+            ->from('transaction')
+            ->where(['transaction.user_id' => \Yii::$app->user->getId()])
+            ->andWhere(['transaction.comment' => $data['comment']])
+            ->orderBy('date DESC')
+            ->limit(1);
+
+        $result = $query->all();
+
+        return count($result) > 0 ? Category::findOne(['id' => $result[0]['category_id']]) : null;
     }
 }

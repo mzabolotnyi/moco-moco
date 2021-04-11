@@ -833,6 +833,13 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
 
                 importService.getTransactionForImport({'startDate': _this.date, 'endDate': _this.date})
                     .success(function (response) {
+
+                        angular.forEach(response, function (row) {
+                            if (row.category) {
+                                row.category = $scope.transaction.findCategory(row.category.id);
+                            }
+                        });
+
                         _this.data = response;
                     })
                     .error(function (error) {
