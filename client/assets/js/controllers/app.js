@@ -896,6 +896,7 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                         notifyService.hideLoadBar();
                         _this.opened = false;
                         _this.submitting = false;
+                        $scope.transaction.date = _this.date;
                         $scope.transaction.afterEdit();
                     });
             }
