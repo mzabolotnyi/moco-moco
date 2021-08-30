@@ -15,7 +15,7 @@ class ImportController extends Controller
      */
     public function behaviors()
     {
-        $behaviors = parent::behaviors();
+        $behaviors                  = parent::behaviors();
         $behaviors['authenticator'] = ['class' => HttpBearerAuth::className()];
         $behaviors['accessControl'] = [
             'class' => AccessControl::className(),
@@ -33,12 +33,12 @@ class ImportController extends Controller
 
     public function actionGetTransactionsForImport()
     {
-        $request = \Yii::$app->request;
+        $request          = \Yii::$app->request;
         $defaultDateValue = (new \DateTime())->format('Y-m-d');
-        $startDateQuery = $request->get('startDate', $defaultDateValue);
-        $endDateQuery = $request->get('endDate', $defaultDateValue);
-        $startDate = \DateTime::createFromFormat('Y-m-d', $startDateQuery);
-        $entDate = \DateTime::createFromFormat('Y-m-d', $endDateQuery);
+        $startDateQuery   = $request->get('startDate', $defaultDateValue);
+        $endDateQuery     = $request->get('endDate', $defaultDateValue);
+        $startDate        = \DateTime::createFromFormat('Y-m-d', $startDateQuery)->setTime(0, 0, 0);
+        $entDate          = \DateTime::createFromFormat('Y-m-d', $endDateQuery)->setTime(23, 59, 59);
 
         return ImportService::create()->getTransactionsForImport($startDate, $entDate);
     }

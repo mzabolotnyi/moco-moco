@@ -12,7 +12,7 @@ class PrivatBankDataProvider
 
     public static function create()
     {
-        return new PrivatBankDataProvider();
+        return new self();
     }
 
     public function getPayments(\DateTime $startDate, \DateTime $entDate, $cardNumber, $merchantId, $merchantPassword)

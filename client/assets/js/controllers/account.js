@@ -71,10 +71,14 @@ App.controller('AccountsCtrl', ['$scope', 'currencies', 'accounts', 'account', '
             getImportTypes: function () {
                 return [
                     {
-                        value: 'privatbank',
-                        name: 'Приват Банк'
+                        value: "privatbank",
+                        name: "PrivatBank API"
+                    },
+                    {
+                        value: "monobank",
+                        name: "Monobank API"
                     }
-                ]
+                ];
             },
             //инициализирует изменение объекта или создание нового
             edit: function (account) {

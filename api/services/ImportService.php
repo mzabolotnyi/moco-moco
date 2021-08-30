@@ -5,11 +5,14 @@ namespace app\services;
 use app\models\Account;
 use app\models\Category;
 use app\models\Transaction;
+use GuzzleHttp\Exception\ClientException;
 use yii\db\Query;
+use yii\web\BadRequestHttpException;
 
 class ImportService
 {
     const IMPORT_TYPE_PRIVATBANK = 'privatbank';
+    const IMPORT_TYPE_MONOBANK = 'monobank';
 
     public static function create()
     {
@@ -24,8 +27,8 @@ class ImportService
         foreach ($accounts as $account) {
             try {
                 $this->addTransactionsByAccount($transactions, $account, $startDate, $entDate);
-            } catch (\Exception $e) {
-                throw $e;
+            } catch (ClientException $e) {
+                throw new BadRequestHttpException($e->getMessage());
             }
         }
 
@@ -40,6 +43,10 @@ class ImportService
                 $merchantId = $account->getMerchantId();
                 $merchantPassword = $account->getMerchantPassword();
                 $payments = PrivatBankDataProvider::create()->getPayments($startDate, $entDate, $cardNumber, $merchantId, $merchantPassword);
+                break;
+            case self::IMPORT_TYPE_MONOBANK:
+                $token = $account->getMerchantId();
+                $payments = MonoBankDataProvider::create()->getPayments($startDate, $entDate, $token);
                 break;
             default:
                 $payments = [];

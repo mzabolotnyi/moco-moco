@@ -89,6 +89,14 @@
                     </div>
                 </div>
 
+                <div data-ng-if="scope.account.importType.value === 'monobank'">
+                    <div class="form-group fg-line">
+                        <label>Токен</label>
+                        <input type="text" class="form-control input-sm" data-ng-model="scope.account.merchantId"
+                               name="merchantId" placeholder="Токен">
+                    </div>
+                </div>
+
             </div>
             <!--end IMPORT-->
 
