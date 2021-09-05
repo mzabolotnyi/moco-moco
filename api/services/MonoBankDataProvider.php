@@ -47,7 +47,7 @@ class MonoBankDataProvider
 
         return [
             'externalId' => $paymentData['id'],
-            'date' => (new \DateTime())->setTimestamp($paymentData['time']),
+            'date' => (new \DateTime())->setTimestamp($paymentData['time'])->format('Y-m-d'),
             'amount' => $amountData['amount'],
             'type' => $amountData['type'],
             'currency' => $amountData['currency'],

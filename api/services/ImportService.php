@@ -28,7 +28,7 @@ class ImportService
             try {
                 $this->addTransactionsByAccount($transactions, $account, $startDate, $entDate);
             } catch (ClientException $e) {
-                throw new BadRequestHttpException($e->getMessage());
+                continue;
             }
         }
 
