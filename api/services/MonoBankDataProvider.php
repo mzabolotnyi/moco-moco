@@ -7,11 +7,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class MonoBankDataProvider
 {
-    const CURRENCY_MAPPING = [
-        980 => 'UAH',
-        840 => 'USD',
-    ];
-
     private $uri = 'https://api.monobank.ua';
 
     public static function create()
@@ -70,7 +65,7 @@ class MonoBankDataProvider
         return [
             'amount' => (float)$amount,
             'type' => $type,
-            'currency' => self::CURRENCY_MAPPING[$currencyCode]
+            'currency' => 'UAH'
         ];
     }
 }

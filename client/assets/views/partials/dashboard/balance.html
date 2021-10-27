@@ -23,7 +23,10 @@
             <tbody data-ng-repeat="item in balance.data">
             <tr data-ng-repeat="itemCurrency in item.currencies"
                 data-ng-if="itemCurrency.amount != 0 && profile.isMainCurrency(itemCurrency.currency)">
-                <td>{{item.account.name}}</td>
+                <td>
+                    <span class="fa fa-circle p-r-10" style="color: {{item.account.color}}"></span>
+                    {{item.account.name}}
+                </td>
                 <td class="text-right">
                     <a href=""
                        data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
@@ -47,7 +50,10 @@
             <tbody data-ng-repeat="item in balance.data">
             <tr data-ng-repeat="itemCurrency in item.currencies"
                 data-ng-if="itemCurrency.amount != 0 && !profile.isMainCurrency(itemCurrency.currency)">
-                <td>{{item.account.name}}</td>
+                <td>
+                    <span class="fa fa-circle p-r-10" style="color: {{item.account.color}}"></span>
+                    {{item.account.name}}
+                </td>
                 <td class="text-right">
                     <a href=""
                        data-ng-click="balance.adjustment.open(item.account, itemCurrency.currency, itemCurrency.amount)">
