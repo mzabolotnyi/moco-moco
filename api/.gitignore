@@ -29,3 +29,5 @@ phpunit.phar
 /.idea
 
 /.env
+
+/dumps
