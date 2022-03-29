@@ -27,6 +27,7 @@
                 <tr data-ng-repeat="importTransaction in importTransactions.data">
                     <td class="p-r-0">
                         <i class="fa fa-check c-teal" data-ng-if="importTransaction.category"></i>
+                        <i class="fa fa-exclamation-circle c-red" data-ng-if="!importTransaction.amount"></i>
                     </td>
                     <td>
                         <span class="c-green" data-ng-if="importTransaction.type === 'income'">

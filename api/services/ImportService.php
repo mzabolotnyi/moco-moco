@@ -5,9 +5,8 @@ namespace app\services;
 use app\models\Account;
 use app\models\Category;
 use app\models\Transaction;
-use GuzzleHttp\Exception\ClientException;
+use Throwable;
 use yii\db\Query;
-use yii\web\BadRequestHttpException;
 
 class ImportService
 {
@@ -27,8 +26,11 @@ class ImportService
         foreach ($accounts as $account) {
             try {
                 $this->addTransactionsByAccount($transactions, $account, $startDate, $entDate);
-            } catch (ClientException $e) {
-                continue;
+            } catch (Throwable $e) {
+                $transactions[] = [
+                    'account' => $account,
+                    'comment' => "Can't fetch data: {$e->getMessage()}"
+                ];
             }
         }
 

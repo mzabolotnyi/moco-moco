@@ -5,6 +5,7 @@ namespace app\services;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
+use yii\web\BadRequestHttpException;
 
 class PrivatBankDataProvider
 {
@@ -49,6 +50,11 @@ class PrivatBankDataProvider
     {
         $xml = $this->parseResponse($response);
         $assocArray = json_decode(json_encode($xml), true);
+
+        if (isset($assocArray['data']['error'])) {
+            throw new BadRequestHttpException($assocArray['data']['error']['@attributes']['message']);
+        }
+
         $statementsData = $assocArray['data']['info']['statements'];
         $statements = isset($statementsData['statement']) ? $statementsData['statement'] : [];
         $payments = [];
