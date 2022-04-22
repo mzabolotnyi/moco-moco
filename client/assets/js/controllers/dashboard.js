@@ -268,6 +268,10 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
                                 angular.forEach(_this.data.expense, function (value, key) {
                                     value.y = value.amount;
                                 });
+
+                                angular.forEach(_this.data.balance, function (value, key) {
+                                    value.y = value.amount;
+                                });
                             })
                             .error(function (error) {
 

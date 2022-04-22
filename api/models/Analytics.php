@@ -2,8 +2,12 @@
 
 namespace app\models;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Yii;
 use Carbon\Carbon;
+use yii\db\Expression;
 use yii\db\Query;
 
 /**
@@ -57,6 +61,9 @@ class Analytics
             ? Carbon::createFromFormat('Y-m-d', $endDate)
             : clone $endDate;
 
+        $analytics->startDate->setTime(00, 00, 00);
+        $analytics->endDate->setTime(23, 59, 59);
+
         return $analytics;
     }
 
@@ -105,6 +112,45 @@ class Analytics
     }
 
     /**
+     * Returns data about balance on the end of month ['month' => 'apr 2017', 'amount' => 125]
+     * Amount in main currency
+     *
+     * @return array
+     */
+    public function getBalanceByMonthData()
+    {
+        $start    = (clone $this->startDate)->modify('first day of this month');
+        $end      = (clone $this->endDate)->modify('first day of this month');
+        $interval = DateInterval::createFromDateString('1 month');
+        $period   = new DatePeriod($start, $interval, $end);
+
+        $result = [];
+        $now    = new DateTime();
+
+        foreach ($period as $date) {
+
+            $date->modify('last day of this month')->setTime(23, 59, 59);
+            $balance = $this->getBalanceOnDate($date);
+            $amount  = 0;
+
+            $rateDate = min($date, $now);
+
+            foreach ($balance as $row) {
+                $currency = $this->getCurrency($row['currency_id']);
+                $amount   += Currency::convertToMainCurrency(floatval($row['amount']), $currency, $rateDate->format('Y-m-d'));
+            }
+
+            $result[] = [
+                'name' => $this->months[$date->format('n')] . ' ' . $date->format('Y'),
+                'date' => $date->format('Y-m'),
+                'amount' => $amount,
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
      * @return array
      */
     public function getCategoryWatchlist()
@@ -113,29 +159,29 @@ class Analytics
 
         $query = new Query();
         $query->select([
-                'transaction.date',
-                'transaction.currency_id',
-                'category.id as category_id',
-                'category.name as category_name',
-                'SUM(IF(transaction.income,transaction.amount,0)) as income',
-                'SUM(IF(transaction.expense,transaction.amount,0)) as expense'
-            ])
+            'transaction.date',
+            'transaction.currency_id',
+            'category.id as category_id',
+            'category.name as category_name',
+            'SUM(IF(transaction.income,transaction.amount,0)) as income',
+            'SUM(IF(transaction.expense,transaction.amount,0)) as expense'
+        ])
             ->from('transaction')
             ->innerJoin('category', 'transaction.category_id = category.id')
             ->where(['transaction.user_id' => $userId])
             ->andWhere(['category.watch' => true]);
 
         if ($this->startDate) {
-            $query->andWhere(['>=', 'transaction.date', $this->startDate->format('Y-m-d')]);
+            $query->andWhere(['>=', 'transaction.date', $this->startDate->format('Y-m-d H:i:s')]);
         }
 
         if ($this->endDate) {
-            $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d')]);
+            $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d H:i:s')]);
         }
 
         $query->groupBy(['date', 'currency_id', 'category_id', 'category_name']);
         $turnoverData = $query->all();
-        $categories = Category::findAll(['watch' => true]);
+        $categories   = Category::findAll(['watch' => true]);
 
         $result = [];
 
@@ -156,9 +202,9 @@ class Analytics
                 }
 
                 $currency = $this->getCurrency($row['currency_id']);
-                $date = $row['date'];
+                $date     = $row['date'];
 
-                $result[$category->id]['income'] += Currency::convertToMainCurrency($row['income'], $currency, $date);
+                $result[$category->id]['income']  += Currency::convertToMainCurrency($row['income'], $currency, $date);
                 $result[$category->id]['expense'] += Currency::convertToMainCurrency($row['expense'], $currency, $date);
             }
         }
@@ -189,11 +235,11 @@ class Analytics
             ->andWhere(['transaction.' . $type => true]);
 
         if ($this->startDate) {
-            $query->andWhere(['>=', 'transaction.date', $this->startDate->format('Y-m-d')]);
+            $query->andWhere(['>=', 'transaction.date', $this->startDate->format('Y-m-d H:i:s')]);
         }
 
         if ($this->endDate) {
-            $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d')]);
+            $query->andWhere(['<=', 'transaction.date', $this->endDate->format('Y-m-d H:i:s')]);
         }
 
         $query->groupBy(['date', 'currency_id', 'category_id', 'category_name']);
@@ -249,13 +295,13 @@ class Analytics
 
         foreach ($data as $row) {
 
-            $categoryId = $row['category_id'];
+            $categoryId   = $row['category_id'];
             $categoryName = $row['category_name'];
 
             $currency = $this->getCurrency($row['currency_id']);
-            $date = $row['date'];
+            $date     = $row['date'];
 
-            $amount = floatval($row['amount']);
+            $amount               = floatval($row['amount']);
             $amountInMainCurrency = Currency::convertToMainCurrency($amount, $currency, $date);
 
             if (!isset($result[$categoryId])) {
@@ -296,11 +342,11 @@ class Analytics
 
             $currency = $this->getCurrency($row['currency_id']);
 
-            $date = $row['date'];
+            $date    = $row['date'];
             $dateObj = Carbon::createFromFormat('Y-m-d', $date);
-            $month = $dateObj->format('Y-m');
+            $month   = $dateObj->format('Y-m');
 
-            $amount = floatval($row['amount']);
+            $amount               = floatval($row['amount']);
             $amountInMainCurrency = Currency::convertToMainCurrency($amount, $currency, $date);
 
             if (!isset($result[$month])) {
@@ -328,6 +374,52 @@ class Analytics
         return $result;
     }
 
+    protected function getBalanceOnDate($date)
+    {
+        $userId = Yii::$app->user->getId();
+
+        $subQuery = new Query();
+        $subQuery->select([
+            new Expression('CASE
+              WHEN expense
+                   OR transfer THEN -amount
+              WHEN income THEN amount
+              ELSE 0
+             END AS amount'),
+            'account_id',
+            'currency_id',
+        ])->from('transaction')
+            ->where(['user_id' => $userId])
+            ->andWhere(['is not', 'account_id', null])
+            ->andWhere(['<=', 'date', $date]);
+
+        $subQuery2 = new Query();
+        $subQuery2->select([
+            'recipient_amount',
+            'recipient_account_id',
+            'recipient_currency_id',
+        ])->from('transaction')
+            ->where(['user_id' => $userId])
+            ->andWhere(['is not', 'recipient_account_id', null])
+            ->andWhere(['<=', 'date', $date]);
+
+        $subQuery->union($subQuery2, true);
+
+        $queryMain = new Query();
+        $queryMain->select([
+            'SUM(balance.amount) AS amount',
+            'balance.currency_id AS currency_id',
+        ])->from(['balance' => $subQuery])
+            ->leftJoin(
+                'account_currency AS ac',
+                'balance.account_id = ac.account_id AND balance.currency_id = ac.currency_id'
+            )->where(['ac.is_balance' => true])
+            ->orWhere(['ac.is_balance' => null])
+            ->groupBy(['balance.currency_id']);
+
+        return $queryMain->all();
+    }
+
     /**
      * Returns currency by ID
      *
@@ -339,7 +431,7 @@ class Analytics
         if (isset($this->_currencies[$id])) {
             $currency = $this->_currencies[$id];
         } else {
-            $currency = Currency::findCurrency($id);
+            $currency               = Currency::findCurrency($id);
             $this->_currencies[$id] = $currency;
         }
 

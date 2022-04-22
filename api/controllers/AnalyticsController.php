@@ -51,6 +51,7 @@ class AnalyticsController extends Controller
         return [
             'income' => $analytics->getIncomeByMonthData(),
             'expense' => $analytics->getExpenseByMonthData(),
+            'balance' => $analytics->getBalanceByMonthData(),
         ];
     }
 

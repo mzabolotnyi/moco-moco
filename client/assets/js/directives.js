@@ -897,6 +897,12 @@ App
                             yAxis: 0,
                             color: '#FF5722',
                             data: scope.data.expense
+                        }, {
+                            name: 'Баланс',
+                            type: 'line',
+                            yAxis: 0,
+                            color: '#009688',
+                            data: scope.data.balance
                         }]
                     });
                 });

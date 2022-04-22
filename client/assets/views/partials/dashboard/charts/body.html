@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" data-ng-if="scope.categoryWatchlist.data.length > 0">
     <div class="col-sm-12">
         <ng-include src="'assets/views/partials/dashboard/charts/watchlist.html'"></ng-include>
     </div>
