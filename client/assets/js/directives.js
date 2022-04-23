@@ -869,11 +869,19 @@ App
                             type: 'category',
                             crosshair: true
                         }],
-                        yAxis: { // Primary yAxis
-                            title: {
-                                text: 'Доход / Расход',
+                        yAxis: [
+                            { // Primary yAxis
+                                title: {
+                                    text: 'Доход / Расход',
+                                }
+                            },
+                            {
+                                title: {
+                                    text: 'Баланс',
+                                },
+                                opposite: true
                             }
-                        },
+                        ],
                         credits: {
                             enabled: false
                         },
@@ -900,7 +908,7 @@ App
                         }, {
                             name: 'Баланс',
                             type: 'line',
-                            yAxis: 0,
+                            yAxis: 1,
                             color: '#009688',
                             data: scope.data.balance
                         }]
