@@ -180,7 +180,7 @@ class CurrencyRate extends OActiveRecord
      * @param $date
      * @return array
      */
-    protected function getRateDataNBU($ISO, $date)
+    protected static function getRateDataNBU($ISO, $date)
     {
         $url = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?valcode=$ISO&date=$date&json";
         $rateData = null;
