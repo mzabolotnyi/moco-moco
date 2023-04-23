@@ -338,6 +338,16 @@ class Analytics
     {
         $result = [];
 
+        $period = new DatePeriod($this->startDate, DateInterval::createFromDateString('1 month'), $this->endDate);
+        foreach ($period as $date) {
+            $month          = $date->format('Y-m');
+            $result[$month] = [
+                'name' => $this->months[$date->format('n')] . ' ' . $date->format('Y'),
+                'date' => $month,
+                'amount' => 0,
+            ];
+        }
+
         foreach ($data as $row) {
 
             $currency = $this->getCurrency($row['currency_id']);
