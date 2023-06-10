@@ -29,27 +29,25 @@ App.controller('DashboardCtrl', ['$scope', 'transaction', 'transactions', 'analy
             },
             getExpensePerDay: function () {
 
-                var amount = 0;
+                const result = this.transactions.data.reduce((acc, {currency, amount, expense}) => {
+                    if (expense) acc[currency.symbol] = (acc[currency.symbol] || 0) + amount;
+                    return acc;
+                }, {});
 
-                angular.forEach(this.transactions.data, function (value, key) {
-                    if (value.expense) {
-                        amount += value.amount;
-                    }
-                });
-
-                return amount;
+                return Object.entries(result)
+                    .map(([currency, amount]) => `${currency} ${amount.toLocaleString()}`)
+                    .join(" | ");
             },
             getIncomePerDay: function () {
 
-                var amount = 0;
+                const result = this.transactions.data.reduce((acc, {currency, amount, income}) => {
+                    if (income) acc[currency.symbol] = (acc[currency.symbol] || 0) + amount;
+                    return acc;
+                }, {});
 
-                angular.forEach(this.transactions.data, function (value, key) {
-                    if (value.income) {
-                        amount += value.amount;
-                    }
-                });
-
-                return amount;
+                return Object.entries(result)
+                    .map(([currency, amount]) => `${currency} ${amount.toLocaleString()}`)
+                    .join(" | ");
             },
             transactions: {
                 data: transactions.data,
