@@ -4,7 +4,7 @@
 
 App
 
-// Add swipe right event for mobile
+    // Add swipe right event for mobile
     .directive('onSwipeRight', function () {
         return {
             restrict: 'A',
@@ -415,8 +415,7 @@ App
                             if (i.length == 0) {
                                 $(this).closest('.fg-line').removeClass('fg-toggled');
                             }
-                        }
-                        else {
+                        } else {
                             $(this).closest('.fg-line').removeClass('fg-toggled');
                         }
                     });
@@ -605,8 +604,7 @@ App
                             $q.all(promises).then(function () {
                                 if (scope.onAfterValidate && typeof scope.onAfterValidate() === "function") {
                                     scope.onAfterValidate()(e, fileObjects, rawFiles);
-                                }
-                                else {
+                                } else {
                                     scope.onAfterValidate(e, fileObjects, rawFiles);
                                 }
                             });
@@ -668,8 +666,7 @@ App
                             if (attrs.onload) {
                                 if (scope.onload && typeof scope.onload() === "function") {
                                     scope.onload()(e, fReader, file, rawFiles, fileObjects, fileObject);
-                                }
-                                else {
+                                } else {
                                     scope.onload(e, rawFiles);
                                 }
                             }
@@ -886,10 +883,30 @@ App
                             enabled: false
                         },
                         tooltip: {
-                            headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
-                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
-                            footerFormat: '</table>',
+                            formatter: function () {
+
+                                var s = '<span style="font-size:14px">' + this.points[0].key + '</span><table>';
+                                var profit = 0;
+
+                                $.each(this.points, function (i, point) {
+
+                                    s += '<tr><td style="color:' + point.series.color + ';padding:0">' + point.series.name + ': </td>' +
+                                        '<td style="padding:0"><b>' + point.y.toFixed(2) + '</b></td></tr>';
+
+                                    if (point.series.name === 'Доходы') {
+                                        profit += point.y;
+                                    } else if (point.series.name === 'Расходы') {
+                                        profit -= point.y;
+                                    }
+                                });
+
+                                s += '<tr><td style="color:#4c79af;padding:0">Прибыль: </td>' +
+                                    '<td style="padding:0"><b>' + profit.toFixed(2) + '</b></td></tr>';
+
+                                s += '</table>';
+
+                                return s;
+                            },
                             shared: true,
                             useHTML: true
                         },
@@ -934,7 +951,9 @@ App
                         },
                         title: false,
                         xAxis: {
-                            categories: scope.data.map(function(a) {return a.name;}),
+                            categories: scope.data.map(function (a) {
+                                return a.name;
+                            }),
                             title: {
                                 text: null
                             }
@@ -950,7 +969,7 @@ App
                         tooltip: {
                             headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
                             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
+                                '<td style="padding:0"><b>{point.y:.2f}</b></td></tr>',
                             footerFormat: '</table>',
                             shared: true,
                             useHTML: true
@@ -959,17 +978,23 @@ App
                             name: 'Доходы',
                             color: '#4CAf50',
                             yAxis: 0,
-                            data: scope.data.map(function(a) {return a.income;})
+                            data: scope.data.map(function (a) {
+                                return a.income;
+                            })
                         }, {
                             name: 'Расходы',
                             yAxis: 0,
                             color: '#FF5722',
-                            data: scope.data.map(function(a) {return a.expense;})
+                            data: scope.data.map(function (a) {
+                                return a.expense;
+                            })
                         }, {
                             name: 'Прибыль',
                             yAxis: 0,
                             color: '#2196f3',
-                            data: scope.data.map(function(a) {return a.income - a.expense;})
+                            data: scope.data.map(function (a) {
+                                return a.income - a.expense;
+                            })
                         }]
                     });
                 });
@@ -1039,10 +1064,10 @@ App
     // WRAP BUTTON FOR DATEPICKER
     // =========================================================================
 
-    .directive('datePickerWrapper', function(){
+    .directive('datePickerWrapper', function () {
         return {
             restrict: 'C',
-            link: function(scope, element){
+            link: function (scope, element) {
                 element.click(function () {
                     var inputId = element.find('.date-picker').attr('id');
                     $('#' + inputId).data('datepicker').show();
@@ -1055,13 +1080,13 @@ App
     // Fix for dropdown with overflow hidden in container
     // =========================================================================
 
-    .directive('dropdownOverflow', function(){
+    .directive('dropdownOverflow', function () {
         return {
             restrict: 'C',
-            link: function(scope, element){
-                element.click(function (){
+            link: function (scope, element) {
+                element.click(function () {
                     var dropdownToggle = element.find('.dropdown-toggle');
-                    var dropdownMenu =  element.find('.dropdown-menu');
+                    var dropdownMenu = element.find('.dropdown-menu');
                     var dropDownTop = dropdownToggle.offset().top + dropdownToggle.outerHeight();
                     dropdownMenu.css('position', 'fixed');
                     dropdownMenu.css('top', dropDownTop + 'px');
@@ -1075,13 +1100,13 @@ App
     // INPUT MASK
     // =========================================================================
 
-    .directive('inputMask', function(){
+    .directive('inputMask', function () {
         return {
             restrict: 'A',
             scope: {
                 inputMask: '='
             },
-            link: function(scope, element){
+            link: function (scope, element) {
                 element.mask(scope.inputMask.mask);
             }
         }
