@@ -2,6 +2,7 @@
 
 namespace app\services;
 
+use app\models\CurrencyMapping;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
@@ -40,20 +41,32 @@ class MonoBankDataProvider
     {
         $amountData = $this->parseAmount($paymentData);
 
+        $comment        = $paymentData['description'];
+        $currencyNumber = $paymentData['currencyCode'];
+
+        if ($currencyNumber && $currencyCode = CurrencyMapping::getCodeByNumber($currencyNumber)) {
+            $amountOriginal = abs($paymentData['operationAmount'] / 100);
+            $comment        = sprintf(
+                '%s (%s %s)',
+                $comment,
+                number_format($amountOriginal, 2),
+                $currencyCode
+            );
+        }
+
         return [
             'externalId' => $paymentData['id'],
             'date' => (new \DateTime())->setTimestamp($paymentData['time'])->format('Y-m-d'),
             'amount' => $amountData['amount'],
             'type' => $amountData['type'],
             'currency' => $amountData['currency'],
-            'comment' => $paymentData['description'],
+            'comment' => $comment,
         ];
     }
 
     private function parseAmount($data)
     {
-        $amount       = $data['amount'] / 100;
-        $currencyCode = $data['currencyCode'];
+        $amount = $data['amount'] / 100;
 
         if ($amount < 0) {
             $type   = 'expense';
