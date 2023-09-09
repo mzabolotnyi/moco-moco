@@ -13,11 +13,13 @@ use yii\web\BadRequestHttpException;
  * @property integer $id
  * @property integer $user_id
  * @property integer $currency_id
+ * @property string $currency_original
  * @property integer $recipient_currency_id
  * @property integer $account_id
  * @property integer $recipient_account_id
  * @property integer $category_id
  * @property double $amount
+ * @property double $amount_original
  * @property double $recipient_amount
  * @property string $date
  * @property string $comment
@@ -57,7 +59,7 @@ class Transaction extends OActiveRecord
         $scenarios = parent::scenarios();
 
         $attributes = [
-            'currency_id', 'account_id', 'category_id', 'amount', 'date', 'comment', 'external_id',
+            'currency_id', 'currency_original', 'account_id', 'category_id', 'amount', 'amount_original', 'date', 'comment', 'external_id',
             '!user_id', '!expense', '!income', '!transfer'
         ];
 
@@ -119,6 +121,8 @@ class Transaction extends OActiveRecord
     {
         return [
             'amount' => 'Сумма',
+            'amount_original' => 'Сумма (Ориг)',
+            'currency_original' => 'Валюта (Ориг)',
             'date' => 'Дата',
             'currency_id' => 'Валюта',
             'account_id' => 'Счет',
@@ -145,6 +149,8 @@ class Transaction extends OActiveRecord
             'id',
             'date',
             'amount',
+            'amountOriginal' => 'amount_original',
+            'currencyOriginal' => 'currency_original',
             'currency' => function () {
                 return $this->currency;
             },

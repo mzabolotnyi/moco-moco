@@ -34,7 +34,7 @@
                 <span class="zmdi zmdi-long-arrow-left" data-ng-if="transaction.income"></span>
                 {{transaction.category.name}}
             </span>
-            <span  class="lv-trans-comment" data-ng-if="transaction.comment != ''">
+            <span class="lv-trans-comment" data-ng-if="transaction.comment != ''">
                 ({{transaction.comment}})
             </span>
         </span>
@@ -51,6 +51,9 @@
         <!--amount for income/expense-->
         <span class="lv-trans-body-amount pull-right" data-ng-if="!transaction.transfer"
               data-ng-class="{ 'c-green':transaction.income, 'c-deeporange':transaction.expense }">
+            <span class="c-gray f-11" data-ng-if="transaction.currencyOriginal">
+                {{transaction.amountOriginal}} {{transaction.currencyOriginal}}
+            </span>
             {{transaction.currency.symbol}}
                 <money-format amount="{{scope.getAmount(transaction)}}" decimals="2"
                               sign="{{scope.getSign(transaction)}}"></money-format>

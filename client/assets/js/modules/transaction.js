@@ -105,6 +105,8 @@ TransactionModule
                 return {
                     date: moment(transaction.date).format('YYYY-MM-DD'),
                     amount: transaction.amount,
+                    amount_original: transaction.amountOriginal,
+                    currency_original: transaction.currencyOriginal,
                     account_id: transaction.account ? transaction.account.id : '',
                     category_id: transaction.category ? transaction.category.id : '',
                     currency_id: transaction.currency ? transaction.currency.id : '',

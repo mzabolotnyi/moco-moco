@@ -17,9 +17,9 @@
                 <thead>
                 <tr>
                     <th width="3%"></th>
-                    <th width="7%">Сумма</th>
-                    <th width="25%">Счет</th>
-                    <th width="25%">Категория</th>
+                    <th width="15%">Сумма</th>
+                    <th width="22%">Счет</th>
+                    <th width="22%">Категория</th>
                     <th>Комментарий</th>
                 </tr>
                 </thead>
@@ -35,6 +35,9 @@
                         </span>
                         <span class="c-deeporange" data-ng-if="importTransaction.type === 'expense'">
                             -{{importTransaction.amount}} {{importTransaction.currency.symbol}}
+                        </span>
+                        <span class="c-gray f-11" data-ng-if="importTransaction.currencyOriginal">
+                            {{importTransaction.amountOriginal}} {{importTransaction.currencyOriginal}}
                         </span>
                     </td>
                     <td>{{importTransaction.account.name}}</td>

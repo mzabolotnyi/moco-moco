@@ -67,16 +67,6 @@ class ImportService
             ]);
 
             $transaction['category'] = $this->getCategory($transaction);
-
-            if ($transaction['currencyOriginal']) {
-                $transaction['comment'] = sprintf(
-                    '%s (%s %s)',
-                    $transaction['comment'],
-                    number_format($transaction['amountOriginal'], 2),
-                    $transaction['currencyOriginal']
-                );
-            }
-
             $transactions[] = $transaction;
         }
     }
