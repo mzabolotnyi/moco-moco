@@ -37,22 +37,9 @@ class MonoBankDataProvider
         return $payments;
     }
 
-    private function parsePayment($paymentData)
+    private function parsePayment($paymentData): array
     {
         $amountData = $this->parseAmount($paymentData);
-
-        $comment        = $paymentData['description'];
-        $currencyNumber = $paymentData['currencyCode'];
-
-        if ($currencyNumber && $currencyCode = CurrencyMapping::getCodeByNumber($currencyNumber)) {
-            $amountOriginal = abs($paymentData['operationAmount'] / 100);
-            $comment        = sprintf(
-                '%s (%s %s)',
-                $comment,
-                number_format($amountOriginal, 2),
-                $currencyCode
-            );
-        }
 
         return [
             'externalId' => $paymentData['id'],
@@ -60,25 +47,22 @@ class MonoBankDataProvider
             'amount' => $amountData['amount'],
             'type' => $amountData['type'],
             'currency' => $amountData['currency'],
-            'comment' => $comment,
+            'comment' => $paymentData['description'],
+            'amountOriginal' => $amountData['amountOriginal'],
+            'currencyOriginal' => $amountData['currencyOriginal'],
         ];
     }
 
-    private function parseAmount($data)
+    private function parseAmount($data): array
     {
         $amount = $data['amount'] / 100;
 
-        if ($amount < 0) {
-            $type   = 'expense';
-            $amount = -$amount;
-        } else {
-            $type = 'income';
-        }
-
         return [
-            'amount' => (float)$amount,
-            'type' => $type,
-            'currency' => 'UAH'
+            'type' => $amount < 0 ? 'expense' : 'income',
+            'amount' => abs($amount),
+            'currency' => 'UAH',
+            'amountOriginal' => abs($data['operationAmount'] / 100),
+            'currencyOriginal' => CurrencyMapping::getCodeByNumber($data['currencyCode'])
         ];
     }
 }
