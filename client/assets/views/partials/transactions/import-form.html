@@ -36,7 +36,7 @@
                         <span class="c-deeporange" data-ng-if="importTransaction.type === 'expense'">
                             -{{importTransaction.amount}} {{importTransaction.currency.symbol}}
                         </span>
-                        <span class="c-gray f-11" data-ng-if="importTransaction.currencyOriginal">
+                        <span class="c-gray f-11" data-ng-if="importTransaction.currencyOriginal && importTransaction.currencyOriginal !== importTransaction.currency.iso">
                             {{importTransaction.amountOriginal}} {{importTransaction.currencyOriginal}}
                         </span>
                     </td>

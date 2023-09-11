@@ -41,7 +41,7 @@
         <!--amount for income/expense-->
         <span class="lv-trans-body-amount pull-right" data-ng-if="!transaction.transfer"
               data-ng-class="{ 'c-green':transaction.income, 'c-deeporange':transaction.expense }">
-            <span class="c-gray f-11" data-ng-if="transaction.currencyOriginal">
+            <span class="c-gray f-11" data-ng-if="transaction.currencyOriginal && transaction.currencyOriginal !== transaction.currency.iso">
                 {{transaction.amountOriginal}} {{transaction.currencyOriginal}}
             </span>
             {{transaction.currency.symbol}}
