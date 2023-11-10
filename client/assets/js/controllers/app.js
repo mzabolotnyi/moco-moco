@@ -593,6 +593,8 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 this.category = defaultCategory;
                 this.currency = defaultCurrency;
                 this.comment = '';
+                this.currencyOriginal = null;
+                this.amountOriginal = null;
 
                 if (this.transfer) {
 
@@ -624,6 +626,8 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 }
 
                 this.externalId = null;
+                this.currencyOriginal = null;
+                this.amountOriginal = null;
             },
             fillByTemplate: function (template) {
 
