@@ -14,7 +14,7 @@ AuthModule
         accessRecoveryUrl: 'auth/access-recovery',
         tokenName: 'access-token'
     })
-    .factory('authUtils', ['$localStorage', 'authConfig', 'config', function ($localStorage, config, appConfig) {
+    .factory('authUtils', ['$window', 'authConfig', 'config', function ($window, config, appConfig) {
         return {
             getFullUrl: function (path) {
                 return [appConfig.apiUrl, path].join('/')
@@ -26,15 +26,15 @@ AuthModule
                     && token !== '';
             },
             setToken: function (token) {
-                $localStorage[config.tokenName] = token;
-                alert('Set token ' + JSON.stringify($localStorage, null, 2));
+                $window.localStorage.setItem(config.tokenName, token);
+                alert('Set token ' + JSON.stringify($window.localStorage, null, 2));
             },
             getToken: function () {
-                alert('Get token ' + JSON.stringify($localStorage, null, 2));
-                return $localStorage[config.tokenName];
+                alert('Get token ' + JSON.stringify($window.localStorage, null, 2));
+                return $window.localStorage.getItem(config.tokenName);
             },
             removeToken: function () {
-                delete $localStorage[config.tokenName];
+                $window.localStorage.removeItem(config.tokenName);
             }
         }
     }])
