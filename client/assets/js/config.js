@@ -109,17 +109,17 @@ App
     .run(['$rootScope', '$window', 'config', 'auth', 'cfpLoadingBar', function ($rootScope, $window, config, auth, cfpLoadingBar) {
 
         // Detact Mobile Browser
-        // if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        //     $('html').addClass('ismobile');
-        //     $rootScope.isMobile = true;
-        // }
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $('html').addClass('ismobile');
+            $rootScope.isMobile = true;
+        }
 
         // Access config (constants) easily from all controllers
         $rootScope.config = config;
 
         // Check auth
         if (!auth.isAuthenticated()) {
-            $window.location.href = config.authHref;
+            // $window.location.href = config.authHref;
             return;
         }
 
@@ -128,7 +128,7 @@ App
             cfpLoadingBar.start();
             if (!auth.isAuthenticated()) {
                 event.preventDefault();
-                $window.location.href = config.authHref;
+                // $window.location.href = config.authHref;
             }
         });
 
