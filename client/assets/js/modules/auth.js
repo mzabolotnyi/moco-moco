@@ -84,7 +84,8 @@ AuthModule
         return {
             request: function (request) {
                 if (request.url.indexOf(appConfig.apiUrl) > -1) {
-                    alert(auth.getToken());
+                    alert(utils.getToken());
+                    alert(utils.isAuthenticated());
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
                     }
@@ -145,7 +146,6 @@ AuthModule
                 auth.login(user)
                     .then(function () {
                         $window.location.href = '/dashboard';
-                        // alert(auth.getToken());
                     }, function (response) {
                         if (response.data) {
                             if (response.status === 422) {
