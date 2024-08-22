@@ -84,8 +84,6 @@ AuthModule
         return {
             request: function (request) {
                 if (request.url.indexOf(appConfig.apiUrl) > -1) {
-                    alert(utils.getToken());
-                    alert(utils.isAuthenticated());
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
                     }
