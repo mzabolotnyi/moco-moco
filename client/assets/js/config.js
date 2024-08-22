@@ -2,7 +2,7 @@ App
 // Router configuration
     .config(function ($stateProvider, $urlRouterProvider) {
 
-        $urlRouterProvider.otherwise('/dashboard');
+        // $urlRouterProvider.otherwise('/dashboard');
 
         $stateProvider
             .state('dashboard', {
