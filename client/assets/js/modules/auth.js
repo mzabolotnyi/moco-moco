@@ -94,9 +94,9 @@ AuthModule
                 if (response.status === 401) {
                     utils.removeToken();
                     $window.location.href = appConfig.authHref;
-                    return $q.reject(response);
+                    // return $q.reject(response);
                 } else {
-                    return $q.reject(response);
+                    // return $q.reject(response);
                 }
             }
         };
