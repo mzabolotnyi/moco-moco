@@ -79,7 +79,7 @@ AuthModule
             }
         };
     }])
-    .factory('authInterceptor', ['$q', '$location', '$window', 'config', 'authUtils', function ($q, $location, $window, appConfig, utils) {
+    .factory('authInterceptor', ['$q', '$window', 'config', 'authUtils', function ($q, $window, appConfig, utils) {
 
         return {
             request: function (request) {
@@ -93,7 +93,7 @@ AuthModule
             responseError: function (response) {
                 if (response.status === 401) {
                     utils.removeToken();
-                    $location.path(appConfig.authHref);
+                    $window.location.href = appConfig.authHref;
                     return $q.reject(response);
                 } else {
                     return $q.reject(response);
@@ -169,13 +169,13 @@ AuthModule
             };
         }
     ])
-    .controller('LogoutCtrl', ['$scope', '$location', '$window', 'auth', 'config',
-        function ($scope, $location, $window, auth, appConfig) {
+    .controller('LogoutCtrl', ['$scope', '$window', 'auth', 'config',
+        function ($scope, $window, auth, appConfig) {
 
             $scope.logout = function () {
                 auth.logout()
                     .then(function () {
-                        $location.path(appConfig.authHref);
+                        $window.location.href = appConfig.authHref;
                     });
             };
         }
