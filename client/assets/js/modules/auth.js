@@ -87,8 +87,8 @@ AuthModule
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
                     }
-                    var separator = config.url.indexOf('?') === -1 ? '?' : '&';
-                    config.url += separator + 'token' + '=' + encodeURIComponent(utils.getToken());
+                    var separator = request.url.indexOf('?') === -1 ? '?' : '&';
+                    request.url += separator + 'token' + '=' + encodeURIComponent(utils.getToken());
                 }
                 return request;
             },
