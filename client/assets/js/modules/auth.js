@@ -27,15 +27,14 @@ AuthModule
             },
             setToken: function (token) {
                 $localStorage[config.tokenName] = token;
-                alert('Set token ' + config.tokenName);
+                alert('Set token ' + $localStorage);
             },
             getToken: function () {
-                alert('Get token ' + config.tokenName);
+                alert('Get token ' + $localStorage);
                 return $localStorage[config.tokenName];
             },
             removeToken: function () {
                 delete $localStorage[config.tokenName];
-                alert('Remove token');
             }
         }
     }])
