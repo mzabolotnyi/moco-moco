@@ -117,7 +117,7 @@ AuthModule
 
                 auth.signup(user)
                     .then(function () {
-                        $window.location.href = '/';
+                        $window.location.href = '/#/dashboard';
                     }, function (response) {
                         if (response.data) {
                             if (response.status === 422) {
@@ -143,7 +143,7 @@ AuthModule
 
                 auth.login(user)
                     .then(function () {
-                        $window.location.href = '/dashboard';
+                        $window.location.href = '/#/dashboard';
                     }, function (response) {
                         if (response.data) {
                             if (response.status === 422) {
