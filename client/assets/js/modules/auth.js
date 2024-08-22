@@ -26,17 +26,7 @@ AuthModule
                     && token !== '';
             },
             setToken: function (token) {
-                try {
-                    $localStorage[config.tokenName] = token;
-                } catch (e) {
-                    if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-                        alert('LocalStorage quota exceeded!');
-                    } else if (e.name === 'SecurityError') {
-                        alert('LocalStorage is not accessible or writable!');
-                    } else {
-                        alert('Error accessing localStorage: ' + e);
-                    }
-                }
+                $localStorage[config.tokenName] = token;
             },
             getToken: function () {
                 return $localStorage[config.tokenName];
@@ -97,8 +87,6 @@ AuthModule
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
                     }
-                    var separator = request.url.indexOf('?') === -1 ? '?' : '&';
-                    request.url += separator + 'token' + '=' + encodeURIComponent(utils.getToken());
                 }
                 return request;
             },
