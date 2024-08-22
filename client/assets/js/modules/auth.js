@@ -27,12 +27,14 @@ AuthModule
             },
             setToken: function (token) {
                 $localStorage[config.tokenName] = token;
+                alert('Set token ' + token);
             },
             getToken: function () {
                 return $localStorage[config.tokenName];
             },
             removeToken: function () {
                 delete $localStorage[config.tokenName];
+                alert('Remove token');
             }
         }
     }])
@@ -42,7 +44,6 @@ AuthModule
                 return $http.post(utils.getFullUrl(config.loginUrl), user)
                     .success(function (response) {
                         utils.setToken(response.token);
-                        alert('success token ' + utils.getToken());
                     });
             },
             signup: function (user) {
@@ -85,7 +86,6 @@ AuthModule
         return {
             request: function (request) {
                 if (request.url.indexOf(appConfig.apiUrl) > -1) {
-                    alert('Request ' + request.url + ' with ' + utils.getToken());
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
                     }
@@ -144,7 +144,6 @@ AuthModule
 
                 auth.login(user)
                     .then(function () {
-                        alert('Before redirect ' + auth.getToken());
                         $window.location.href = '/#/dashboard';
                     }, function (response) {
                         if (response.data) {
