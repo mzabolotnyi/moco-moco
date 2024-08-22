@@ -26,7 +26,17 @@ AuthModule
                     && token !== '';
             },
             setToken: function (token) {
-                $localStorage[config.tokenName] = token;
+                try {
+                    $localStorage[config.tokenName] = token;
+                } catch (e) {
+                    if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                        alert('LocalStorage quota exceeded!');
+                    } else if (e.name === 'SecurityError') {
+                        alert('LocalStorage is not accessible or writable!');
+                    } else {
+                        alert('Error accessing localStorage: ' + e);
+                    }
+                }
             },
             getToken: function () {
                 return $localStorage[config.tokenName];
