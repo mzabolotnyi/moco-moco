@@ -1,5 +1,5 @@
-App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService', 'currency', 'importService',
-    function ($scope, $state, $rootScope, $localStorage, balance, profile, account, category, transaction, notifyService, currency, importService) {
+App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$window', 'balance', 'profile', 'account', 'category', 'transaction', 'notifyService', 'currency', 'importService',
+    function ($scope, $state, $rootScope, $window, balance, profile, account, category, transaction, notifyService, currency, importService) {
 
         // Global values
         $scope.global = {
@@ -263,14 +263,14 @@ App.controller('AppCtrl', ['$scope', '$state', '$rootScope', '$localStorage', 'b
                 savedCategoryAlias: 'adjustment-category',
                 setCategory: function (category) {
                     if (category) {
-                        $localStorage[this.savedCategoryAlias] = category.id;
+                        $window.localStorage.setItem(this.savedCategoryAlias, category.id);
                     } else {
-                        delete $localStorage[this.savedCategoryAlias];
+                        $window.localStorage.removeItem(this.savedCategoryAlias);
                     }
                 },
                 getCategory: function () {
 
-                    var categoryId = $localStorage[this.savedCategoryAlias];
+                    var categoryId = $window.localStorage.getItem(this.savedCategoryAlias);
 
                     var categories = $scope.global.categories.filter(function (obj) {
                         return obj.id === categoryId;
