@@ -143,8 +143,8 @@ AuthModule
 
                 auth.login(user)
                     .then(function () {
-                        // $window.location.href = '/';
-                        alert(auth.getToken());
+                        $window.location.href = '/dashboard';
+                        // alert(auth.getToken());
                     }, function (response) {
                         if (response.data) {
                             if (response.status === 422) {
