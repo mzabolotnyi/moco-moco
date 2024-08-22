@@ -83,6 +83,7 @@ AuthModule
 
         return {
             request: function (request) {
+                alert(auth.getToken());
                 if (request.url.indexOf(appConfig.apiUrl) > -1) {
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
@@ -94,7 +95,6 @@ AuthModule
                 if (response.status === 401) {
                     utils.removeToken();
                     $window.location.href = appConfig.authHref;
-                    // return $q.reject(response);
                 } else {
                     return $q.reject(response);
                 }
