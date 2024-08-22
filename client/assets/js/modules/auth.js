@@ -27,10 +27,8 @@ AuthModule
             },
             setToken: function (token) {
                 $window.localStorage.setItem(config.tokenName, token);
-                alert('Set token ' + JSON.stringify($window.localStorage, null, 2));
             },
             getToken: function () {
-                alert('Get token ' + JSON.stringify($window.localStorage, null, 2));
                 return $window.localStorage.getItem(config.tokenName);
             },
             removeToken: function () {
