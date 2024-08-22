@@ -42,6 +42,7 @@ AuthModule
                 return $http.post(utils.getFullUrl(config.loginUrl), user)
                     .success(function (response) {
                         utils.setToken(response.token);
+                        alert('success token ' + utils.getToken());
                     });
             },
             signup: function (user) {
@@ -84,6 +85,7 @@ AuthModule
         return {
             request: function (request) {
                 if (request.url.indexOf(appConfig.apiUrl) > -1) {
+                    alert('Request ' + request.url + ' with ' + utils.getToken());
                     if (utils.isAuthenticated()) {
                         request.headers.Authorization = 'Bearer ' + utils.getToken();
                     }
@@ -142,7 +144,7 @@ AuthModule
 
                 auth.login(user)
                     .then(function () {
-                        alert(auth.getToken());
+                        alert('Before redirect ' + auth.getToken());
                         $window.location.href = '/#/dashboard';
                     }, function (response) {
                         if (response.data) {
