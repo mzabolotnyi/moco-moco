@@ -101,6 +101,7 @@ class AnalyticsController extends Controller
             ->leftJoin('currency', 'transaction.currency_id = currency.id')
             ->where(['transaction.user_id' => $userId])
             ->andWhere('transaction.category_id IS NOT NULL')
+            ->andWhere('account.import != 1')
             ->andWhere('transaction.transfer = 0')
             ->andWhere('transaction.date BETWEEN NOW() - INTERVAL 100 DAY AND NOW()')
             ->groupBy(['categoryId', 'categoryName', 'categoryIcon', 'accountId', 'accountName', 'accountColor', 'currencyId', 'currencySymbol', 'expense', 'income'])
