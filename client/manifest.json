@@ -2,8 +2,6 @@
   "name": "Money Control",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1976d2",
   "icons": [
     {
       "src": "/assets/img/favicons/icon-32x32.png",
