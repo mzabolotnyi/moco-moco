@@ -119,7 +119,7 @@ App
 
         // Check auth
         if (!auth.isAuthenticated()) {
-            // $window.location.href = config.authHref;
+            $window.location.href = config.authHref;
             return;
         }
 
@@ -128,7 +128,7 @@ App
             cfpLoadingBar.start();
             if (!auth.isAuthenticated()) {
                 event.preventDefault();
-                // $window.location.href = config.authHref;
+                $window.location.href = config.authHref;
             }
         });
 
