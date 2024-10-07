@@ -23,6 +23,9 @@
             {{transaction.currency.symbol}}
                 <money-format amount="{{scope.transactions.getAmount(transaction)}}" decimals="2"
                               sign="{{scope.transactions.getSign(transaction)}}"></money-format>
+            <span class="c-gray f-11" data-ng-if="transaction.currencyOriginal && transaction.currencyOriginal !== transaction.currency.iso">
+                {{transaction.amountOriginal}} {{transaction.currencyOriginal}}
+            </span>
         </span>
 
         <!--amount for transfer-->
